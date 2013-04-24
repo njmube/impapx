@@ -1,0 +1,110 @@
+@CHARSET "UTF-8";
+/* Base class
+------------------------- */
+.jumbotron {
+  position: relative;
+  padding: 40px 0;
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 1px 3px rgba(0,0,0,.4), 0 0 30px rgba(0,0,0,.075);
+  background: #020031; /* Old browsers */
+  background: -moz-linear-gradient(45deg,  #020031 0%, #6d3353 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left bottom, right top, color-stop(0%,#020031), color-stop(100%,#6d3353)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(45deg,  #020031 0%,#6d3353 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(45deg,  #020031 0%,#6d3353 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(45deg,  #020031 0%,#6d3353 100%); /* IE10+ */
+  background: linear-gradient(45deg,  #020031 0%,#6d3353 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#020031', endColorstr='#6d3353',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+  -webkit-box-shadow: inset 0 3px 7px rgba(0,0,0,.2), inset 0 -3px 7px rgba(0,0,0,.2);
+     -moz-box-shadow: inset 0 3px 7px rgba(0,0,0,.2), inset 0 -3px 7px rgba(0,0,0,.2);
+          box-shadow: inset 0 3px 7px rgba(0,0,0,.2), inset 0 -3px 7px rgba(0,0,0,.2);
+
+}
+.jumbotron:after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: .4;
+}
+.jumbotron h1 {
+  font-size: 70px;
+  font-weight: bold;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+.jumbotron p {
+  font-size: 24px;
+  font-weight: 300;
+  line-height: 30px;
+  margin-bottom: 30px;
+}
+.subhead {
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+
+}
+.subhead h1 {
+  font-size: 60px;
+}
+.subhead p {
+  margin-bottom: 20px;
+}
+.subhead .navbar {
+  display: none;
+}
+
+/* 
+	Styles para componentes 
+
+*/
+form{
+	margin:0,0,5px;
+}
+.form-actions {
+    background-color: #F5F5F5;
+    border-top: 1px solid #E5E5E5;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+.proveedorAuto {
+	width: 510px;
+  background-color: #fcfcfc;
+  border: 1px solid #cccccc;
+  font-size: 1em;
+  padding: 0.2em 0.4em;
+  text-transform:uppercase
+}
+.cuentaDeBanco{
+	width: 510px;
+}
+
+.partidas-header{
+	color: #0088cc;
+}
+
+.mayusculas{
+	text-transform:uppercase;
+}
+.comentario{
+	text-transform:uppercase;
+	width: 510px;
+}
+
+.form-horizontal .control-group {
+    margin-bottom: 8px;
+}
+
+.table tbody tr.textError td {
+    color: red;
+}
+.table tfoot th.rightAlign {
+	text-align: right;
+}
+.modal-large {
+	width: 780px;
+    margin-left: -390px; /* - width/2 */
+}
