@@ -1,10 +1,18 @@
 package com.luxsoft.impapx.cxp
 
+import grails.converters.JSON
+
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.codehaus.groovy.grails.web.json.JSONArray
 import org.springframework.dao.DataIntegrityViolationException
+
+import com.luxsoft.impapx.FacturaDeGastos;
 
 class CuentaDeGastosGenericaController {
 
     static allowedMethods = [create: ['GET', 'POST'], edit: ['GET', 'POST'], delete: 'POST']
+	
+	def cuentaDeGastosGenericaService
 
     def index() {
         redirect action: 'list', params: params
@@ -13,7 +21,7 @@ class CuentaDeGastosGenericaController {
     def list() {
 		params.sort='id'
 		params.order='desc'
-        params.max = Math.min(params.max ? params.int('max') : 10, 100)
+        params.max = Math.min(params.max ? params.int('max') : 50, 100)
         [rows: CuentaDeGastosGenerica.list(params)]
     }
 
@@ -24,13 +32,14 @@ class CuentaDeGastosGenericaController {
 			break
 		case 'POST':
 	        def cuentaDeGastosGenericaInstance = new CuentaDeGastosGenerica(params)
+			cuentaDeGastosGenericaInstance.facturas=[]
 	        if (!cuentaDeGastosGenericaInstance.save(flush: true)) {
 	            render view: 'create', model: [cuentaDeGastosGenericaInstance: cuentaDeGastosGenericaInstance]
 	            return
 	        }
 
 			flash.message = message(code: 'default.created.message', args: [message(code: 'cuentaDeGastosGenerica.label', default: 'CuentaDeGastosGenerica'), cuentaDeGastosGenericaInstance.id])
-	        redirect action: 'show', id: cuentaDeGastosGenericaInstance.id
+	        redirect action: 'edit', id: cuentaDeGastosGenericaInstance.id
 			break
 		}
     }
@@ -85,7 +94,7 @@ class CuentaDeGastosGenericaController {
 	        }
 
 			flash.message = message(code: 'default.updated.message', args: [message(code: 'cuentaDeGastosGenerica.label', default: 'CuentaDeGastosGenerica'), cuentaDeGastosGenericaInstance.id])
-	        redirect action: 'show', id: cuentaDeGastosGenericaInstance.id
+	        redirect action: 'list'
 			break
 		}
     }
@@ -108,4 +117,75 @@ class CuentaDeGastosGenericaController {
             redirect action: 'show', id: params.id
         }
     }
+	
+	def facturasAsJSON(){
+		
+		def dataToRender = [:]
+		dataToRender.sEcho = params.sEcho
+		dataToRender.aaData=[]
+		
+		def cuenta=CuentaDeGastosGenerica.findById(params.long('cuentaDeGastosId'),[fetch:[facturas:'select']])
+		def list=cuenta.facturas
+		dataToRender.iTotalRecords=list.size()
+		dataToRender.iTotalDisplayRecords = dataToRender.iTotalRecords
+		list.each{ row ->
+			
+			dataToRender.aaData <<[
+				row.id
+				,row.documento
+				,lx.shortDate(date:row.fecha)
+				,row.proveedor.nombre
+				,lx.moneyFormat(number:row.importe*row.tc)
+				]
+			
+		}
+		render dataToRender as JSON
+	}
+	
+	def facturasDisponiblesPorAsignarJSON(){
+		println params
+		def key=params.term?.toLowerCase()+'%'
+		def facturas=FacturaDeGastos.findAll("\
+			from FacturaDeGastos fac \
+			where fac.cuentaGenerica is null \
+			and (lower(fac.documento) like ? ) or (lower(fac.proveedor.nombre) like ?)\
+			order by fac.documento desc" 
+			,[key,key],[max: 50])
+		
+		def res=facturas.collect{row ->
+			def total=lx.moneyFormat(number:row.total)
+			def label="Fac: ${row.documento}  F: ${row.fecha.format('dd/MM/yyyy')} T: ${total} Prov:${row.proveedor.nombre}"
+			[id:row.id,label:label,value:label,documento:row.documento]
+		}
+		render res as JSON
+		
+	}
+	
+	def agregarFactura(){
+		def dataToRender=[:]
+		def res=cuentaDeGastosGenericaService.agregarFactura(params.long('cuentaDeGastosId'), params.long('facturaId'))
+		//dataToRender.total=res.total
+		//render dataToRender as JSON
+		render res as JSON
+	}
+	
+	def eliminarFacturas(){
+		//println 'Eliminando facturas: '+params
+		JSONArray jsonArray=JSON.parse(params.partidas);
+		def data=[:]
+		def cuenta=cuentaDeGastosGenericaService.eliminarFacturas(params.cuentaDeGastosId,jsonArray)
+		data.total=cuenta.total
+		/*
+		try {
+			def cuenta=cuentaDeGastosGenericaService.eliminarFacturas(params.cuentaDeGastosId,jsonArray)
+			data.total=cuenta.total
+			
+		} catch (Exception e) {
+			e.printStackTrace()
+			log.error(e)
+			data.error=ExceptionUtils.getRootCauseMessage(e)
+		}*/
+		
+		render data as JSON
+	}
 }

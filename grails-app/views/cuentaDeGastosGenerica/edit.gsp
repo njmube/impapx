@@ -3,36 +3,37 @@
 <html>
 	<head>
 		<meta name="layout" content="luxor">
-		<g:set var="entityName" value="${message(code: 'cuentaDeGastosGenerica.label', default: 'CuentaDeGastosGenerica')}" />
-		<title><g:message code="default.edit.label" args="[entityName]" /></title>
+		<title>Cuenta genérica de gastos</title>
+		<r:require modules="luxorTableUtils,dataTables"/>
 	</head>
 	<body>
+		<div class="container-fluid">
 		<div class="row-fluid">
 
-			<div class="span3">
+			<div class="span2">
 				<div class="well">
 					<ul class="nav nav-list">
-						<li class="nav-header">${entityName}</li>
+						<li class="nav-header">Cuenta de gastos</li>
 						<li>
 							<g:link class="list" action="list">
 								<i class="icon-list"></i>
-								<g:message code="default.list.label" args="[entityName]" />
+								Cuentas
 							</g:link>
 						</li>
 						<li>
 							<g:link class="create" action="create">
 								<i class="icon-plus"></i>
-								<g:message code="default.create.label" args="[entityName]" />
+								Alta
 							</g:link>
 						</li>
 					</ul>
 				</div>
 			</div>
 			
-			<div class="span9">
+			<div class="span10">
 
 				<div class="page-header">
-					<h3><g:message code="default.edit.label" args="[entityName]" /></h3>
+					<h3>Cueta de gastos: ${ cuentaDeGastosGenericaInstance}</h3>
 				</div>
 
 				<g:if test="${flash.message}">
@@ -48,28 +49,49 @@
 				</ul>
 				</bootstrap:alert>
 				</g:hasErrors>
-
-				<fieldset>
-					<g:form class="form-horizontal" action="edit" id="${cuentaDeGastosGenericaInstance?.id}" >
-						<g:hiddenField name="version" value="${cuentaDeGastosGenericaInstance?.version}" />
+				<ul class="nav nav-tabs" id="myTab">
+					<li class=""><a href="#cuenta" data-toggle="tab">Cuenta</a></li>
+					<li class="active"><a href="#facturas" data-toggle="tab">Facturas</a></li>
+				</ul>
+				<div class="tab-content">
+					<div class="tab-pane " id="cuenta">
 						<fieldset>
-							<f:all bean="cuentaDeGastosGenericaInstance"/>
-							<div class="form-actions">
-								<button type="submit" class="btn btn-primary">
-									<i class="icon-ok icon-white"></i>
-									<g:message code="default.button.update.label" default="Update" />
-								</button>
-								<button type="submit" class="btn btn-danger" name="_action_delete" formnovalidate>
-									<i class="icon-trash icon-white"></i>
-									<g:message code="default.button.delete.label" default="Delete" />
-								</button>
-							</div>
+							<g:form class="form-horizontal" action="update" >
+								<fieldset>
+									<f:with bean="${cuentaDeGastosGenericaInstance}">
+										<f:field property="proveedor">
+											<label class="control-label" >${cuentaDeGastosGenericaInstance.proveedor}</label>
+										</f:field>
+										<f:field property="fecha"/>
+										<f:field property="comentario"/>
+									</f:with>
+									<button type="submit" class="btn btn-primary">
+										<i class="icon-ok icon-white"></i>
+										Salvar
+									</button>
+									<button type="submit" class="btn btn-danger" name="_action_delete"
+										formnovalidate>
+										<i class="icon-trash icon-white"></i>
+										Eliminar
+									</button>
+							
+								</fieldset>
+							</g:form>
 						</fieldset>
-					</g:form>
-				</fieldset>
+					</div>
+					
+					<div class="tab-pane active" id="facturas">
+						<g:render template="facturasPanel" bean="${cuentaDeGastosGenericaInstance}"/>
+					</div>
+					
+				</div>
+				
 
 			</div>
 
 		</div>
+		</div>
 	</body>
 </html>
+
+

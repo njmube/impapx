@@ -6,5 +6,7 @@ databaseChangeLog = {
 
 	
 
-	include file: 'cuentaDeGastosGenerica.groovy'
+	include file: 'creacionDeCuentaDeGastosGenerica.groovy'
+
+	
 }

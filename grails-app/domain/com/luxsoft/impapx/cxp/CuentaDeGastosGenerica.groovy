@@ -14,7 +14,6 @@ class CuentaDeGastosGenerica {
 	
 	Date fecha
 	String comentario
-	String referencia
 	BigDecimal importe=0
 	BigDecimal impuestos=0
 	BigDecimal retension=0
@@ -33,7 +32,6 @@ class CuentaDeGastosGenerica {
 
     static constraints = {
 		comentario(nullable:true,maxSize:250)
-		referencia(nullable:true)
 		proveedor(nullable:true)
     }
 	
@@ -44,11 +42,5 @@ class CuentaDeGastosGenerica {
 		
 	}
 	
-	def beforeUpdate(){
-		actualizarImportes();
-	}
 	
-	def beforeInsert(){
-		actualizarImportes();
-	}
 }

@@ -18,7 +18,7 @@
 		<h4>Cuentas de gastos genéricas periodo: ${periodo}</h4>
 	</content>
 	
-	<content tag="consultasPanelTitle">Cuentas de gastos genéricas</content>
+	<content tag="consultasPanelTitle"></content>
  	
  	<content tag="consultas">
  	</content>
@@ -26,7 +26,7 @@
 	
  	<content tag="operaciones">
 		<li>
-			<g:link action="cambiarPeriodo" />
+			<g:link action="create">Alta</g:link>
  		</li>
  		
  	</content>

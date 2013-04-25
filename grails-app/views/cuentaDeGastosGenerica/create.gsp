@@ -52,12 +52,15 @@
 				<fieldset>
 					<g:form class="form-horizontal" action="create" >
 						<fieldset>
-							<f:all bean="cuentaDeGastosGenericaInstance"/>
-							<div class="form-actions">
-								<button type="submit" class="btn btn-primary">
-									<i class="icon-ok icon-white"></i>
-									<g:message code="default.button.create.label" default="Create" />
-								</button>
+							<f:with bean="${cuentaDeGastosGenericaInstance}">
+								<f:field property="proveedor"/>
+								<f:field property="fecha"/>
+								<f:field property="comentario"/>
+							</f:with>
+							<button type="submit" class="btn btn-primary">
+								<i class="icon-ok icon-white"></i>
+								<g:message code="default.button.create.label" default="Create" />
+							</button>
 							</div>
 						</fieldset>
 					</g:form>

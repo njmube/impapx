@@ -60,4 +60,11 @@
 	</g:link>
 </li>
 --%>
+<sec:ifAnyGranted roles="ROLE_COMPRAS,ROLE_ADMIN,ROLE_TESORERIA">
+<li><g:link class="list" controller="cuentaDeGastosGenerica" action="list">
+		<!-- <i class="icon-list"></i> -->
+		<g:message code="cuentaDeGastosGenerica.list.label" default="Cuenta de Gastos (Genérica)"/>
+	</g:link>
+</li>
+</sec:ifAnyGranted>
 

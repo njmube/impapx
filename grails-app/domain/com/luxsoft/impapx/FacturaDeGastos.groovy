@@ -3,6 +3,7 @@ package com.luxsoft.impapx
 
 
 import com.luxsoft.impapx.cxp.ConceptoDeGasto;
+import com.luxsoft.impapx.cxp.CuentaDeGastosGenerica;
 
 class FacturaDeGastos extends CuentaPorPagar{
 	
@@ -10,6 +11,8 @@ class FacturaDeGastos extends CuentaPorPagar{
 	
 	
 	static hasMany =[conceptos:ConceptoDeGasto]
+	
+	static belongsTo=[cuentaGenerica:CuentaDeGastosGenerica]
 
     static constraints = {
 		retensionIsr(nullable:true)
