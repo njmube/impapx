@@ -35,7 +35,7 @@ class CuentaDeGastosController {
 	        }
 
 			flash.message = message(code: 'default.created.message', args: [message(code: 'cuentaDeGastos.label', default: 'CuentaDeGastos'), cuentaDeGastosInstance.id])
-	        redirect action: 'show', id: cuentaDeGastosInstance.id
+	        redirect action: 'edit', id: cuentaDeGastosInstance.id
 			break
 		}
     }

@@ -136,6 +136,8 @@ class CuentaDeGastosGenericaController {
 				,lx.shortDate(date:row.fecha)
 				,row.proveedor.nombre
 				,lx.moneyFormat(number:row.importe*row.tc)
+				,lx.moneyFormat(number:row.impuestos*row.tc)
+				,lx.moneyFormat(number:row.total*row.tc)
 				]
 			
 		}
@@ -148,7 +150,7 @@ class CuentaDeGastosGenericaController {
 		def facturas=FacturaDeGastos.findAll("\
 			from FacturaDeGastos fac \
 			where fac.cuentaGenerica is null \
-			and (lower(fac.documento) like ? ) or (lower(fac.proveedor.nombre) like ?)\
+			and (lower(fac.documento) like ?  or lower(fac.proveedor.nombre) like ?)\
 			order by fac.documento desc" 
 			,[key,key],[max: 50])
 		
@@ -164,9 +166,10 @@ class CuentaDeGastosGenericaController {
 	def agregarFactura(){
 		def dataToRender=[:]
 		def res=cuentaDeGastosGenericaService.agregarFactura(params.long('cuentaDeGastosId'), params.long('facturaId'))
-		//dataToRender.total=res.total
+		dataToRender.importe=res.importe
+		println dataToRender
 		//render dataToRender as JSON
-		render res as JSON
+		render dataToRender as JSON
 	}
 	
 	def eliminarFacturas(){
@@ -175,6 +178,7 @@ class CuentaDeGastosGenericaController {
 		def data=[:]
 		def cuenta=cuentaDeGastosGenericaService.eliminarFacturas(params.cuentaDeGastosId,jsonArray)
 		data.total=cuenta.total
+		println 'Cuenta actualizada: '+cuenta.facturas.size()
 		/*
 		try {
 			def cuenta=cuentaDeGastosGenericaService.eliminarFacturas(params.cuentaDeGastosId,jsonArray)
@@ -186,6 +190,7 @@ class CuentaDeGastosGenericaController {
 			data.error=ExceptionUtils.getRootCauseMessage(e)
 		}*/
 		
-		render data as JSON
+		//render data as JSON
+		render cuenta as JSON
 	}
 }

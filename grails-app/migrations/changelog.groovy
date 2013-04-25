@@ -9,4 +9,6 @@ databaseChangeLog = {
 	include file: 'creacionDeCuentaDeGastosGenerica.groovy'
 
 	
+
+	include file: 'ajusteFacturaDeGastos.groovy'
 }

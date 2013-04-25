@@ -20,6 +20,10 @@
 				value="${lx.moneyFormat(number:cuentaPorPagarInstance.retImp) }"/>
 			<f:field property="retensionIsr" input-disabled="true"
 				value="${lx.moneyFormat(number:cuentaPorPagarInstance.retensionIsr) }"/>
+			<f:field property="descuento" 
+				value="${lx.moneyFormat(number:cuentaPorPagarInstance.descuento) }"/>
+			<f:field property="rembolso" 
+				value="${lx.moneyFormat(number:cuentaPorPagarInstance.rembolso) }"/>
 			<f:field property="total" input-disabled="true"
 				value="${lx.moneyFormat(number:cuentaPorPagarInstance.total) }"/>
 			<%-- 

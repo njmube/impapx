@@ -47,6 +47,9 @@ class FacturaDeGastosService {
 		gasto.impuestos=gasto.conceptos.sum(0.0,{it.impuesto})
 		gasto.retImp=gasto.conceptos.sum(0.0,{it.retension})
 		gasto.retensionIsr=gasto.conceptos.sum(0.0,{it.retensionIsr})
+		
+		
+		
 		gasto.total=gasto.importe+gasto.impuestos-gasto.retImp-gasto.retensionIsr
 		
 	}

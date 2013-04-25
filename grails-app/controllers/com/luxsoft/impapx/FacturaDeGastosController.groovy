@@ -19,6 +19,8 @@ class FacturaDeGastosController {
 
     def list() {
         params.max = 500
+		params.sort='id'
+	   params.order='desc'
         [facturaDeGastosInstanceList: FacturaDeGastos.list(params), facturaDeGastosInstanceTotal: FacturaDeGastos.count()]
 		//[gastosDeImportacionInstanceList: GastosDeImportacion.list(params), gastosDeImportacionInstanceTotal: GastosDeImportacion.count()]
     }
@@ -38,7 +40,7 @@ class FacturaDeGastosController {
 	        }
 
 			flash.message = message(code: 'default.created.message', args: [message(code: 'facturaDeGastos.label', default: 'FacturaDeGastos'), facturaDeGastosInstance.id])
-	        redirect action: 'show', id: facturaDeGastosInstance.id
+	        redirect action: 'edit', id: facturaDeGastosInstance.id
 			break
 		}
     }

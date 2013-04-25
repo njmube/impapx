@@ -15,6 +15,7 @@
 	class="simpleGrid table table-striped table-hover table-bordered table-condensed">
 	<thead>
 		<tr>
+			<th class="header">Id</th>
 			<th class="header">Cuenta</th>
 			<th class="header">Descripcion</th>
 			<th class="header">Tipo</th>
@@ -32,9 +33,13 @@
 	</thead>
 	<tbody>
 		<g:each in="${conceptos}" var="row">
-			<tr id="${fieldValue(bean:row, field:"id")}">
-			    
-				<td>${fieldValue(bean: row, field: "concepto.clave")}</td>
+			<tr id="${row.id}">
+				<td><g:link controller="conceptoDeGasto" action="edit" id="${row.id}">
+			    	${row.id}</g:link>
+			    </td>
+			    <td><g:link controller="conceptoDeGasto" action="edit" id="${row.id}">
+			    	${fieldValue(bean: row, field: "concepto.clave")}</g:link>
+			    </td>
 				<td>${fieldValue(bean: row, field: "concepto.descripcion")}</td>
 				<td>${fieldValue(bean: row, field: "tipo")}</td>
 				<td><lx:moneyFormat number="${row.importe }" /></td>
@@ -52,16 +57,16 @@
 	</tbody>
 	<tfoot>
 		<tr>
-			
+			<td></td>
 			<td></td>
 			<td></td>
 			<td><label class="pull-right" >Totales: </label></td>
 			<td><lx:moneyFormat number="${facturaDeGastosInstance.importe}" /></td>
 			<td><lx:moneyFormat number="${facturaDeGastosInstance.conceptos.sum(0.0,{it.ietu})}" /></td>
+			<td><lx:moneyFormat number="${facturaDeGastosInstance.impuestos}" /></td>
+			<td><lx:moneyFormat number="${facturaDeGastosInstance.retImp}" /></td>
 			<td></td>
-			<td></td>
-			<td></td>
-			<td></td>
+			<td><lx:moneyFormat number="${facturaDeGastosInstance.retensionIsr}" /></td>
 			<td></td>
 			<td><lx:moneyFormat number="${facturaDeGastosInstance.total}" /></td>
 		</tr>
@@ -84,7 +89,7 @@
 					<f:with bean="${new ConceptoDeGasto() }">
 						<f:field property="concepto" >
 							<g:hiddenField id="conceptoId" name="concepto.id"/>
-							<g:field type="text" id="concepto" name="concepto.descripcion" required="true" class="input-xxlarge"/>
+							<g:field type="text" id="concepto" name="conceptoDesc" required="true" class="input-xxlarge"/>
 						</f:field>
 						<f:field property="tipo"/>
 						<f:field property="descripcion" input-required="true"  input-class="input-xxlarge"/>

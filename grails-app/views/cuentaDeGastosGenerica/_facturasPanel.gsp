@@ -25,6 +25,8 @@
 				<th>Fecha</th>
 				<th>Proveedor</th>
 				<th>Importe</th>
+				<th>Impuestos</th>
+				<th>Total</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -34,8 +36,10 @@
 				<th></th>
 				<th></th>
 				<th></th>
-				<th class="rightAlign">Importe:  </th>
-				<th><label id="totalGastos"><lx:moneyFormat number="${cuentaDeGastosGenericaInstance.importe}"/></label></th>
+				<th></th>
+				<th><label id="importeGastos"><lx:moneyFormat number="${cuentaDeGastosGenericaInstance.importe}"/></label></th>
+				<th><label id="impuestosGastos"><lx:moneyFormat number="${cuentaDeGastosGenericaInstance.impuestos}"/></label></th>
+				<th><label id="totalGastos"><lx:moneyFormat number="${cuentaDeGastosGenericaInstance.total}"/></label></th>
 			</tr>
 		</tfoot>
 	</table>
@@ -118,7 +122,7 @@ $(function(){
 				},
 				success:function(response){
 					console.log('Response: '+response)
-					reload(null);
+					location.reload();
 					
 				},
 				error:function(request,status,error){
@@ -154,6 +158,8 @@ $(function(){
 			,{"sName": "fecha", "sTitle": "Fecha", "sWidth": "10%", "bSortable": "true"}
 			,{"sName": "proveedor", "sTitle": "Proveedor",  "bSortable": "false"}
 			,{"sName": "importeMN", "sTitle": "Importe",  "bSortable": "true"}
+			,{"sName": "impuestosMN", "sTitle": "Impuestos",  "bSortable": "true"}
+			,{"sName": "totalMN", "sTitle": "Total",  "bSortable": "true"}
 			
 		],
 		"fnCreatedRow":function(nRow,aData,iDataIndex){
@@ -172,12 +178,14 @@ $(function(){
 });
 
 function onSuccess(data){
-	console.log('data')
+	console.log('Success: '+data)
 };
 		
 function reload(data){
-	console.log('Reloading...');
+	console.log('Reloading...'+data);
 	$("#facturasGrid").dataTable().fnReloadAjax();
+	location.reload();
+	
 	
 }			
 </r:script>

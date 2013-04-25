@@ -15,8 +15,9 @@ class CuentaDeGastosGenericaService {
 		
 		cuenta.addToFacturas(factura)
 		cuenta.actualizarImportes()
-		cuenta=cuenta.save(failOnError:true)
-		return [cuentaDeGastosGenerica:cuenta,factura:factura]
+		cuenta.save(failOnError:true)
+		//println 'Cuenta: '+cuenta.total
+		return cuenta
 		
 	}
 	
@@ -26,23 +27,22 @@ class CuentaDeGastosGenericaService {
 		
 		facturas.each{
 			def facturaId=it.toLong()
-			//def factura=FacturaDeGastos.get(facturaId)
-			def factura=cuenta.facturas.find{
-				it.id==facturaId
-			}
+			def factura=FacturaDeGastos.get(facturaId)
+			//def factura=cuenta.facturas.find{
+				//it.id==facturaId
+			//}
 			//println 'Factura a eliminar: '+factura
 			if(factura){
-				def res=cuenta.removeFromFacturas(factura)
-				//println 'Eliminacion: '+res.facturas.size()
+				//cuenta.removeFromFacturas(factura)
+				def res=cuenta.facturas.remove(factura)
+				println 'Eliminacion: '+res
 				factura.cuentaGenerica=null
 				factura.save()
-				//factura.cuentaDeGastos=null
+				cuenta.save()
 			}
 		}
 		cuenta.actualizarImportes()
-		cuenta=cuenta.save(failOnError:true)
-		println 'Facturas de cuenta actualizada: '+cuenta.facturas.size()
-		println 'Nuevo importe actualizado: '+cuenta.importe
+		//cuenta.save(failOnError:true)
 		return cuenta
 		
 	}
