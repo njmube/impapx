@@ -11,4 +11,8 @@ databaseChangeLog = {
 	
 
 	include file: 'ajusteFacturaDeGastos.groovy'
+
+	include file: 'ajusteFacturaDeGastos2.groovy'
+
+	
 }

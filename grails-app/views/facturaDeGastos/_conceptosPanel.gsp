@@ -99,6 +99,8 @@
 						<f:field property="impuestoTasa" input-required="true" input-class="tasa"/>
 						<f:field property="retensionTasa" input-required="true" input-class="tasa"/>
 						<f:field property="retensionIsrTasa" input-required="true" input-class="tasa"/>
+						<f:field property="descuento"  input-class="moneyField"/>
+						<f:field property="rembolso"  input-class="moneyField"/>
 						
 					</f:with>
 					<div class="form-actions">

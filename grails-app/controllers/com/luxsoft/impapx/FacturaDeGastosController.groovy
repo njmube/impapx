@@ -91,12 +91,13 @@ class FacturaDeGastosController {
 			def proveedor=facturaDeGastosInstance.proveedor
 			params.proveedor=proveedor
 	        facturaDeGastosInstance.properties = params
+			
 
-	        if (!facturaDeGastosInstance.save(flush: true)) {
+	        if (!facturaDeGastosInstance.validate()) {
 	            render view: 'edit', model: [facturaDeGastosInstance: facturaDeGastosInstance]
 	            return
 	        }
-
+			facturaDeGastosInstance=facturaDeGastosService.save(facturaDeGastosInstance)
 			flash.message = message(code: 'default.updated.message', args: [message(code: 'facturaDeGastos.label', default: 'FacturaDeGastos'), facturaDeGastosInstance.id])
 	        redirect action: 'show', id: facturaDeGastosInstance.id
 			break

@@ -19,9 +19,10 @@ class CuentaDeGastosGenerica {
 	BigDecimal retension=0
 	BigDecimal retensionIsr=0
 	BigDecimal total=0 //Suma del total de las facturas
+	
 	BigDecimal descuento=0 //Sumado de las facturas
 	BigDecimal rembolso=0  //Sumado de las facturas
-	
+	BigDecimal otros=0  //Sumado de las facturas
 	
 	Date dateCreated
 	Date lastUpdated
@@ -33,6 +34,7 @@ class CuentaDeGastosGenerica {
     static constraints = {
 		comentario(nullable:true,maxSize:250)
 		proveedor(nullable:true)
+		otros nullable:true
     }
 	
 	def actualizarImportes(){

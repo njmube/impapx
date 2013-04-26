@@ -1,5 +1,7 @@
 package com.luxsoft.impapx.cxp
 
+import java.math.BigDecimal;
+
 import com.luxsoft.impapx.FacturaDeGastos;
 import com.luxsoft.impapx.contabilidad.CuentaContable;
 import com.luxsoft.impapx.tesoreria.MovimientoDeCuenta;
@@ -22,6 +24,12 @@ class ConceptoDeGasto {
 	MovimientoDeCuenta egreso
 	String tipo
 	
+	BigDecimal descuento=0
+	BigDecimal rembolso=0
+	BigDecimal otros=0
+	Date fechaRembolso
+	String comentarioOtros
+	
 	static belongsTo =[factura:FacturaDeGastos]
 
     static constraints = {
@@ -35,6 +43,11 @@ class ConceptoDeGasto {
 			,'SERVICIOS INDEPENDIENTES'
 			,'SEGUROS Y FIANZAS'
 			,'HONORARIOS AL CONSEJO ADMON'])
+		rembolso nullable:true
+		descuento nullable:true
+		otros nullable:true
+		fechaRembolso nullable:true
+		comentarioOtros nullable:true
     }
 	
 	static mapping = {

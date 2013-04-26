@@ -8,6 +8,13 @@ import com.luxsoft.impapx.contabilidad.Poliza;
 import com.luxsoft.impapx.cxp.ConceptoDeGasto;
 
 class FacturaDeGastosService {
+	
+	def save(FacturaDeGastos fac){
+		
+		actualizar(fac)
+		fac.save(failOnError:true)
+		return fac
+	}
 
     def agregarPartida(long gastoId,ConceptoDeGasto concepto) {
 		
@@ -51,7 +58,9 @@ class FacturaDeGastosService {
 		
 		
 		gasto.total=gasto.importe+gasto.impuestos-gasto.retImp-gasto.retensionIsr
-		
+		gasto.descuento=gasto.conceptos.sum(0.0,{it.descuento})
+		gasto.rembolso=gasto.conceptos.sum(0.0,{it.rembolso})
+		gasto.otros=gasto.conceptos.sum(0.0,{it.otros})
 	}
 	
 }
