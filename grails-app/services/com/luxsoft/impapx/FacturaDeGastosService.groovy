@@ -49,7 +49,7 @@ class FacturaDeGastosService {
 		}
 	}
 	
-	private void actualizar(FacturaDeGastos gasto){
+	def actualizar(FacturaDeGastos gasto){
 		gasto.importe=gasto.conceptos.sum(0.0,{it.importe})
 		gasto.impuestos=gasto.conceptos.sum(0.0,{it.impuesto})
 		gasto.retImp=gasto.conceptos.sum(0.0,{it.retension})

@@ -33,7 +33,7 @@
 			<div class="span10">
 
 				<div class="page-header">
-					<h3>Cueta de gastos: ${ cuentaDeGastosGenericaInstance}</h3>
+					<h3>Cueta de gastos genérica: ${ cuentaDeGastosGenericaInstance?.id}</h3>
 				</div>
 
 				<g:if test="${flash.message}">

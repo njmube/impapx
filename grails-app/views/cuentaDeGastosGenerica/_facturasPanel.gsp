@@ -26,7 +26,12 @@
 				<th>Proveedor</th>
 				<th>Importe</th>
 				<th>Impuestos</th>
+				<th>Retension</th>
+				<th>Ret ISR</th>
 				<th>Total</th>
+				<th>Descuento</th>
+				<th>Vale</th>
+				<th>Otros</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -39,7 +44,12 @@
 				<th></th>
 				<th><label id="importeGastos"><lx:moneyFormat number="${cuentaDeGastosGenericaInstance.importe}"/></label></th>
 				<th><label id="impuestosGastos"><lx:moneyFormat number="${cuentaDeGastosGenericaInstance.impuestos}"/></label></th>
+				<th><label ><lx:moneyFormat number="${cuentaDeGastosGenericaInstance.retension}"/></label></th>
+				<th><label ><lx:moneyFormat number="${cuentaDeGastosGenericaInstance.retensionIsr}"/></label></th>
 				<th><label id="totalGastos"><lx:moneyFormat number="${cuentaDeGastosGenericaInstance.total}"/></label></th>
+				<th><label ><lx:moneyFormat number="${cuentaDeGastosGenericaInstance.descuento}"/></label></th>
+				<th><label ><lx:moneyFormat number="${cuentaDeGastosGenericaInstance.rembolso}"/></label></th>
+				<th><label ><lx:moneyFormat number="${cuentaDeGastosGenericaInstance.otros}"/></label></th>
 			</tr>
 		</tfoot>
 	</table>
@@ -159,7 +169,12 @@ $(function(){
 			,{"sName": "proveedor", "sTitle": "Proveedor",  "bSortable": "false"}
 			,{"sName": "importeMN", "sTitle": "Importe",  "bSortable": "true"}
 			,{"sName": "impuestosMN", "sTitle": "Impuestos",  "bSortable": "true"}
+			,{"sName": "retensionMN", "sTitle": "Retension",  "bSortable": "false"}
+			,{"sName": "retensionIsrMN", "sTitle": "Ret ISR",  "bSortable": "false"}
 			,{"sName": "totalMN", "sTitle": "Total",  "bSortable": "true"}
+			,{"sName": "descuentoMN", "sTitle": "Descuento",  "bSortable": "false"}
+			,{"sName": "rembolsoMN", "sTitle": "Vales",  "bSortable": "false"}
+			,{"sName": "otrosMN", "sTitle": "Otros",  "bSortable": "false"}
 			
 		],
 		"fnCreatedRow":function(nRow,aData,iDataIndex){

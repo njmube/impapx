@@ -137,7 +137,12 @@ class CuentaDeGastosGenericaController {
 				,row.proveedor.nombre
 				,lx.moneyFormat(number:row.importe*row.tc)
 				,lx.moneyFormat(number:row.impuestos*row.tc)
+				,lx.moneyFormat(number:row.retImp)
+				,lx.moneyFormat(number:row.retensionIsr)
 				,lx.moneyFormat(number:row.total*row.tc)
+				,lx.moneyFormat(number:row.descuento)
+				,lx.moneyFormat(number:row.rembolso)
+				,lx.moneyFormat(number:row.otros)
 				]
 			
 		}

@@ -100,7 +100,11 @@
 						<f:field property="retensionTasa" input-required="true" input-class="tasa"/>
 						<f:field property="retensionIsrTasa" input-required="true" input-class="tasa"/>
 						<f:field property="descuento"  input-class="moneyField"/>
-						<f:field property="rembolso"  input-class="moneyField"/>
+						<f:field property="rembolso"  input-class="moneyField" label="Vales"/>
+						<f:field property="fechaRembolso"  input-id="fechaRembolso" label="Fecha Vales"/>
+						<f:field property="otros"  input-class="moneyField"/>
+						<f:field property="comentarioOtros"  />
+						
 						
 					</f:with>
 					<div class="form-actions">
@@ -118,6 +122,21 @@
 <r:script>
 
 $(function(){
+
+	$("#fechaRembolso").datepicker({
+    	 dateFormat: 'dd/mm/yy',
+         showOtherMonths: true,
+         selectOtherMonths: true,
+         showOn:'focus',
+         showAnim:'fold',
+         minDate:'01/10/2012',
+         maxDate:'31/12/2015',
+         navigationAsDateFormat:false,
+         showButtonPanel: true,
+         changeMonth:true,
+         changeYear:true,
+         closeText:'Cerrar'
+      });
 	
 	$("#concepto").autocomplete({
 			source:'<g:createLink controller="cuentaContable" action="cuentasDeDetalleJSONList"/>',
@@ -166,6 +185,8 @@ $(function(){
 		var importe=$("#c_Importe").autoNumericGet();
 		$('#c_ietu').autoNumericSet(importe);
 	});
+	
+	
 	
 	
 });

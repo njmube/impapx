@@ -42,6 +42,16 @@ class CuentaDeGastosGenerica {
 		impuestos=facturas.sum 0,{it.impuestos*it.tc}
 		total=facturas.sum 0,{it.total*it.tc}
 		
+		retension=facturas.sum 0,{it.retImp}
+		retensionIsr=facturas.sum 0,{it.retensionIsr}
+		descuento=facturas.sum 0,{it.descuento}
+		rembolso=facturas.sum 0,{it.rembolso}
+		otros=facturas.sum 0,{it.otros}
+		
+		
+		
+		
+		
 	}
 	
 	
