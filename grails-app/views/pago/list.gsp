@@ -31,7 +31,7 @@
 				<bootstrap:alert class="alert-info">${flash.message}</bootstrap:alert>
 		</g:if>
 		
-		<table id="pagosGrid" class="table table-striped table-hover table-bordered table-condensed">
+		<table id="grid" class="table table-striped table-hover table-bordered table-condensed">
 			<thead>
 				<tr>
 					<td>Id</td>
@@ -58,46 +58,27 @@
 				</g:each>
 			</tbody>
 			</table>
+			<div class="pagination">
+				<bootstrap:paginate total="${pagoInstanceTotal}" />
+			</div>
 				
 	</content>
  
  <r:script>
  $(function(){
- 	var oTable=$("#pagosGrid").dataTable({
-		"sDom": "<'row'<'span4'f>r>t<'row'<'span6'i><'span6'p>>",
+	$("#grid2").dataTable({
+		aLengthMenu: [[100, 150, 200, 250, -1], [100, 150, 200, 250, "Todos"]],
+        iDisplayLength: 50,
         "oLanguage": {
       		"sUrl":"<g:resource dir="js" file="dataTables.spanish.txt" />"
-    	},
-    	bProcessing: true,
-		bServerSide:false,
-		/*sAjaxSource: '${createLink(controller:'pago',action:'pagosAsJSON')}', 
-		"aoColumns":[
-			{"sName": "id", "sTitle": "Folio",sWidth:"5%", "bSortable": "true"}
-			,{"sName": "proveedor", "sTitle": "Proveedor", "bSortable": "true"}
-			,{"sName": "fecha", "sTitle": "Fecha", "bSortable": "true"}
-			,{"sName": "moneda", "sTitle": "Mon", "bSortable": "false"}
-			,{"sName": "total", "sTitle": "Total", "bSortable": "false"}
-			,{"sName": "disponible", "sTitle": "Disponible", "bSortable": "false"}
-			],
-		"fnCreatedRow":function(nRow,aData,iDataIndex){
-			$(nRow).attr("id",aData[0]);
-		},
-		"fnRowCallback":function(nRow, aData, iDisplayIndex, iDisplayIndexFull){
-			if(aData[0]){
-				//$('td:eq(0)', nRow).replaceWith( '<td><g:link action="edit" id="">'+$('td:eq(0)', nRow).html()+'</g:link></td>' );
-			}
-		},*/
-		//"bDeferRender": false,
-    	//"bPaginate": false,
-    	"bInfo": false,
-    	iDisplayLength: 1000
+	    },
+    	"aoColumnDefs": [
+        	{ "sType": "numeric","bSortable": true,"aTargets":[0] }
+         ],
+         "bPaginate": true  
 	});
-	
-	$("#refreshBtn").live('click',function(e){
-		oTable.fnReloadAjax();
-	});
-	
- });
+});
+ 
  
  
  </r:script>

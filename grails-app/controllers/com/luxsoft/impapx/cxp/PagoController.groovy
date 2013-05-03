@@ -1,17 +1,27 @@
 package com.luxsoft.impapx.cxp
 
+import org.apache.commons.lang.exception.ExceptionUtils;
+
+import org.codehaus.groovy.grails.web.json.JSONArray
 import org.springframework.dao.DataIntegrityViolationException
+
+import com.luxsoft.impapx.CuentaPorPagar;
+import grails.converters.JSON
 
 class PagoController {
 
     static allowedMethods = [create: ['GET', 'POST'], edit: ['GET', 'POST'], delete: 'POST']
 
+	def pagoService
+		
     def index() {
         redirect action: 'list', params: params
     }
 
     def list() {
-        params.max = Math.min(params.max ? params.int('max') : 10, 100)
+        params.max = Math.min(params.max ? params.int('max') : 50, 100)
+		params.sort='id'
+		params.order='desc'
         [pagoInstanceList: Pago.list(params), pagoInstanceTotal: Pago.count()]
     }
 
@@ -90,4 +100,52 @@ class PagoController {
             redirect action: 'show', id: params.id
         }
     }
+	
+	def selectorDeFacturas(){
+		//println 'Selector de factoras para aplicaciones: '+params
+		def pago = Pago.get(params.id)
+		
+		def facturas=CuentaPorPagar
+			.findAll("from CuentaPorPagar p where p.proveedor=? and p.moneda=? and p.total-p.pagosAplicados>0"
+				,[pago.proveedor,pago.moneda])
+		[cuentaPorPagarInstanceList:facturas,cuentasPorPagarTotal:facturas.size(),abonoInstance:pago]
+	}
+	
+	def registrarAplicaciones(){
+		println 'Registrando aplicaciones: '+params
+		def data=[:]
+		def pagoInstance = Pago.findById(params.abonoId,[fetch:[aplicaciones:'eager']])
+		JSONArray jsonArray=JSON.parse(params.partidas);
+		
+		try {
+			
+			pagoService?.generaAplicacion(pagoInstance,jsonArray)
+			data.res='APLICACIONES_GENERADAS'
+		}
+		catch (RuntimeException e) {
+			e.printStackTrace()
+			println 'Error: '+e
+			data.res="ERROR"
+			data.error=ExceptionUtils.getRootCauseMessage(e)
+		}
+		
+		render data as JSON
+	}
+	
+	def eliminarAplicaciones(){
+		def data=[:]
+		def pagoInstance = Pago.findById(params.abonoId,[fetch:[aplicaciones:'eager']])
+		JSONArray jsonArray=JSON.parse(params.partidas);
+		try {
+			pagoService?.eliminarAplicaciones(pago.Instance,jsonArray)
+			data.res='APLICACIONES_ELIMINADAS'
+		}
+		catch (RuntimeException e) {
+			e.printStackTrace()
+			//println 'Error: '+e
+			data.res="ERROR"
+			data.error=ExceptionUtils.getRootCauseMessage(e)
+		}
+		render data as JSON
+	}
 }
