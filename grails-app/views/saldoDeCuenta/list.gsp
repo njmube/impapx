@@ -24,7 +24,7 @@
  	<content tag="operaciones">
  		<li>
  			<a href="#cambioDePeriodoDialog" data-toggle="modal">Cambiar periodo</a>
-			<g:link action="actualizarSaldos" params="[periodo:periodo.text()]">Actualizar saldos</g:link>
+			<g:link action="actualizarSaldos" >Actualizar saldo</g:link>
 		</li>
  		
  	</content> 
@@ -91,9 +91,9 @@
 		<div class="modal-body">
 		
 			<fieldset>
-			<g:form action="list" class="form-search">
+			<g:form action="cambiarPeriodo" class="form-search">
 				<label>Fecha final: </label>
-				<g:field id="periodo" type="string" name="periodo" value="${(new Date()-1).format('dd/MM/yyyy') }"/>
+				<g:field id="periodo" type="string" name="fecha" value="${(new Date()-1).format('dd/MM/yyyy') }"/>
 				<div class="form-actions">
 					<a href="#" class="btn" data-dismiss="modal">Cancelar</a>
 					<button type="submit" class="btn btn-primary">

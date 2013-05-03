@@ -56,6 +56,11 @@
 								<f:field property="retension" input-required="true" input-class="moneyField"/>
 								<f:field property="retensionIsrTasa" input-required="true" input-class="tasa"/>
 								<f:field property="retensionIsr" input-required="true" input-class="moneyField"/>
+								<f:field property="descuento"  input-class="moneyField"/>
+								<f:field property="rembolso"  input-class="moneyField" label="Vales"/>
+								<f:field property="fechaRembolso"  input-id="fechaRembolso" label="Fecha Vales"/>
+								<f:field property="otros"  input-class="moneyField"/>
+								<f:field property="comentarioOtros"  />
 							</f:with>
 							<div class="form-actions">
 								<button type="submit" class="btn btn-primary">

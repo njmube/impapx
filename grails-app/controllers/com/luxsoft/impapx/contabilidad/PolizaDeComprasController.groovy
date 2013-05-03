@@ -137,10 +137,12 @@ class PolizaDeComprasController {
 	private procearImpuestosAduanales(def poliza , def dia){
 		
 		def asiento="IMPUESTOS ADUANALES"
-		def pedimentos=Pedimento.findAll ("from Pedimento p where date(p.fecha)=?",[dia])
+		def pedimentos=Pedimento.findAll ("from Pedimento p where date(p.fecha)=?",[dia])	
 		
 		pedimentos.each{pedimento->
 			
+			def provImportacion=EmbarqueDet.executeQuery('select d.embarque.proveedor.nombre from EmbarqueDet d where d.pedimento=?',[pedimento]) as Set
+			def provImp=provImportacion.join(',')
 			
 			//println 'Procesando pedimento: '+pedimento
 			//1 Cargo a DTA
@@ -155,7 +157,7 @@ class PolizaDeComprasController {
 				debe:pedimento.dta,
 				haber:0.0,
 				asiento:asiento,
-				descripcion:"Ped:$pedimento.pedimento $pedimento.fecha Ref:$pedimento.referenciacg ",
+				descripcion:"Ped:$pedimento.pedimento $pedimento.fecha Ref:$pedimento.referenciacg Prov:$provImp",
 				referencia:"$pedimento.pedimento",
 				,fecha:poliza.fecha
 				,tipo:poliza.tipo
@@ -165,6 +167,9 @@ class PolizaDeComprasController {
 		}
 		
 		pedimentos.each{pedimento->
+			
+			def provImportacion=EmbarqueDet.executeQuery('select d.embarque.proveedor.nombre from EmbarqueDet d where d.pedimento=?',[pedimento]) as Set
+			def provImp=provImportacion.join(',')
 			
 			//2 Cargo a Prevalidacion
 			def clave="501-0004"
@@ -179,7 +184,7 @@ class PolizaDeComprasController {
 				debe:imp,
 				haber:0.0,
 				asiento:asiento,
-				descripcion:"Ped:$pedimento.pedimento $pedimento.fecha Ref:$pedimento.referenciacg ",
+				descripcion:"Ped:$pedimento.pedimento $pedimento.fecha Ref:$pedimento.referenciacg Prov:$provImp",
 				referencia:"$pedimento.pedimento",
 				,fecha:poliza.fecha
 				,tipo:poliza.tipo
@@ -189,6 +194,9 @@ class PolizaDeComprasController {
 		}
 		
 		pedimentos.each{pedimento->
+			
+			def provImportacion=EmbarqueDet.executeQuery('select d.embarque.proveedor.nombre from EmbarqueDet d where d.pedimento=?',[pedimento]) as Set
+			def provImp=provImportacion.join(',')
 			
 			//2 Cargo a Prevalidacion
 			def clave="117-0003"
@@ -208,7 +216,7 @@ class PolizaDeComprasController {
 				debe:imp2,
 				haber:0.0,
 				asiento:asiento,
-				descripcion:"Ped:$pedimento.pedimento $pedimento.fecha Ref:$pedimento.referenciacg ",
+				descripcion:"Ped:$pedimento.pedimento $pedimento.fecha Ref:$pedimento.referenciacg Prov:$provImp",
 				referencia:"$pedimento.pedimento",
 				,fecha:poliza.fecha
 				,tipo:poliza.tipo
@@ -239,6 +247,10 @@ class PolizaDeComprasController {
 		}
 		
 		pedimentos.each{pedimento->
+			
+			def provImportacion=EmbarqueDet.executeQuery('select d.embarque.proveedor.nombre from EmbarqueDet d where d.pedimento=?',[pedimento]) as Set
+			def provImp=provImportacion.join(',')
+			
 			//6 Cargo a Arancel
 			def clave="501-0005"
 			def cuenta=CuentaContable.findByClave(clave)
@@ -251,7 +263,7 @@ class PolizaDeComprasController {
 				debe:pedimento.arancel,
 				haber:0.0,
 				asiento:asiento,
-				descripcion:"Ped:$pedimento.pedimento $pedimento.fecha Ref:$pedimento.referenciacg ",
+				descripcion:"Ped:$pedimento.pedimento $pedimento.fecha Ref:$pedimento.referenciacg Prov:$provImp",
 				referencia:"$pedimento.pedimento",
 				,fecha:poliza.fecha
 				,tipo:poliza.tipo
@@ -270,7 +282,7 @@ class PolizaDeComprasController {
 					debe:Rounding.round(pedimento.incrementable1.importe*pedimento.tipoDeCambio,0),
 					haber:0.0,
 					asiento:asiento,
-					descripcion:"Ped:$pedimento.pedimento $pedimento.fecha Ref:$pedimento.referenciacg ",
+					descripcion:"Ped:$pedimento.pedimento $pedimento.fecha Ref:$pedimento.referenciacg Prov:$provImp",
 					referencia:"$pedimento.pedimento",
 					,fecha:poliza.fecha
 					,tipo:poliza.tipo
@@ -304,7 +316,7 @@ class PolizaDeComprasController {
 				debe:0.0,
 				haber:impuesto+imp2,
 				asiento:asiento,
-				descripcion:"Ped:$pedimento.pedimento $pedimento.fecha Ref:$pedimento.referenciacg ",
+				descripcion:"Ped:$pedimento.pedimento $pedimento.fecha Ref:$pedimento.referenciacg Prov:$provImp",
 				referencia:"$pedimento.pedimento",
 				,fecha:poliza.fecha
 				,tipo:poliza.tipo
@@ -317,6 +329,9 @@ class PolizaDeComprasController {
 			def ietu=pedimento.dta+pedimento.arancel+(pedimento.prevalidacion*(1+(pedimento.impuestoTasa/100)))
 			ietu=Rounding.round(ietu, 0)
 			
+			def provImportacion=EmbarqueDet.executeQuery('select d.embarque.proveedor.nombre from EmbarqueDet d where d.pedimento=?',[pedimento]) as Set
+			def provImp=provImportacion.join(',')
+			
 			//2 Cargo a Prevalidacion
 			def clave="900-0004"
 			def cuenta=CuentaContable.findByClave(clave)
@@ -328,7 +343,7 @@ class PolizaDeComprasController {
 				debe:ietu,
 				haber:0.0,
 				asiento:asiento,
-				descripcion:"Ped:$pedimento.pedimento $pedimento.fecha Ref:$pedimento.referenciacg ",
+				descripcion:"Ped:$pedimento.pedimento $pedimento.fecha Ref:$pedimento.referenciacg Prov:$provImp",
 				referencia:"$pedimento.pedimento",
 				,fecha:poliza.fecha
 				,tipo:poliza.tipo
@@ -345,7 +360,7 @@ class PolizaDeComprasController {
 				debe:0.0,
 				haber:ietu,
 				asiento:asiento,
-				descripcion:"Ped:$pedimento.pedimento $pedimento.fecha Ref:$pedimento.referenciacg ",
+				descripcion:"Ped:$pedimento.pedimento $pedimento.fecha Ref:$pedimento.referenciacg Prov:$provImp",
 				referencia:"$pedimento.pedimento",
 				,fecha:poliza.fecha
 				,tipo:poliza.tipo

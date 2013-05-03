@@ -2,14 +2,18 @@ package com.luxsoft.impapx.tesoreria
 
 import luxsoft.cfd.ImporteALetra;
 import grails.converters.JSON
+import groovy.transform.ToString;
 
 import org.codehaus.groovy.grails.plugins.jasper.JasperExportFormat;
 import org.codehaus.groovy.grails.plugins.jasper.JasperReportDef;
 import org.springframework.dao.DataIntegrityViolationException
 
+import com.luxsoft.impapx.Requisicion;
+
 class ChequeController {
 	
 	def jasperService
+	def chequeService
 
     static allowedMethods = [create: ['GET', 'POST'], edit: ['GET', 'POST'], delete: 'POST']
 
@@ -48,6 +52,7 @@ class ChequeController {
 			chequeInstance.fechaImpresion=new Date()
 			chequeInstance.egreso=pago
 			chequeInstance.cuenta=pago.cuenta
+			pago.referenciaBancaria=chequeInstance.folio?.toString()
 	        if (!chequeInstance.save(flush: true)) {
 	            render view: 'create', model: [chequeInstance: chequeInstance]
 	            return
@@ -105,33 +110,26 @@ class ChequeController {
             return
         }
 		def importeALetra=ImporteALetra.aLetra(chequeInstance.egreso.importe.abs())
+		def pago=PagoProveedor.findByEgreso(chequeInstance.egreso)
 
-        [chequeInstance: chequeInstance,importeALetra:importeALetra]
+        [chequeInstance: chequeInstance,importeALetra:importeALetra,pago:pago]
     }
 
     
 
-    def cancelar() {
-		println 'Cancelando cheque: '+params
-        def chequeInstance = Cheque.get(params.id)
-        if (!chequeInstance) {
-			flash.message = message(code: 'default.not.found.message', args: [message(code: 'cheque.label', default: 'Cheque'), params.id])
-            redirect action: 'list'
-            return
-        }
-
-        try {
-            chequeInstance.cancelacion=new Date()
-			chequeInstance.usuarioCancelacion=principal.username
-			chequeInstance.motivoCancelacion=params.motivoCancelacion
-			chequeInstance.save(failOnError:true)
-			flash.message = "Cheque ${params.id} cancelado"
-            redirect action: 'list'
-        }
-        catch (DataIntegrityViolationException e) {
-			flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'cheque.label', default: 'Cheque'), params.id])
-            redirect action: 'show', id: params.id
-        }
+    def cancelar(CancelacionCommand c) {
+		//println 'Cancelando cheque: '+params
+		switch (request.method) {
+			case 'GET':
+			[cancelacionCommand:new CancelacionCommand(id:params.long('id'))]
+			break
+			case 'POST':
+			c.fecha=new Date()
+			//println 'Mandando a cancelar: '+c
+			chequeService.cancelarCheque(c)
+			redirect action:'show', params:params
+		}
+		
     }
 	
 	def pagosDisponiblesJSONList(){
@@ -146,4 +144,12 @@ class ChequeController {
 		}
 		render pagosList as JSON
 	}
+	
+}
+
+@ToString
+class CancelacionCommand{
+	long id
+	Date fecha=new Date()
+	String comentario
 }

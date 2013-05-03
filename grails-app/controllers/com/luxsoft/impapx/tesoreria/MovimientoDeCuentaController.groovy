@@ -4,6 +4,7 @@ import org.springframework.dao.DataIntegrityViolationException
 
 import com.luxsoft.impapx.CuentaBancaria;
 import com.luxsoft.impapx.cxc.CXCPago;
+import com.luxsoft.impapx.cxp.Anticipo;
 
 class MovimientoDeCuentaController {
 
@@ -56,10 +57,17 @@ class MovimientoDeCuentaController {
 				movimientoDeCuentaInstance.importe=movimientoDeCuentaInstance.importe.abs()*-1
 			}
 			movimientoDeCuentaInstance.concepto="$movimientoDeCuentaInstance.concepto $movimientoDeCuentaInstance.comentario"
+			
 	        if (!movimientoDeCuentaInstance.save(flush: true)) {
 	            render view: 'create', model: [movimientoDeCuentaInstance: movimientoDeCuentaInstance]
 	            return
 	        }
+			
+			if(params.anticipoId){
+				def anticipo=Anticipo.get(params.long('anticipoId'))
+				anticipo.sobrante=movimientoDeCuentaInstance
+				anticipo.save()
+			}
 
 			flash.message = message(code: 'default.created.message', args: [message(code: 'movimientoDeCuenta.label', default: 'MovimientoDeCuenta'), movimientoDeCuentaInstance.id])
 	        redirect action: 'show', id: movimientoDeCuentaInstance.id
@@ -79,6 +87,7 @@ class MovimientoDeCuentaController {
     }
 
     def edit() {
+		/*
 		switch (request.method) {
 		case 'GET':
 		
@@ -124,6 +133,8 @@ class MovimientoDeCuentaController {
 	        redirect action: 'show', id: movimientoDeCuentaInstance.id
 			break
 		}
+		 */
+		redirect action:'show',model:params
     }
 
     def delete() {
@@ -143,11 +154,12 @@ class MovimientoDeCuentaController {
 			flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'movimientoDeCuenta.label', default: 'MovimientoDeCuenta'), params.id])
             redirect action: 'show', id: params.id
         }
+       
     }
 	
 	def depositar(){
 		redirect(action:'create'
-			,params:[origen:'TESORERIA',tc:'1.00',ingreso:true,conceptos:Conceptos.INGRESOS])
+			,params:[origen:'TESORERIA',tc:'1.00',ingreso:true,conceptos:Conceptos.INGRESOS,anticipoId:params.anticipoId])
 	}
 	
 	def retirar(){

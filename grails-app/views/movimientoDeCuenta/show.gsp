@@ -48,10 +48,12 @@
 				<g:form>
 					<g:hiddenField name="id" value="${movimientoDeCuentaInstance?.id}" />
 					<div class="form-actions">
+						<%-- 
 						<g:link class="btn" action="edit" id="${movimientoDeCuentaInstance?.id}">
 							<i class="icon-pencil"></i>
 							<g:message code="default.button.edit.label" default="Edit" />
 						</g:link>
+						--%>
 						<button class="btn btn-danger" type="submit" name="_action_delete">
 							<i class="icon-trash icon-white"></i>
 							<g:message code="default.button.delete.label" default="Delete" />

@@ -15,6 +15,8 @@
 			<f:field property="incrementable"  />
 			<f:field property="tasaDeImpuesto" input-class="numeric"/>
 			<f:field property="impuestos" input-class="numeric" />
+			<f:field property="retTasa" input-id="retTasa" input-class="numeric" />
+			<f:field property="retImp" input-id="retencion" input-class="numeric" />
 			<f:field property="total" input-class="numeric"/>
 			<f:field property="comentario">
 					<g:textArea name="comentario" value="${cuentaPorPagarInstance?.comentario}" rows="3" cols="70" class ="span7"/>
@@ -58,6 +60,20 @@
 					var total=importe+impuesto;
 					
 					$('#impuestos').val(impuesto);
+					$('#total').val(total);
+					
+				});
+				
+				$('#retTasa').blur(function(){
+					var ret=+$(this).val();
+					
+					var importe=+$('#importe').val()
+					var retencion=(importe*ret)/100
+					
+					var total=+$('#total').val()
+					total=total-retencion
+					
+					$('#retencion').val(retencion);
 					$('#total').val(total);
 					
 				});

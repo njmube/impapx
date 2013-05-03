@@ -24,7 +24,7 @@ class ComprobanteFiscalController {
 		params.sort='fecha,folio'
 		params.order='asc'
 		def year=2013
-		def month=2
+		def month=3
 		
 		def res=[]
 		def list= ComprobanteFiscal.findAll("from ComprobanteFiscal c where year(c.fecha)=? and month(c.fecha)=?",[year,month],[readOnly:true])
@@ -53,7 +53,7 @@ class ComprobanteFiscalController {
 	 def actualizar(){
 		 println 'Actualizando CFDs'
 		 def year=2013
-		 def month=2
+		 def month=3
 		 def ventas=Venta.findAll("from Venta v where year(v.fecha)=? and month(v.fecha)=? and v.cfd!=null",[year,month])
 		 ventas.each{
 		 	println 'Actualizando CFD: '+it.cfd.folio
@@ -92,7 +92,7 @@ class ComprobanteFiscalController {
 	 def generarArchivo(){
 		 
 		 def year=2013
-		 def month=2
+		 def month=3
 		 def res=[]
 		 
 		 def list= ComprobanteFiscal.findAll("from ComprobanteFiscal c where year(c.fecha)=? and month(c.fecha)=?",[year,month],[readOnly:true])

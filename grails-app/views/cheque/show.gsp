@@ -40,13 +40,25 @@
 				<bootstrap:alert class="alert-info">${flash.message}</bootstrap:alert>
 				</g:if>
 
-				<dl>	
-				
+				<dl>
+					<dt>Id</dt>
+						<dd>${chequeInstance.id}</dd>
+						
 					<g:if test="${chequeInstance?.egreso}">
 						<dt><g:message code="cheque.egreso.label" default="Egreso" /></dt>
 						
 							<dd><g:link controller="movimientoDeCuenta" action="show" id="${chequeInstance?.egreso?.id}">${chequeInstance?.egreso?.encodeAsHTML()}</g:link></dd>
 						
+					</g:if>	
+				
+					<g:if test="${pago}">
+						<dt>Pago Proveedor</dt>
+							<dd><g:fieldValue bean="${pago}" field="id"/></dd>
+					</g:if>
+					
+					<g:if test="${pago}">
+						<dt>Requisición</dt>
+							<dd><g:fieldValue bean="${pago}" field="requisicion"/></dd>
 					</g:if>
 				
 					<g:if test="${chequeInstance?.fechaImpresion}">
@@ -60,10 +72,13 @@
 						<dt><g:message code="cheque.folio.label" default="Folio" /></dt>
 						
 							<dd><g:fieldValue bean="${chequeInstance}" field="folio"/></dd>
-						
 					</g:if>
 				
-					
+					<g:if test="${chequeInstance?.cancelacion}">
+						<dt>Cancelación</dt>
+							<dd><g:fieldValue bean="${chequeInstance}" field="cancelacion"/></dd>
+							<dd><g:fieldValue bean="${chequeInstance}" field="comentarioCancelacion"/></dd>
+					</g:if>
 				
 				</dl>
 				<%-- 

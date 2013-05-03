@@ -4,7 +4,7 @@
 	
 
 	<div class="btn-group ">
-		<g:if test="${requisicionInstance.concepto.startsWith('ANTICIPO')}">
+		<g:if test="  ${requisicionInstance.concepto.startsWith('ANTICIPO') || requisicionInstance.concepto.startsWith('FLETE')} ">
 			<g:link action="create" controller="requisicionDet"
 				params="['requisicionId':requisicionInstance.id]"
 				class="btn btn-primary" >

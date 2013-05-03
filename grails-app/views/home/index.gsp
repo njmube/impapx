@@ -41,7 +41,7 @@
 	<header class="jumbotron subhead">
 		<div class="container">
 			<h1> IMPAP-EX</h1>
-			<p class="lead">Sistema de administración, importación y comerciaización de la inustria del papel</p>
+			<p class="lead">Sistema de administración, importación y comercialización de la inustria del papel</p>
 		</div>
 	</header>
 	

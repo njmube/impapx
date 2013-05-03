@@ -1,5 +1,7 @@
 package com.luxsoft.impapx.tesoreria
 
+import util.MonedaUtils;
+
 import com.luxsoft.impapx.cxp.Aplicacion
 import com.luxsoft.impapx.cxp.Pago
 import grails.validation.ValidationException;
@@ -9,6 +11,7 @@ class CompraDeMonedaService {
 	//def pagoProveedorService
 
     def registrarCompra(CompraDeMoneda c) {
+		//c.moneda=MonedaUtils.PESOS
 		c.actualizarDiferenciaCambiaria();
 		try {
 			def requisicion=c.requisicion
@@ -67,9 +70,9 @@ class CompraDeMonedaService {
 			pago.save()
 			c.ingreso=ingreso
 			c.pagoProveedor=pago
-			c.save(flush:true)
-		} catch (ValidationException e) {
-			println 'Error: '+e
+			c.save(failOnError:true)
+		} catch (Exception e) {
+			e.printStackTrace()
 			return c;
 		}
 		

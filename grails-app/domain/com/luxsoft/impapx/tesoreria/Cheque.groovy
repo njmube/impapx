@@ -8,9 +8,13 @@ class Cheque {
 	int folio
 	Date fechaImpresion
 	MovimientoDeCuenta egreso
+	Date cancelacion
+	String comentarioCancelacion
 
     static constraints = {
 		fechaImpresion(nullable:true)
+		cancelacion nullable:true
+		comentarioCancelacion nullable:true
     }
 	
 	static mapping ={

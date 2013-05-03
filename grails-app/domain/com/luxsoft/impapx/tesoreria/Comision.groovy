@@ -66,19 +66,21 @@ class Comision {
 			,ingreso:false
 			,tipo:'TRANSFERENCIA'
 			,origen:'TESORERIA'
-			,concepto:"Comisión "+comentario
+			,concepto:"Comision "+comentario
 			,comentario:'COMISION_BANCARIA')
+		if(getImpuestoMN().abs()>0){
+			addToMovimientos(cuenta:this.cuenta
+				,fecha:this.fecha
+				,moneda:this.cuenta.moneda
+				,tc:this.tc
+				,importe:getImpuestoMN().abs()*-1.0
+				,ingreso:false
+				,tipo:'TRANSFERENCIA'
+				,origen:'TESORERIA'
+				,concepto:"Iva comision "+comentario
+				,comentario:'IMPUESTO_COMISION_BANCARIA')
+		}
 		
-		addToMovimientos(cuenta:this.cuenta
-			,fecha:this.fecha
-			,moneda:this.cuenta.moneda
-			,tc:this.tc
-			,importe:getImpuestoMN().abs()*-1.0
-			,ingreso:false
-			,tipo:'TRANSFERENCIA'
-			,origen:'TESORERIA'
-			,concepto:"Iva comisión "+comentario
-			,comentario:'IMPUESTO_COMISION_BANCARIA')
 	}
 	
 	def beforeInsert(){

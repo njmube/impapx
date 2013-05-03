@@ -137,4 +137,8 @@ class VentaService {
 		
 	}
 	
+	def refacturar(long id){
+		comprobanteFiscalService.generarComprobanteFiscalDigital(id)
+	}
+	
 }

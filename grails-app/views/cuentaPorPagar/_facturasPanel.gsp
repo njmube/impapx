@@ -34,7 +34,7 @@
 			<g:each in="${facturasList}" var="row">
 				<tr>
 					<td><g:link action="edit" id="${row.id}">
-							${fieldValue(bean: row, field: "id")}
+							${row.id}
 						</g:link></td>
 					<td><g:link action="edit" id="${row.id}">
 							${fieldValue(bean: row, field: "proveedor.nombre")}

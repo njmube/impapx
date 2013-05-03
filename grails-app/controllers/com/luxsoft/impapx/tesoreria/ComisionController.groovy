@@ -22,13 +22,15 @@ class ComisionController {
     def create() {
 		switch (request.method) {
 		case 'GET':
-			
+			params.tc=1
+			params.fecha=new Date()
 			params.impuestoTasa=16
         	[comisionInstance: new Comision(params)]
 			break
 		case 'POST':
-			params.tc=1 
+			 
 	        def comisionInstance = new Comision(params)
+			
 			if(!comisionInstance.cuenta.moneda==MonedaUtils.PESOS){
 				// Pendiente hasta tener el bean de TipoDeCambio
 				def fecha=comisionInstance.fecha
@@ -41,6 +43,8 @@ class ComisionController {
 					render view: 'create', model: [comisionInstance: comisionInstance]
 					return
 				}
+			}else{
+				comisionInstance.tc=1
 			}
 	        if (!comisionInstance.save(flush: true)) {
 	            render view: 'create', model: [comisionInstance: comisionInstance]

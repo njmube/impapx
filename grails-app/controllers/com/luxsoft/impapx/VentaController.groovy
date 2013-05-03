@@ -285,4 +285,8 @@ class VentaController {
 		}
 	}
 	
+	def refacturar(long id){
+		ventaService.refacturar(id)
+	}
+	
 }

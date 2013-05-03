@@ -36,7 +36,7 @@ class MovimientoDeCuenta {
 		referenciaBancaria(nullable:true,maxSize:250)
 		tipo(nullable:false,inList:['TRANSFERENCIA','CHEQUE','EFECTIVO','DEPOSITO','TARJETA'])
 		origen(blank:false,maxSize:70)
-		concepto(blank:false,maxSize:70)
+		concepto(blank:false,maxSize:255)
 		cuentaDeudora(nullable:true)
 		//cheque(nullable:true)
     }

@@ -135,7 +135,7 @@ class PagoProveedorController {
 		}*/
 		
 		def requisicionesList=requisiciones.collect { req ->
-			def desc="Id: ${req.id} ${req.proveedor.nombre}  ${req.total} "
+			def desc="Id: ${req.id} ${req.proveedor.nombre}  ${req.total} ${req.moneda}"
 			[id:req.id,label:desc,value:desc]
 		}
 		render requisicionesList as JSON

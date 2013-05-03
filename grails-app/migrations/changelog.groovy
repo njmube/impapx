@@ -15,4 +15,12 @@ databaseChangeLog = {
 	include file: 'ajusteFacturaDeGastos2.groovy'
 
 	
+
+	include file: 'cambiosPagoProveedor.groovy'
+
+	include file: 'cambiosCXCPago.groovy'
+
+	include file: 'cancelacionDeCheques.groovy'
+
+	
 }

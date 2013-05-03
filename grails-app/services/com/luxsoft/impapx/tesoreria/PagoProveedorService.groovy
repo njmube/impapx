@@ -1,5 +1,7 @@
 package com.luxsoft.impapx.tesoreria
 
+import util.MonedaUtils;
+
 import com.luxsoft.impapx.cxp.Aplicacion
 import com.luxsoft.impapx.cxp.Pago;
 
@@ -8,10 +10,13 @@ class PagoProveedorService {
     def registrarEgreso(PagoProveedor pago) {
 		def requisicion=pago.requisicion
 		println 'Pagando con requisicion: '+requisicion
+		if(pago.cuenta.moneda!=MonedaUtils.PESOS){
+			//Localizar el tipo de cambio 
+		}
 		MovimientoDeCuenta egreso = new MovimientoDeCuenta(cuenta:pago.cuenta
 			,fecha:pago.fecha
 			,moneda:pago.cuenta.moneda
-			,tc:requisicion.tc
+			,tc:pago.tipoDeCambio
 			,importe:requisicion.total.abs()*-1.0
 			,ingreso:false
 			,tipo:requisicion.formaDePago
@@ -24,7 +29,7 @@ class PagoProveedorService {
 			proveedor:requisicion.proveedor
 			,fecha:pago.fecha
 			,moneda:pago.cuenta.moneda
-			,tc:requisicion.tc
+			,tc:pago.tipoDeCambio
 			,importe:requisicion.importe
 			,impuestos:requisicion.impuestos
 			,total:requisicion.total	

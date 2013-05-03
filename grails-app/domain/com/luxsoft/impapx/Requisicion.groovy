@@ -49,7 +49,7 @@ class Requisicion {
 
     static constraints = {
 		proveedor(nullable:false)
-		concepto(blank:false,inList:['PAGO','ANTICIPO','ANTICIPO_COMPLEMENTO','ANTICIPO_COMPRA','ANTICIPO_GASTO','PARCIALIDAD','COMPRA_MONEDA'])
+		concepto(blank:false,inList:['PAGO','ANTICIPO','ANTICIPO_COMPLEMENTO','ANTICIPO_COMPRA','ANTICIPO_GASTO','PARCIALIDAD','COMPRA_MONEDA','FLETE'])
 		formaDePago(blank:false,inLis:['TRANSFERENCIA','CHEQUE'])
 		tc(nullable:false,scale:6,validator:{ val,obj ->
 			if(obj.moneda!=Currency.getInstance('MXN') && val<=1.0)

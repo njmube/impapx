@@ -61,7 +61,7 @@ class ComprobanteFiscalService {
 		
 		
 		Calendar c=Calendar.getInstance();
-		//c.setTime(venta.lastUpdated);
+		//c.setTime(venta.lastUpdated);										//CAMBIO ESPECIAL QUITAR
 		SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 		XmlDateTime xmlDateTime = XmlDateTime.Factory.newInstance();
 		xmlDateTime.setStringValue(df.format(c.getTime()));
@@ -146,13 +146,14 @@ class ComprobanteFiscalService {
 		if(venta.tipo=='NOTA_DE_CARGO'){
 			serie="IMNOTCAR"
 		}
-		FolioFiscal folio=FolioFiscal.findBySerie(serie)
+
+		FolioFiscal folio=FolioFiscal.findBySerie(serie)			
 		cfd.setSerie(serie);
-		cfd.setFolio(folio.next().toString());
+		cfd.setFolio(folio.next().toString()); 
 		cfd.setAnoAprobacion(folio.getAnoAprobacion());
 		cfd.setNoAprobacion(new BigInteger(folio.getNoAprobacion().toString()));
 		folio=folio.save()
-		println 'folio: '+folio.folio
+		//println 'folio: '+folio.folio
 		
 		registrarSelloDigital(document);
 		

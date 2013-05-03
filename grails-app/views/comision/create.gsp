@@ -31,11 +31,13 @@
 			<g:form class="form-horizontal" action="create" >
 				<fieldset>
 				<f:with bean="comisionInstance">
-					<f:field property="fecha"/>
-					<f:field property="cuenta"/>
+					<f:field input-id="fecha"  property="fecha"/>
+					<f:field input-id="cuenta" property="cuenta"/>
 					<f:field property="comision" input-class="moneyField"/>
+					<f:field input-id="tc" property="tc" />
 					<f:field property="impuestoTasa" label="Tasa de impuesto(%)" input-class="porcentField"/>
-					<f:field property="impuesto" input-class="moneyField"/>
+					<g:hiddenField name="impuesto" id="hiddenImpuesto"/>
+					<f:field property="impuesto" input-class="moneyField" input-disabled="true" />
 					<f:field property="referenciaBancaria" input-class="input-xxlarge"/>
 					<f:field property="comentario" input-class="input-xxlarge"/>
 					
@@ -66,7 +68,35 @@
 		var impuesto=comision*tasa;
 		//importe=Math.round(importe*100)/100;
 		$("#impuesto").val(impuesto);
+		$("#hiddenImpuesto").val(impuesto);
+		
 	});
+	
+	$("#cuenta").change(function(){
+		var date=$("#fecha").val();
+		$.ajax({
+			url:"${createLink(controller:'tipoDeCambio', action:'ajaxTipoDeCambioDiaAnterior')}",
+			success:function(response){
+				console.log('OK: '+response);
+				if(response!=null){
+					if(response.factor!=null){
+						$("#tc").val(response.factor);
+						console.log('Tipo de cambio: '+response.factor);
+					}else if(response.error!=null){
+						alert(response.error);
+					}
+				}
+			},
+			data:{
+				fecha:date
+			},
+			error:function(request,status,error){
+				alert("Error: "+status);
+			}
+		});
+		
+	});
+	
  });
  </r:script>
 	

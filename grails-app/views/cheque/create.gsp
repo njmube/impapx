@@ -32,7 +32,7 @@
 						<fieldset>
 							<f:with bean="chequeInstance">
 								<f:field property="egreso" label="Pago"/>
-								<f:field property="folio" id="folio" input-type="string"/>
+								<f:field property="folio" input-id="folio" />
 							</f:with>
 							<div class="form-actions">
 								<button type="submit" class="btn btn-primary">
@@ -48,7 +48,7 @@
  	
  <r:script>
  $(function(){
- 	$("#folio").autoNumeric({vMin:'1',vMax:'10000'});
+ 	$("#folio").autoNumeric({vMin:'1',vMax:'10000',aSep: ''});
  	
  });
  </r:script>

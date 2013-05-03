@@ -17,6 +17,9 @@ class CobranzaService {
 		
 		try {
 			pago.impuestoTasa=16.00
+			pago.moneda=pago.cuenta.moneda
+			if(pago.cuenta.moneda==MonedaUtils.PESOS)
+				pago.tc=1
 			pago.actualizarImportes()
 			def res=pago.save(failOnError:true)
 			if(res.instanceOf(CXCPago)){
@@ -36,7 +39,7 @@ class CobranzaService {
 						,comentario:'INGRESO POR TRANSFERENCIA'
 						,referenciaBancaria:pago.referenciaBancaria)
 					ingreso.save(failOnError:true)
-					//pago.egreso=egreso
+					pago.ingreso=ingreso
 					
 				}
 			}

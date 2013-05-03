@@ -131,4 +131,16 @@ class AnticipoController {
 		}
 		render depositosList as JSON
 	}
+	
+	def disponiblesJSONList(){
+		//println 'Embarques disponibles para anticipo: '+params
+		def anticipos=Anticipo.findAll(
+			"from Anticipo a where  a.sobrante is null and a.requisicion.concepto=?"
+			,['ANTICIPO'])
+		def anticiposList=anticipos.collect { row ->
+			def label=" ${row.id}  Req: ${row.requisicion}"
+			[id:row.id,label:label,value:label]
+		}
+		render anticiposList as JSON
+	}
 }

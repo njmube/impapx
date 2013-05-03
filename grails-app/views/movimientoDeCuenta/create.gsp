@@ -44,6 +44,14 @@
 							<f:field property="importe"/>
 							<f:field property="comentario" input-class="input-xxlarge"/>
 						</f:with>
+						<div class="control-group ">
+							<label class="control-label" for="anticipo">Anticipo</label>
+							<div class="controls">
+								<g:hiddenField name="anticipoId"/>
+								<g:field type="text" name="anticipo" class="input-xxlarge"/>
+							</div>
+						</div>
+						
 						<div class="form-actions">
 							<button type="submit" class="btn btn-primary">
 								<i class="icon-ok icon-white"></i>
@@ -55,6 +63,18 @@
 			</fieldset>
 		</content>
 		
+<r:script>
+	$(function(){
+		$("#anticipo").autocomplete({
+			source:'<g:createLink controller="anticipo" action="disponiblesJSONList"/>',
+			minLength:3,
+			select:function(e,ui){
+				console.log('Valor seleccionado: '+ui.item.id);
+				$("#anticipoId").val(ui.item.id);
+			}
+		});
+	});
+</r:script>
 		
 	</body>
 </html>

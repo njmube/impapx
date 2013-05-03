@@ -23,7 +23,7 @@
  	<content tag="operaciones">
  		<li>
  			<a href="#cambioDePeriodoDialog" data-toggle="modal">Cambiar periodo</a>
-			<g:link action="actualizarSaldoDeCuenta" params="[periodo:periodo.text()]">Actualizar saldo</g:link>
+			<%-- <g:link action="actualizarSaldoDeCuenta" params="[periodo:periodo.text()]">Actualizar saldo</g:link>--%>
 			
 		</li>
  		
@@ -118,7 +118,7 @@
 			<fieldset>
 			<g:form action="detalleDeMovimientos"  id="${saldoDeCuenta.cuenta.id}" class="form-search">
 				<label>Fecha final: </label>
-				<g:field id="periodo" type="string" name="periodo" value="${periodo.text()}"/>
+				<g:field id="periodo" type="string" name="fecha" value="${periodo.text()}"/>
 				<div class="form-actions">
 					<a href="#" class="btn" data-dismiss="modal">Cancelar</a>
 					<button type="submit" class="btn btn-primary">
@@ -131,6 +131,7 @@
 			</fieldset>
 		
 		</div>
+	</div>
 	
 	</content>
  	

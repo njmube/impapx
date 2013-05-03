@@ -31,9 +31,10 @@
 					<g:form class="form-horizontal" action="create" >
 						<fieldset>
 							<f:with bean="pagoProveedorInstance">
-								<f:field property="fecha"/>
-								<f:field property="cuenta"/>
 								<f:field property="requisicion"/>
+								<f:field input-id="fecha" property="fecha"/>
+								<f:field input-id="cuenta" property="cuenta" value="${pagoProveedorInstance.cuenta}"/>
+								<f:field input-id="tipoDeCambio" property="tipoDeCambio"/>
 								<f:field property="comentario" input-class="input-xxlarge"/>
 							</f:with>
 							<div class="form-actions">
@@ -63,7 +64,33 @@
 		//importe=Math.round(importe*100)/100;
 		$("#impuesto").val(impuesto);
 	});
+	
+	$("#cuenta").change(function(){
+		var date=$("#fecha").val();
+		$.ajax({
+			url:"${createLink(controller:'tipoDeCambio', action:'ajaxTipoDeCambioDiaAnterior')}",
+			success:function(response){
+				console.log('OK: '+response);
+				if(response!=null){
+					if(response.factor!=null){
+						$("#tipoDeCambio").val(response.factor);
+						console.log('Tipo de cambio: '+response.factor);
+					}else if(response.error!=null){
+						alert(response.error);
+					}
+				}
+			},
+			data:{
+				fecha:date
+			},
+			error:function(request,status,error){
+				alert("Error: "+status);
+			}
+		});
+		console.log('Fecha seleccionada: '+date);
+	});
  });
+ 
  </r:script>
 	
 </body>

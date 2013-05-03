@@ -32,11 +32,10 @@
 				<fieldset>
 				<f:with bean="CXCPagoInstance">
 					<f:field property="cliente"/>
-					<f:field property="fecha"/>
+					<f:field input-id="fecha" property="fecha"/>
 					<f:field property="formaDePago"/>
-					<f:field property="cuenta" label="Cuenta destino"/>
-					<f:field property="moneda"/>
-					<f:field property="tc" input-class="tc"/>
+					<f:field field-id="cuenta" property="cuenta" label="Cuenta destino"/>
+					<f:field field-id="tc" property="tc" input-class="tc"/>
 					<f:field property="total" input-class="moneyField"/>
 					<f:field property="fechaBancaria"/>
 					<f:field property="referenciaBancaria" />
@@ -65,6 +64,32 @@
 		
 		
 	});
+	
+	$("#cuenta").change(function(){
+		var date=$("#fecha").val();
+		$.ajax({
+			url:"${createLink(controller:'tipoDeCambio', action:'ajaxTipoDeCambioDiaAnterior')}",
+			success:function(response){
+				console.log('OK: '+response);
+				if(response!=null){
+					if(response.factor!=null){
+						$("#tc").val(response.factor);
+						console.log('Tipo de cambio: '+response.factor);
+					}else if(response.error!=null){
+						alert(response.error);
+					}
+				}
+			},
+			data:{
+				fecha:date
+			},
+			error:function(request,status,error){
+				alert("Error: "+status);
+			}
+		});
+		
+	});
+	
  });
  </r:script>
 	

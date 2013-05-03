@@ -13,12 +13,24 @@ class SaldoDeCuentaController {
     def index() {
         redirect action: 'list', params: params
     }
+	
+	def cambiarPeriodo(String fecha){
+		println 'Cambiando periodo: '+fecha
+		def periodo=fecha?Date.parse("dd/MM/yyyy",fecha):new Date()
+		session.periodo=periodo
+		redirect action:'list'
+	}
 
     def list() {
 		log.info('Saldo de cuentas')
 		
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
-		def periodo=params.periodo?Date.parse("dd/MM/yyyy",params.periodo):new Date()
+		if(!session.periodo){
+			session.periodo=new Date()
+		}
+		
+		//def periodo=params.periodo?Date.parse("dd/MM/yyyy",params.periodo):new Date()
+		def periodo=session.periodo
 		def rango=periodo.asPeriodoText()
 		
 		def saldoDeCuentasList=SaldoDeCuenta.findAllByYearAndMes(periodo.toYear(),periodo.toMonth())
@@ -38,9 +50,9 @@ class SaldoDeCuentaController {
 	
 	def actualizarSaldos(){
 		//def periodo=params.periodo?Date.parse(params.periodo):new Date()
-		//println("Actualizando saldos al: "+params)
-		
-		Date periodo=Date.parse("dd/MM/yyyy", params.periodo).inicioDeMes()
+		println("Actualizando saldos al: "+session.periodo)
+		Date periodo=session.periodo
+		//Date periodo=Date.parse("dd/MM/yyyy", params.periodo).inicioDeMes()
 		//Date periodo=params.periodo
 		//Obtenemos el saldo al inicio del mes
 		def month=periodo.toMonth()
@@ -76,17 +88,19 @@ class SaldoDeCuentaController {
 			saldo.saldoFinalMN=0.0
 			saldo.save(flush:true)
 		}
-		flash.message='Saldos actualizados al: '+periodo
+		flash.message='Saldos actualizados al: '+periodo.text()
 		redirect (action:'list',params:params) 
 	}
 	
-	def detalleDeMovimientos(long id){
+	def detalleDeMovimientos(long id,String fecha){
 		def cuenta=CuentaBancaria.get(id)
 		
 		if(!cuenta)
 			throw new RuntimeException("No existe la cuenta: "+id)
-			
-		def periodo=Date.parse("dd/MM/yyyy", params.periodo).inicioDeMes()
+		if(fecha)
+			session.periodo=Date.parse("dd/MM/yyyy", fecha)
+		//def periodo=Date.parse("dd/MM/yyyy", params.periodo).inicioDeMes()
+		def periodo=session.periodo
 		def saldo=SaldoDeCuenta.findOrCreateByCuentaAndYearAndMes(cuenta,periodo.toYear(),periodo.toMonth())
 		println "Detalle de movientos Cuenta: $cuenta  Saldo:$saldo Periodo:$periodo "
 		if(saldo.id==null){
@@ -103,7 +117,7 @@ class SaldoDeCuentaController {
 		
 		if(!cuenta)
 			throw new RuntimeException("No existe la cuenta: "+id)
-		def periodo=Date.parse("dd/MM/yyyy", params.periodo)
+		def periodo=Date.parse("dd/MM/yyyy", session.periodo)
 		
 		println "Generando estado de cuenta para:$cuenta  al:$periodo"
 		

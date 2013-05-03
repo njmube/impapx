@@ -570,7 +570,7 @@ class PolizaDeDiarioController {
 				debe:0.0,
 				haber:importe,
 				asiento:asiento,
-				descripcion:"NC: $nota.documento Descuentos sobre compras  $nota.total * $nota.tc",
+				descripcion:"NC: $nota.documento $nota.concepto  $nota.total * $nota.tc",
 				referencia:"$nota.documento",
 				,fecha:poliza.fecha
 				,tipo:poliza.tipo
@@ -583,7 +583,7 @@ class PolizaDeDiarioController {
 				debe:importe,
 				haber:0.0,
 				asiento:asiento,
-				descripcion:"NC: $nota.documento Descuentos sobre compras $nota.total * $nota.tc",
+				descripcion:"NC: $nota.documento $nota.concepto  $nota.total * $nota.tc",
 				referencia:"$nota.documento",
 				,fecha:poliza.fecha
 				,tipo:poliza.tipo

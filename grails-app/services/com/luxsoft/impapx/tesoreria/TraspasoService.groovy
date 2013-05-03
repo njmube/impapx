@@ -49,7 +49,7 @@ class TraspasoService {
 				,ingreso:true)
 			ingreso.tipo='TRANSFERENCIA'
 			ingreso.origen='TESORERIA'
-			ingreso.concepto="Traspado: $traspaso.cuentaOrigen"
+			ingreso.concepto="Traspaso: $traspaso.cuentaOrigen"
 			traspaso.addToMovimientos(ingreso)
 			
 			return traspaso.save(failOnError:true)

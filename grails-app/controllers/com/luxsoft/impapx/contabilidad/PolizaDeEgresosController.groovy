@@ -118,7 +118,7 @@ class PolizaDeEgresosController {
 						debe:importeMN,
 						haber:0.0,
 						asiento:asiento,
-						descripcion:"Fecha:$fechaDocto $fac.proveedor.nombre TC:$tc",
+						descripcion:"Fecha:$fechaDocto Imp:$det.total TC:$tc",
 						referencia:"$fac.documento"
 						,fecha:poliza.fecha
 						,tipo:poliza.tipo
@@ -573,7 +573,7 @@ class PolizaDeEgresosController {
 				debe:0.0,
 				haber:pago.egreso.importe.abs()*pago.egreso.tc,
 				asiento:asiento,
-				descripcion:"$pago.egreso.cuenta ",
+				descripcion:"$pago.egreso.cuenta "+egreso.importe.abs()+" * $egreso.tc",
 				referencia:"$pago.egreso.referenciaBancaria",
 				,fecha:poliza.fecha
 				,tipo:poliza.tipo
@@ -592,7 +592,7 @@ class PolizaDeEgresosController {
 					debe:reqDet.importe.abs()*pago.egreso.tc,
 					haber:0.0,
 					asiento:asiento,
-					descripcion:"$pago.egreso.cuenta Ref:$reqDet.documento REq: $requisicion.id ",
+					descripcion:"$pago.egreso.cuenta Ref:$reqDet.documento REq: $requisicion.id "+egreso.importe.abs()+" * $egreso.tc",
 					referencia:"$pago.egreso.referenciaBancaria"
 					,fecha:poliza.fecha
 					,tipo:poliza.tipo

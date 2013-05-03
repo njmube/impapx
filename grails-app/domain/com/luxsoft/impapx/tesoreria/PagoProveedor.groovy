@@ -8,6 +8,8 @@ import com.luxsoft.impapx.cxp.Pago;
 import org.apache.commons.lang.builder.EqualsBuilder
 import org.apache.commons.lang.builder.HashCodeBuilder
 
+import util.MonedaUtils;
+
 class PagoProveedor {
 	
 	Date fecha
@@ -15,6 +17,7 @@ class PagoProveedor {
 	Requisicion requisicion
 	String comentario
 	MovimientoDeCuenta egreso
+	BigDecimal tipoDeCambio
 	
 	Date dateCreated
 	Date lastUpdated
@@ -28,6 +31,7 @@ class PagoProveedor {
 			if(val.moneda!=obj.requisicion.moneda)
 				return "tipoDeMonedaError"
 		})
+		
     }
 	
 	static mapping ={

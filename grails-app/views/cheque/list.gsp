@@ -30,6 +30,7 @@
 				Registrar cheque
 			</g:link>
 		</li>
+		
  	</content> 
  	
  	<content tag="document">
@@ -42,6 +43,7 @@
 		class="table table-striped table-hover table-bordered table-condensed">
 		<thead>
 			<tr>
+				<th class="header">Id</th>
 				<th class="header">Cuenta</th>
 				<th class="header">Desc</th>
 				<th class="header">Pago</th>
@@ -49,6 +51,8 @@
 				<th class="header">Folio</th>
 				<th class="header">Importe</th>
 				<th class="header">Impreso</th>
+				<th class="header">Cancelación</th>
+				
 			</tr>
 		</thead>
 		<tbody>
@@ -58,14 +62,27 @@
 					<td>
 						<g:link action="show"
 							id="${row.id}" >
-							${fieldValue(bean: row, field: "cuenta.numero")}
-						</g:link></td>
+							${row.id}
+						</g:link>
+					</td>
+					<td>
+						${fieldValue(bean: row, field: "cuenta.numero")}
+					</td>
 					<td>${fieldValue(bean: row, field: "cuenta.nombre")}</td>
 					<td>${fieldValue(bean: row, field: "egreso.id")}</td>
 					<td><lx:shortDate date="${row.egreso.fecha }"/></td>
 					<td><g:formatNumber number="${row.folio}" format="####"/></td>
 					<td><lx:moneyFormat number="${row.egreso.importe.abs()}"/></td>
 					<td><lx:shortDate date="${row.fechaImpresion}"/></td>
+					<td><g:if test="${!row.cancelacion }">
+							<g:link action="cancelar" id="${row.id}" ><i class="icon-remove-sign"></i> Cancelar</g:link>
+						</g:if>
+						<g:else>
+							<lx:shortDate date="${row.cancelacion}"/>	
+						</g:else>
+					</td>				
+					
+					
 					
 				</tr>
 			</g:each>
