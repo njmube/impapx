@@ -3,7 +3,7 @@
 	<g:form class="form-horizontal" action="edit" id="${embarqueDetInstance.id}">
 		<fieldset>
 			
-			<g:hiddenField name="kilosPorMillar" value="${embarqueDetInstance.producto.kilos}"/>
+			<g:hiddenField name="kilosPorMillar" value="${kilosPorMillar}"/>
 			<g:hiddenField name="factorUnitario" value="1000"/>
 			
 			<f:with bean="embarqueDetInstance">

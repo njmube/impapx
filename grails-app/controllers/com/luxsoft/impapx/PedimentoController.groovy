@@ -27,6 +27,8 @@ class PedimentoController {
         	[pedimentoInstance: new Pedimento(params)]
 			break
 		case 'POST':
+			println 'Alta de pedimento: '+params
+			params.pedimento=params.pedimento?.replace('-', '')
 	        def pedimentoInstance = new Pedimento(params)
 	        if (!pedimentoInstance.save(flush: true)) {
 	            render view: 'create', model: [pedimentoInstance: pedimentoInstance]

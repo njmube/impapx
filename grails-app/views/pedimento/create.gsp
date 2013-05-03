@@ -5,6 +5,7 @@
 		<meta name="layout" content="luxor">
 		<g:set var="entityName" value="${message(code: 'pedimento.label', default: 'Pedimento')}" />
 		<title><g:message code="default.create.label" args="[entityName]" /></title>
+		<r:require module="luxorForms"/>
 	</head>
 	<body>
 		<div class="row-fluid">

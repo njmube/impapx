@@ -34,7 +34,7 @@
 				Nota ${CXCNotaInstance.tipo} : ${CXCNotaInstance.id}  ${CXCNotaInstance.cliente.nombre} 
 				Total:<lx:moneyFormat number="${CXCNotaInstance.total}"/> /
 				Disponible: <lx:moneyFormat number="${CXCNotaInstance.disponibleMN}"/> 
-				CFD: ${CXCNotaInstance?.cfd.folio }
+				CFD: ${CXCNotaInstance?.cfd?.folio }
 			</strong></h4>
 		</div>
  		<g:render template="/shared/messagePanel" model="[beanInstance:CXCNotaInstance]"/>

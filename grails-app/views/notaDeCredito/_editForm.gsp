@@ -1,17 +1,16 @@
-
 <fieldset>
-	<g:form class="form-horizontal" action="create" id="${notaDeCreditoInstance?.id}">
+	<g:form class="form-horizontal" action="edit" id="${notaDeCreditoInstance?.id}">
 		<fieldset>
 			<f:with bean="notaDeCreditoInstance">
 				<g:hiddenField name="version" value="${notaDeCreditoInstance.version}"/>
 				
 				
-				<f:field property="concepto" input-disabled="disabled"/>
+				<f:field property="concepto" input-disabled="disabled" value="${ notaDeCreditoInstance.concepto}"/>
 				<f:field property="moneda" input-readOnly="true">
 					<g:field type="text" value="${notaDeCreditoInstance.moneda}" name="moneda" readOnly="true"/>
 				</f:field>
-				<f:field property="tc"/>
-				<f:field property="documento"/>
+				<f:field property="tc" value="${notaDeCreditoInstance.tc }"/>
+				<f:field property="documento" value="${notaDeCreditoInstance.documento}"/>
 				<f:field property="fecha"/>
 				<g:if test="notaDeCreditoInstance.aplicado">
 					<f:field property="importe" input-class="autoCalculate moneyField" />

@@ -52,6 +52,8 @@
 					<th>Docto</th>
 					<th>Fecha</th>
 					<th>Mon</th>
+					<th>TC</th>
+					<th>Tipo</th>
 					<th>Total</th>
 					<th>Aplicado</th>
 					<th>Disponible</th>
@@ -68,6 +70,8 @@
 						<td>${fieldValue(bean: row, field: "documento")}</td>
 						<td><lx:shortDate date="${row.fecha }"/></td>
 						<td>${fieldValue(bean: row, field: "moneda")}</td>
+						<td>${fieldValue(bean: row, field: "tc")}</td>
+						<td>${fieldValue(bean: row, field: "concepto")}</td>
 						<td><lx:moneyFormat number="${row.total}"/></td>
 						<td><lx:moneyFormat number="${row.aplicado?:0.0}"/></td>
 						<td><lx:moneyFormat number="${row.disponible}"/></td>

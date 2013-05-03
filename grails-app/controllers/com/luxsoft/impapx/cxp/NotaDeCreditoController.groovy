@@ -85,12 +85,12 @@ class NotaDeCreditoController {
 	                return
 	            }
 	        }
-
+			/*
 			if(notaDeCreditoInstance.aplicado>0.0){
 				flash.message = "Nota de crédito con aplicaciones no se puede modificar "
 				redirect action: 'show', id: notaDeCreditoInstance.id
 				return
-			}
+			}*/
 			
 	        notaDeCreditoInstance.properties = params
 
@@ -100,7 +100,7 @@ class NotaDeCreditoController {
 	        }
 
 			flash.message = message(code: 'default.updated.message', args: [message(code: 'notaDeCredito.label', default: 'NotaDeCredito'), notaDeCreditoInstance.id])
-	        redirect action: 'show', id: notaDeCreditoInstance.id
+	        redirect action: 'edit', id: notaDeCreditoInstance.id
 			break
 		}
     }

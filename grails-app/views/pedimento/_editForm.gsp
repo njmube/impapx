@@ -7,7 +7,7 @@
 					<f:field property="id" input-disabled="true"/>
 				</g:if>
 				
-				<f:field property="pedimento" input-autofocus="true"/>
+				
 				<f:field property="proveedor" input-required="true" label="Agente"/>
 				<f:field property="fecha"/>
 				<f:field property="tipoDeCambio"/>

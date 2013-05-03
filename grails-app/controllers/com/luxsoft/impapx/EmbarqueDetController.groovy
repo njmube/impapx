@@ -68,7 +68,27 @@ class EmbarqueDetController {
 	            redirect action: 'list'
 	            return
 	        }
-	        [embarqueDetInstance: embarqueDetInstance]
+			println 'Buscando proveedor producto para Proveedor: '+embarqueDetInstance.embarque.proveedor+ '  Y Producto: '+embarqueDetInstance.producto
+			
+			def pp=ProveedorProducto.findByProveedorAndProducto(embarqueDetInstance.embarque.proveedor,embarqueDetInstance.producto)
+			println 'Encontro: '+pp?.id
+			def kilosPorMillar=0
+			if(pp){
+				try{
+					def gramos=pp.gramos
+					def ancho=pp.producto.ancho
+					def largo=pp.producto.largo
+					
+					def area=ancho*largo/10000
+					kilosPorMillar=area*gramos
+					def kilosPorMillarProd=pp.producto.kilos
+					println "Gramos: $gramos Ancho: $ancho Largo: $largo Kilos calculados: $kilosPorMillar  Kilos Prod: $kilosPorMillarProd"
+				}catch(Exception e){
+				  log.error e
+				}
+				
+			}
+	        [embarqueDetInstance: embarqueDetInstance,kilosPorMillar:kilosPorMillar]
 			break
 		case 'POST':
 			//println 'Actualizando embarqueDet: '+params
