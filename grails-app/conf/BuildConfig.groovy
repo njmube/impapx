@@ -65,5 +65,6 @@ grails.project.dependency.resolution = {
 			exclude "spock-grails-support"
 		}
 		runtime ":filterpane:2.1.6"
+		compile ':jquery-date-time-picker:0.1.0'
     }
 }

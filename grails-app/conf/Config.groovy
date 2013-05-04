@@ -115,3 +115,17 @@ grails.plugin.databasemigration.updateOnStartFileNames = ["changelog.groovy"]
 grails.plugins.springsecurity.userLookup.userDomainClassName = 'com.luxsoft.impapx.sec.User'
 grails.plugins.springsecurity.userLookup.authorityJoinClassName = 'com.luxsoft.impapx.sec.UserRole'
 grails.plugins.springsecurity.authority.className = 'com.luxsoft.impapx.sec.Role'
+
+
+jqueryDateTimePicker {
+	format {
+		java {
+			datetime = "dd-MM-yyyy HH:mm"
+			date = "dd/MM/yyyy"
+		}
+		picker {
+			date = "'dd/mm/yy'"
+			time = "'H-mm'"
+		}
+	}
+}
