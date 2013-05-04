@@ -1,6 +1,8 @@
 package com.luxsoft.impapx
 
-import org.spockframework.util.Assert;
+
+
+import org.springframework.util.Assert;
 
 import com.luxsoft.impapx.cxp.CuentaDeGastosGenerica;
 

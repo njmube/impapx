@@ -14,13 +14,25 @@ class EmbarqueController {
 
 	def jasperService
 	def embarqueService
-
+	
+	def filterPaneService
+	
     def index() {
         redirect action: 'list', params: params
     }
+	
+	def filter(){
+		if(!params.max) params.max = 20
+		println filterPaneService?'OK':'ERROR'
+		render( view:'list',
+			model:[ embarqueInstanceList: filterPaneService.filter( params, Embarque.class),
+			embarqueInstanceTotal: filterPaneService.count( params, Embarque.class ),
+			filterParams: org.grails.plugin.filterpane.FilterPaneUtils.extractFilterParams(params),
+			params:params ] )
+	}
 
     def list() {
-        params.max = Math.min(params.max ? params.int('max') : 100, 100)
+        params.max = Math.min(params.max ? params.int('max') : 20, 100)
 		params.sort='id'
 		params.order='desc'
         [embarqueInstanceList: Embarque.list(params), embarqueInstanceTotal: Embarque.count()]

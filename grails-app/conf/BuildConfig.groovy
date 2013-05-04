@@ -64,5 +64,6 @@ grails.project.dependency.resolution = {
 		test(":spock:0.7") {
 			exclude "spock-grails-support"
 		}
+		runtime ":filterpane:2.1.6"
     }
 }

@@ -6,7 +6,8 @@
 <g:set var="entityName"
 	value="${message(code: 'embarque.label', default: 'Embarque')}" />
 <title><g:message code="default.list.label" args="[entityName]" /></title>
-<r:require module="dataTables"/>
+<r:require modules="dataTables,filterpane"/>
+
 </head>
 <body>
 	<div class="container-fluid">
@@ -24,6 +25,9 @@
 							<i class="icon-plus icon-white"></i>
 							<g:message code="embarque.create.label"  />
 						</g:link>
+						
+						<filterpane:filterButton text="Filter Me" appliedText="Change Filter" class="btn"/>
+						
 					</div>
 				</div>
 				<table id="grid" class=" table table-striped table-hover table-bordered table-condensed">
@@ -89,6 +93,14 @@
 		
 		</div> 
 	</div>
+	<filterpane:filterPane	domain="com.luxsoft.impapx.Embarque"
+		dialog="true"
+		title="Filtrar"
+		filterProperties="id,fechaEmbarque,nombre,ingresoAduana"
+		associatedProperties="proveedor.nombre"
+		additionalProperties="identifier"
+		
+	/>
 	<r:script>
 	$(function(){
 		$("#grid2").dataTable({
