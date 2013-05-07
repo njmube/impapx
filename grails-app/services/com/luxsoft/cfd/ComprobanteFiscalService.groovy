@@ -179,7 +179,7 @@ class ComprobanteFiscalService {
 			folio:cfd.getFolio(),
 			serie:cfd.getSerie(),
 			numeroDeAprobacion:cfd.getNoAprobacion(),
-			rfc:cfd.getSerie(),
+			rfc:rfc,
 			tipoCfd:'I',
 			estado:'1',
 			xmlPath:xml.toURI().toURL().toString(),

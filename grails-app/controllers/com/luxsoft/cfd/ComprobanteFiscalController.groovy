@@ -9,22 +9,34 @@ import org.apache.commons.lang.time.DateUtils;
 
 import com.luxsoft.impapx.Empresa;
 import com.luxsoft.impapx.Venta;
+import com.luxsoft.impapx.contabilidad.PeriodoContable;
 import com.luxsoft.impapx.cxc.CancelacionDeCargo;
 
 class ComprobanteFiscalController {
 
     def index() { 
 		redirect action: 'list', params: params
-		
+	}
+	
+	def actualizarPeriodo(PeriodoContable periodo){
+		periodo.actualizarConFecha()
+		session.periodoContable=periodo
+		redirect action:'list'
 	}
 	
 	 def list() {
-		// println 'CFD :'+params
+		 def periodo=session.periodoContable
+		if(!periodo){
+			println 'Asignando periodo contable:..'
+			periodo=new PeriodoContable()
+			periodo.actualizarConFecha()
+			session.periodoContable=periodo
+		}
         params.max = 1000
 		params.sort='fecha,folio'
 		params.order='asc'
-		def year=2013
-		def month=3
+		def year=periodo.year
+		def month=periodo.month
 		
 		def res=[]
 		def list= ComprobanteFiscal.findAll("from ComprobanteFiscal c where year(c.fecha)=? and month(c.fecha)=?",[year,month],[readOnly:true])

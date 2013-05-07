@@ -5,7 +5,7 @@
 <meta name="layout" content="polizasView">
 
 <g:set var="periodo" value="${session.periodoContable}"/>
-<title><g:message code="polizasDeDiario.label" default="Póliza de diario"/></title>
+<title><g:message code="polizasDeDiario.label" default="Póliza de diario (IVA ISR)"/></title>
 
 <r:require modules="dataTables,luxorForms"/>
 </head>

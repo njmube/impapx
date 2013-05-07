@@ -83,6 +83,7 @@ class PolizaDeDiarioController {
 		procesarNotasDeCreditoCxC(poliza, dia)
 		procesarNotasDeCargoCxC(poliza, dia)
 		procesarProvisionDeGastos(poliza, dia)
+		procesarPagoImpuestosISR(poliza,dia)
 		
 		//Salvar la poliza
 		poliza.debe=poliza.partidas.sum (0.0,{it.debe})
@@ -609,8 +610,8 @@ class PolizaDeDiarioController {
 				debe:0.0,
 				haber:nota.total,
 				asiento:asiento,
-				descripcion:"NC: $nota.tipo $nota.cfd.folio  ",
-				referencia:"$nota.cfd.folio",
+				descripcion:"NC: $nota.tipo $nota?.cfd?.folio  ",
+				referencia:"$nota?.cfd?.folio",
 				,fecha:poliza.fecha
 				,tipo:poliza.tipo
 				,entidad:'CXCNota'
@@ -622,8 +623,8 @@ class PolizaDeDiarioController {
 				debe:nota.importe,
 				haber:0.0,
 				asiento:asiento,
-				descripcion:"NC: $nota.tipo $nota.cfd.folio  ",
-				referencia:"$nota.cfd.folio",
+				descripcion:"NC: $nota.tipo $nota?.cfd.folio  ",
+				referencia:"$nota?.cfd.folio",
 				,fecha:poliza.fecha
 				,tipo:poliza.tipo
 				,entidad:'NotaDeCredito'
@@ -635,8 +636,8 @@ class PolizaDeDiarioController {
 				debe:nota.impuesto,
 				haber:0.0,
 				asiento:asiento,
-				descripcion:"NC: $nota.tipo $nota.cfd.folio  ",
-				referencia:"$nota.cfd.folio",
+				descripcion:"NC: $nota.tipo $nota?.cfd.folio  ",
+				referencia:"$nota?.cfd.folio",
 				,fecha:poliza.fecha
 				,tipo:poliza.tipo
 				,entidad:'NotaDeCredito'
@@ -967,4 +968,71 @@ class PolizaDeDiarioController {
 		}
 	}
 	
+	
+	private procesarPagoImpuestosISR(def poliza,def dia){
+		def asiento='PAGO IMPUESTOS ISR'
+		
+		def egresos=MovimientoDeCuenta.findAll("from MovimientoDeCuenta m where date(m.fecha)=? and m.concepto like ?",[dia,'ISR %'])
+		
+		Date diaImpuesto=dia.inicioDeMes()-1
+		
+		egresos.each{ egreso ->
+			poliza.addToPartidas(
+				cuenta:CuentaContable.buscarPorClave("205-0001"),
+				debe:egreso.importe.abs(),
+				haber:0.0,
+				asiento:asiento,
+				descripcion:"Pago impuestos ISR "+diaImpuesto.asPeriodoText(),
+				referencia:egreso.referenciaBancaria,
+				,fecha:poliza.fecha
+				,tipo:poliza.tipo
+				,entidad:'MovimientoDeCuenta'
+				,origen:egreso.id)
+			
+			poliza.addToPartidas(
+				cuenta:egreso.cuenta.cuentaContable,
+				debe:0.0,
+				haber:egreso.importe.abs(),
+				asiento:asiento,
+				descripcion:"Pago impuestos ISR "+diaImpuesto.asPeriodoText(),
+				referencia:egreso.referenciaBancaria,
+				,fecha:poliza.fecha
+				,tipo:poliza.tipo
+				,entidad:'MovimientoDeCuenta'
+				,origen:egreso.id)
+			
+		}
+		
+		int year=dia.toYear()
+		int mes=dia.toMonth()
+		def saldos=SaldoPorCuentaContable.findAll("from SaldoPorCuentaContable s where s.cuenta.id=248 and s.year=? and s.mes=?"
+			,[year,mes])
+		saldos.each { s->
+			
+			poliza.addToPartidas(
+				cuenta:s.cuenta,
+				debe:s.saldoInicial.abs(),
+				haber:0.0,
+				asiento:asiento,
+				descripcion:"Pago impuestos ISR "+diaImpuesto.asPeriodoText(),
+				referencia:"",
+				,fecha:poliza.fecha
+				,tipo:poliza.tipo
+				,entidad:'SaldoPorCuentaContable'
+				,origen:s.id)
+			
+			poliza.addToPartidas(
+				cuenta:CuentaContable.buscarPorClave("118-0001"),
+				debe:0.0,
+				haber:s.saldoInicial.abs(),
+				asiento:asiento,
+				descripcion:"Pago impuestos ISR "+diaImpuesto.asPeriodoText(),
+				referencia:"",
+				,fecha:poliza.fecha
+				,tipo:poliza.tipo
+				,entidad:'SaldoPorCuentaContable'
+				,origen:s.id)
+			
+		}
+	}
 }

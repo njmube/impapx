@@ -44,7 +44,7 @@ class SaldoPorCuentaContableController {
 		def sort=params.sort?:'fecha'
 		def order=params.order?:'desc'
 		println 'Periodo:'+periodo
-		def saldos=SaldoPorCuentaContable.findAll("from SaldoPorCuentaContable c where c.cuenta.detalle=? and c.year=? and c.mes=?"
+		def saldos=SaldoPorCuentaContable.findAll("from SaldoPorCuentaContable c where c.cuenta.detalle=? and c.year=? and c.mes=? order by c.cuenta.clave"
 			,[false,periodo.year,periodo.month])
 		println 'Saldos existentes:'+saldos.size()
 		[saldoPorCuentaContableInstanceList: saldos, saldoPorCuentaContableInstanceTotal: saldos.size()]
@@ -99,7 +99,7 @@ class SaldoPorCuentaContableController {
 		}
 		def sal=SaldoPorCuentaContable.get(id)
 		def saldos=SaldoPorCuentaContable
-			.findAll("from SaldoPorCuentaContable c where c.cuenta.padre=? and c.year=? and c.mes=?"
+			.findAll("from SaldoPorCuentaContable c where c.cuenta.padre=? and c.year=? and c.mes=? order by c.cuenta.clave asc"
 			,[sal.cuenta,sal.year,sal.mes])
 		[saldo:sal,saldoPorCuentaContableInstanceList: saldos
 			, saldoPorCuentaContableInstanceTotal: saldos.size(),]

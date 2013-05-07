@@ -8,7 +8,7 @@
 <body>
 	
 	<content tag="header">
-		<h3>Reporte mensual de CFDs</h3>
+		<h3>Reporte mensual de CFDs : ${session.periodoContable}</h3>
  	</content>
  	
  	<content tag="consultas">
@@ -20,11 +20,8 @@
  	
  	<content tag="operaciones">
  		<li>
-			<g:link class="list" action="cambiarPeriodo">
-				<i class="icon-list"></i>
-				Cambiar periodo
-			</g:link>
-		</li>
+			<g:render template="cambiarPeriodo" bean="${session.periodoContable}"/>
+ 		</li>
 		<li>
 			<g:link class="list" action="actualizar">
 				<i class="icon-list"></i>

@@ -17,6 +17,18 @@
  	</g:link>
  </li>
  <li>
+ 	<g:link controller="polizaDeDiarioFlete" action="list">
+ 		<i class="icon-list"></i>
+ 		Diario - Flete
+ 	</g:link>
+ </li>
+ <li>
+ 	<g:link controller="polizaDeDiarioIvaIsr" action="list">
+ 		<i class="icon-list"></i>
+ 		Diario - IVA/ISR
+ 	</g:link>
+ </li>
+ <li>
  	<g:link controller="polizaDeIngresos" action="list">
  		<i class="icon-list"></i>
  		Ingresos

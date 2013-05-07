@@ -6,6 +6,7 @@ import com.luxsoft.impapx.EmbarqueDet;
 import com.luxsoft.impapx.FacturaDeGastos;
 import com.luxsoft.impapx.TipoDeCambio;
 import com.luxsoft.impapx.tesoreria.Cheque;
+import com.luxsoft.impapx.tesoreria.MovimientoDeCuenta;
 import com.luxsoft.impapx.tesoreria.PagoProveedor;
 
 class PolizaDeEgresosController {
@@ -195,7 +196,7 @@ class PolizaDeEgresosController {
 		
 		procesarAnticiposCompra(dia)
 		procesarChequesCancelados(dia)
-		
+		procesarPagoChoferes(dia)
 		redirect action: 'list'
 	}
 	
@@ -652,6 +653,66 @@ class PolizaDeEgresosController {
 			poliza=polizaService.salvarPoliza(poliza)
 		}
 	}
+	
+	private procesarPagoChoferes(Date dia){
+		def pagos=PagoProveedor
+		.findAll("from PagoProveedor p where date(p.egreso.fecha)=? and p.egreso.origen=? and p.requisicion.concepto in ('FLETE')"
+		,[dia,'CXP'])
+		
+		pagos.each{ pago ->
+			
+			def fp=pago.egreso.tipo.substring(0,2)
+			def egreso=pago.egreso
+			
+			def req=pago.requisicion
+			def descripcion="$fp-$egreso.referenciaBancaria $req.proveedor ($req.concepto) id:$egreso.id"
+			Poliza poliza=new Poliza(tipo:'EGRESO', fecha:dia,descripcion:descripcion,partidas:[])
+			def asiento='PAGO_FLETE'
+			
+			//Abono a bancos
+			def cuentaDeBanco=pago.egreso.cuenta
+			if(cuentaDeBanco.cuentaContable==null)
+				throw new RuntimeException("Cuenta de banco sin cuenta contable asignada: $cuentaDeBanco")
+			poliza.addToPartidas(
+				cuenta:cuentaDeBanco.cuentaContable,
+				debe:0.0,
+				haber:pago.egreso.importe.abs(),
+				asiento:asiento,
+				descripcion:"$pago.egreso.cuenta ",
+				referencia:"$pago.egreso.referenciaBancaria",
+				,fecha:poliza.fecha
+				,tipo:poliza.tipo
+				,entidad:'PagoProveedor'
+				,origen:pago.id)
+			
+			//Cargo a proveedor
+			def proveedor=pago.requisicion.proveedor
+			def clave="203-$proveedor.subCuentaOperativa"
+			def cuenta=CuentaContable.buscarPorClave(clave)
+			def requisicion=pago.requisicion
+			poliza.addToPartidas(
+				cuenta:cuenta,
+				debe:pago.egreso.importe.abs(),
+				haber:0.0,
+				asiento:asiento,
+				descripcion:"$pago.egreso.cuenta ",
+				referencia:"$pago.egreso.referenciaBancaria"
+				,fecha:poliza.fecha
+				,tipo:poliza.tipo
+				,entidad:'PagoProveedor'
+				,origen:pago.id)
+			
+			//Salvar la poliza
+			poliza.debe=poliza.partidas.sum (0.0,{it.debe})
+			poliza.haber=poliza.partidas.sum(0.0,{it.haber})
+			//poliza.folio=polizaService.nextFolio(poliza)
+			//poliza.save(failOnError:true)
+			poliza=polizaService.salvarPoliza(poliza)
+		}
+	}
+	
+
+	
 	
 	
 }
