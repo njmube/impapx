@@ -48,7 +48,7 @@ class PolizaDeEgresosController {
 		
 		pagos.each{ pago->
 			
-			System.out.println();
+			
 			//Prepara la poliza
 			def fp=pago.egreso.tipo.substring(0,2)
 			def egreso=pago.egreso
@@ -57,7 +57,7 @@ class PolizaDeEgresosController {
 			def descripcion="$fp-$egreso.referenciaBancaria $req.proveedor (Proveedores extranjeros) id:$egreso.id"
 			Poliza poliza=new Poliza(tipo:'EGRESO',folio:1, fecha:dia,descripcion:descripcion,partidas:[])
 			
-			def clave="201-$req.proveedor.subCuentaOperativa"
+			
 			def asiento='PAGO CXP'
 			def pagoAcu=0
 			req.partidas.each{ det->
@@ -69,7 +69,7 @@ class PolizaDeEgresosController {
 				//NUEVO
 				def embarqueDet=EmbarqueDet.find("from EmbarqueDet x where x.factura=?",[fac])
 				def pedimento=embarqueDet.pedimento
-				System.out.println("*********************************************************"+pedimento.fecha);
+				System.out.println("*********************************************************"+pedimento?.fecha);
 				if(!pedimento){
 				
 					def fechaTc=egreso.fecha-1
@@ -93,19 +93,15 @@ class PolizaDeEgresosController {
 							
 				}
 				
-				
-				
-				
-				/*
-				if(egreso.fecha.toMonth()!=fac.fecha.toMonth()){
-					def fechaTc=egreso.fecha.inicioDeMes()-2
-					def tipoDeCambioInstance=TipoDeCambio.find("from TipoDeCambio t where date(t.fecha)=? and t.monedaFuente=?",[fechaTc,fac.moneda])
-					if(!tipoDeCambioInstance)
-						throw new RuntimeException("No existe el Tipo de cambio para:"+fechaTc.text())
-					tc=tipoDeCambioInstance.factor
+				def clave="201-$req.proveedor.subCuentaOperativa"
+				if(pedimento ){
+					if(egreso.fecha<pedimento.fecha || pedimento.fecha.toMonth()== egreso.fecha.toMonth() ){
+						clave="111-$req.proveedor.subCuentaOperativa"
+					}
 				}else{
-					tc=fac.tc
-				}*/
+					clave="111-$req.proveedor.subCuentaOperativa"
+				}
+				
 				
 				def importeMN=Rounding.round(det.total*tc,2)
 				def fechaDocto=fac.fecha.text()
@@ -114,12 +110,14 @@ class PolizaDeEgresosController {
 				pagoAcu+=det.total*tc
 				
 				//Cargo a a proveedores
+				
+				
 				poliza.addToPartidas(
 						cuenta:CuentaContable.buscarPorClave(clave),
 						debe:importeMN,
 						haber:0.0,
 						asiento:asiento,
-						descripcion:"Fecha:$fechaDocto Imp:$det.total TC:$tc",
+						descripcion:"F Fac:$fechaDocto Imp:$det.total TC:$tc F.Ped:"+pedimento?.fecha.text()+' F.Pag:'+egreso?.fecha.text(),
 						referencia:"$fac.documento"
 						,fecha:poliza.fecha
 						,tipo:poliza.tipo
@@ -145,7 +143,7 @@ class PolizaDeEgresosController {
 			def dif=(egreso.importe.abs()*egreso.tc)-pagoAcu
 			
 			if(dif.abs()>0){
-				clave=dif<0?'701-0002':'705-0002'
+				def clave=dif<0?'701-0002':'705-0002'
 				poliza.addToPartidas(
 					cuenta:CuentaContable.buscarPorClave(clave),
 					debe:dif>0?dif.abs():0.0,

@@ -49,7 +49,7 @@ class PolizaDeDiarioIvaIsrController {
 		def sort=params.sort?:'fecha'
 		def order=params.order?:'desc'
 		
-		def polizas=Poliza.findAllByTipoAndFechaBetween('DIARIO',periodo.inicio,periodo.fin,[sort:sort,order:order])
+		def polizas=Poliza.findAllByTipoAndDescripcionIlikeAndFechaBetween('DIARIO','%IVA-ISR%',periodo.inicio,periodo.fin,[sort:sort,order:order])
 		[polizaInstanceList: polizas, polizaInstanceTotal: polizas.size()]
 	}
 	
@@ -69,7 +69,7 @@ class PolizaDeDiarioIvaIsrController {
 		Poliza poliza=new Poliza(tipo:'DIARIO',folio:1, fecha:dia,descripcion:'Poliza IVA-ISR'+dia.text(),partidas:[])
 		
 		procesar(poliza ,dia)
-		
+		procesarIva(poliza, dia)
 		//Salvar la poliza
 		poliza.debe=poliza.partidas.sum (0.0,{it.debe})
 		poliza.haber=poliza.partidas.sum(0.0,{it.haber})
@@ -171,6 +171,88 @@ class PolizaDeDiarioIvaIsrController {
 		
 		return isrAPagar
 		
+	}
+	
+	private procesarIva(Poliza poliza ,Date dia){
+		def asiento="DETERMINACION-IVA"
+		int year=dia.toYear()
+		int mes=dia.toMonth()
+		def rows=PolizaDet
+			.findAll("from PolizaDet p where p.cuenta.id in (61,62,63) and year(p.fecha)=? and month(p.fecha)=?"
+			,[year,mes])
+		
+		Map res=rows.groupBy({p-> p.cuenta?.id})
+		//res.
+		println 'Map keys: '+res.keySet()
+		
+		def p61=res.get(61l)
+		def p62=res.get(62l)
+		def p63=res.get(63l)
+		
+		println 'P61: '+p61+  '  P62'+p62+  '  P63'+p63
+		
+		def row61
+		def row62
+		def row63
+		
+		def debe61=p61?.sum(0.0,{it.debe})
+		def debe62=p62?.sum(0.0,{it.debe})
+		def debe63=p63?.sum(0.0,{it.debe})
+		def ptotal=p61+p62+p63
+		
+		if(p61){
+			//Abono a
+			poliza.addToPartidas(
+				cuenta:row61?.cuenta,
+				debe:0.0,
+				haber:debe61,
+				asiento:asiento,
+				descripcion:"Determinacion IVA ${year} - ${mes}",
+				referencia:""
+				,fecha:poliza.fecha
+				,tipo:poliza.tipo
+				,entidad:'PolizaDet')
+		}
+		if(p62){
+			//Abono a
+			poliza.addToPartidas(
+				cuenta:row62?.cuenta,
+				debe:0.0,
+				haber:debe62,
+				asiento:asiento,
+				descripcion:"Determinacion IVA ${year} - ${mes}",
+				referencia:""
+				,fecha:poliza.fecha
+				,tipo:poliza.tipo
+				,entidad:'PolizaDet')
+		}
+		if(p63){
+			//Abono a
+			poliza.addToPartidas(
+				cuenta:row63?.cuenta,
+				debe:0.0,
+				haber:debe63,
+				asiento:asiento,
+				descripcion:"Determinacion IVA ${year} - ${mes}",
+				referencia:""
+				,fecha:poliza.fecha
+				,tipo:poliza.tipo
+				,entidad:'PolizaDet')
+		}
+		
+		
+		//Abono a
+		poliza.addToPartidas(
+			cuenta:CuentaContable.buscarPorClave("206-0001"),
+			debe:ptotal,
+			haber:0.0,
+			asiento:asiento,
+			descripcion:"Determinacion IVA ${year} - ${mes}",
+			referencia:""
+			,fecha:poliza.fecha
+			,tipo:poliza.tipo
+			,entidad:'PolizaDet')
+			
 	}
 	
 }

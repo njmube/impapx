@@ -29,6 +29,12 @@
  	</g:link>
  </li>
  <li>
+ 	<g:link controller="polizaDeDiarioAplicacionAnticipo" action="list">
+ 		<i class="icon-list"></i>
+ 		Diario - Aplic Anticipo
+ 	</g:link>
+ </li>
+ <li>
  	<g:link controller="polizaDeIngresos" action="list">
  		<i class="icon-list"></i>
  		Ingresos

@@ -776,7 +776,7 @@ class PolizaDeDiarioController {
 			
 			def diferencia=saldo-saldoActualizado
 			def periodo=dia.asPeriodoText()
-			
+					System.out.println("******************"+$proveedor.nombre);
 			poliza.addToPartidas(
 				cuenta:CuentaContable.buscarPorClave("201-$proveedor.subCuentaOperativa"),
 				debe:diferencia>0?diferencia.abs():0.0,

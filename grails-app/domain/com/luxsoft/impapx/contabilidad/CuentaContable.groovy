@@ -4,6 +4,8 @@ import java.util.Date;
 import org.apache.commons.lang.builder.EqualsBuilder
 import org.apache.commons.lang.builder.HashCodeBuilder
 
+import com.luxsoft.impapx.Proveedor;
+
 class CuentaContable {
 	
 	String clave
@@ -62,6 +64,7 @@ class CuentaContable {
 	static CuentaContable buscarPorClave(String clave){
 		def found=CuentaContable.findByClave(clave)
 		if(!found)
+
 			throw new RuntimeException("No existe la cuenta contable: $clave")
 		return found
 	}

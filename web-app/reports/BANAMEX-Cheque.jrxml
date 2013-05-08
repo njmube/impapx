@@ -93,7 +93,7 @@ where ch.id=$P{ID}]]></queryString>
 						key="textField-1"/>
 					<box></box>
 					<textElement verticalAlignment="Bottom">
-						<font pdfFontName="Helvetica" size="9" isBold="false"/>
+						<font pdfFontName="Helvetica-Bold" size="9" isBold="true"/>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[new String("(").concat($P{IMPLETRA}).concat(")")]]></textFieldExpression>
 				</textField>

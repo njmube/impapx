@@ -117,7 +117,9 @@ class SaldoDeCuentaController {
 		
 		if(!cuenta)
 			throw new RuntimeException("No existe la cuenta: "+id)
-		def periodo=Date.parse("dd/MM/yyyy", session.periodo)
+		println 'Periodo: '+session.periodo+ ' Tipo: '+session.periodo.class
+		//def periodo=Date.parse("dd/MM/yyyy", session.periodo)
+		def periodo=session.periodo
 		
 		println "Generando estado de cuenta para:$cuenta  al:$periodo"
 		

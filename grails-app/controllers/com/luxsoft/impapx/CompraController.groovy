@@ -12,9 +12,21 @@ class CompraController {
 	
 	
 
+   def filterPaneService
+	
     def index() {
         redirect action: 'list', params: params
     }
+	
+	def filter(){
+		if(!params.max) params.max = 20
+		println filterPaneService?'OK':'ERROR'
+		render( view:'list',
+			model:[ compraInstanceList: filterPaneService.filter( params, Compra.class),
+			compraInstanceTotal: filterPaneService.count( params, Compra.class ),
+			filterParams: org.grails.plugin.filterpane.FilterPaneUtils.extractFilterParams(params),
+			params:params ] )
+	}
 
     def list() {
         params.max = Math.min(params.max ? params.int('max') : 100, 100)

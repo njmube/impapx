@@ -26,7 +26,7 @@
 							<g:message code="embarque.create.label"  />
 						</g:link>
 						
-						<filterpane:filterButton text="Filter Me" appliedText="Change Filter" class="btn"/>
+						<filterpane:filterButton text="Filtrar" appliedText="Cambiar filtro" class="btn"/>
 						
 					</div>
 				</div>
@@ -96,7 +96,7 @@
 	<filterpane:filterPane	domain="com.luxsoft.impapx.Embarque"
 		dialog="true"
 		title="Filtrar"
-		filterProperties="id,fechaEmbarque,nombre,ingresoAduana"
+		filterProperties="id,fechaEmbarque,nombre"
 		associatedProperties="proveedor.nombre"
 		additionalProperties="identifier"
 		
