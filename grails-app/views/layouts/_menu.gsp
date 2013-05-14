@@ -69,6 +69,7 @@
 				  		<li><g:link controller="diferenciaCambiaria" action="list">Diferencias cambiarias</g:link></li>
 				  		<li><g:link controller="poliza" action="index">Pólizas</g:link></li>
 				  		<li><g:link controller="poliza" action="index">Balanza</g:link></li>
+				  		<li><g:link controller="diot" action="list">DIOT</g:link></li>
 				  	</ul>
 				  	</sec:ifAnyGranted>
 				  </li>

@@ -129,3 +129,12 @@ jqueryDateTimePicker {
 		}
 	}
 }
+
+environments {
+	development {
+		cfd.xslt.path="Z:\\CFD\\xslt\\v2.2\\cadenaoriginal_2_2.xslt"
+	}
+	production {
+		cfd.xslt.path="/usr/etc/cfd/cert/xslt/cadenaoriginal_2_2.xslt"
+	}
+}

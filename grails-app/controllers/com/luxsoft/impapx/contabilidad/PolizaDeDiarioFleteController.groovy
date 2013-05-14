@@ -47,7 +47,8 @@ class PolizaDeDiarioFleteController {
 		def sort=params.sort?:'fecha'
 		def order=params.order?:'desc'
 		
-		def polizas=Poliza.findAllByTipoAndFechaBetween('DIARIO',periodo.inicio,periodo.fin,[sort:sort,order:order])
+		//def polizas=Poliza.findAllByTipoAndDescripcionFechaBetween('DIARIO',periodo.inicio,periodo.fin,[sort:sort,order:order])
+		def polizas=Poliza.findAllByTipoAndDescripcionIlikeAndFechaBetween('DIARIO','%Flete%',periodo.inicio,periodo.fin,[sort:sort,order:order])
 		[polizaInstanceList: polizas, polizaInstanceTotal: polizas.size()]
 	}
 	
@@ -59,14 +60,14 @@ class PolizaDeDiarioFleteController {
 		//println 'Generando poliza: '+params
 		
 		//Prepara la poliza
-		Poliza poliza=new Poliza(tipo:'DIARIO',folio:1, fecha:dia,descripcion:'Poliza '+dia.text(),partidas:[])
+		Poliza poliza=new Poliza(tipo:'DIARIO',folio:1, fecha:dia,descripcion:'Poliza (Flete)'+dia.text(),partidas:[])
 		
 		procesarGastosChoferes(poliza ,dia)
 		
 		//Salvar la poliza
 		poliza.debe=poliza.partidas.sum (0.0,{it.debe})
 		poliza.haber=poliza.partidas.sum(0.0,{it.haber})
-		poliza=polizaService.salvarPoliza(poliza)
+		poliza=polizaService.salvarPolizaDiario(poliza)
 		redirect action: 'mostrarPoliza', params: [id:poliza.id]
 	}
 	
@@ -75,7 +76,8 @@ class PolizaDeDiarioFleteController {
 			
 		def asiento="GASTO CHOFERES"
 		
-		def facturasList=FacturaDeGastos.executeQuery("from FacturaDeGastos f where year(f.fecha)=? and month(f.fecha)=? and f.retImp>0",[dia.toYear(),dia.toMonth()])
+	//	def facturasList=FacturaDeGastos.executeQuery("from FacturaDeGastos f where year(f.fecha)=? and month(f.fecha)=? and f.retImp>0",[dia.toYear(),dia.toMonth()])
+		def facturasList=FacturaDeGastos.executeQuery("from FacturaDeGastos f where date(f.fecha)=? and f.retImp>0",[dia])
 		
 		//println 'Factuars de chofer en el periodo: '+facturasList.size()
 		def facturas=new HashSet()
@@ -91,17 +93,20 @@ class PolizaDeDiarioFleteController {
 		facturas.each{ fac->
 			fac.conceptos.each{c->
 				//Cargo a gasto concepto
-				poliza.addToPartidas(
-					cuenta:c.concepto,
-					debe:c.importe,
-					haber:0.0,
-					asiento:asiento,
-					descripcion:"$c.descripcion",
-					referencia:"$fac.documento"
-					,fecha:poliza.fecha
-					,tipo:poliza.tipo
-					,entidad:'FacturaDeGasto'
-					,origen:fac.id)
+				if(c.importe>0){
+					poliza.addToPartidas(
+						cuenta:c.concepto,
+						debe:c.importe,
+						haber:0.0,
+						asiento:asiento,
+						descripcion:"$c.descripcion",
+						referencia:"$fac.documento"
+						,fecha:poliza.fecha
+						,tipo:poliza.tipo
+						,entidad:'FacturaDeGasto'
+						,origen:fac.id)
+				}
+				
 				
 				if(c.descuento>0){
 					poliza.addToPartidas(
@@ -109,7 +114,7 @@ class PolizaDeDiarioFleteController {
 						debe:0.0,
 						haber:c.descuento,
 						asiento:asiento,
-						descripcion:"Prestamo $fac.documento "+fac.fecha.text()+" $fac.proveedor",
+						descripcion:"Prestamo Fac: $fac.documento "+fac.fecha.text()+" $fac.proveedor",
 						referencia:"$fac.documento"
 						,fecha:poliza.fecha
 						,tipo:poliza.tipo
@@ -137,7 +142,7 @@ class PolizaDeDiarioFleteController {
 						debe:0.0,
 						haber:c.otros,
 						asiento:asiento,
-						descripcion:"Varios $fac.documento "+fac.fecha.text()+" $fac.proveedor "+c.comentarioOtros,
+						descripcion:"Varios Fac: $fac.documento "+fac.fecha.text()+" $fac.proveedor "+c.comentarioOtros,
 						referencia:"$fac.documento"
 						,fecha:poliza.fecha
 						,tipo:poliza.tipo
@@ -153,7 +158,7 @@ class PolizaDeDiarioFleteController {
 				debe:fac.impuestos-fac.retImp,
 				haber:0.0,
 				asiento:asiento,
-				descripcion:"$fac.documento "+fac.fecha.text(),
+				descripcion:"Fac: $fac.documento "+fac.fecha.text(),
 				referencia:"$fac.documento"
 				,fecha:poliza.fecha
 				,tipo:poliza.tipo
@@ -166,7 +171,7 @@ class PolizaDeDiarioFleteController {
 				debe:fac.retImp,
 				haber:0.0,
 				asiento:asiento,
-				descripcion:"$fac.documento "+fac.fecha.text(),
+				descripcion:"Fac: $fac.documento "+fac.fecha.text(),
 				referencia:"$fac.documento"
 				,fecha:poliza.fecha
 				,tipo:poliza.tipo
@@ -179,7 +184,7 @@ class PolizaDeDiarioFleteController {
 				debe:0.0,
 				haber:fac.retImp,
 				asiento:asiento,
-				descripcion:"$fac.documento "+fac.fecha.text(),
+				descripcion:"Fac: $fac.documento "+fac.fecha.text(),
 				referencia:"$fac.documento"
 				,fecha:poliza.fecha
 				,tipo:poliza.tipo
@@ -188,11 +193,11 @@ class PolizaDeDiarioFleteController {
 			
 			//Abono a Acredores
 			poliza.addToPartidas(
-				cuenta:CuentaContable.buscarPorClave("203-P004"),
+				cuenta:CuentaContable.buscarPorClave("203-F001"),
 				debe:0.0,
 				haber:fac.total-(fac.descuento?:0.0)-(fac.rembolso?:0.0)-(fac.otros?:0.0),
 				asiento:asiento,
-				descripcion:"$fac.documento "+fac.fecha.text()+"  DEBUG",
+				descripcion:"Pago Fac: $fac.documento "+fac.fecha.text()+ " $fac.proveedor",
 				referencia:"$fac.documento"
 				,fecha:poliza.fecha
 				,tipo:poliza.tipo

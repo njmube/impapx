@@ -11,7 +11,7 @@
 		
 		<content tag="header">
 			<div class="alert">
-				<h4><strong>Req: ${requisicionInstance?.id} (${requisicionInstance?.proveedor?.nombre})</strong></h4>
+				<h4><strong>Req: ${requisicionInstance?.id} (${requisicionInstance?.proveedor?.nombre} ) ${requisicionInstance.concepto }</strong></h4>
 			</div>
  		</content>
  		

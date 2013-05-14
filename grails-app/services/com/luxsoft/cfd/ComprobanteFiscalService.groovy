@@ -45,7 +45,7 @@ import org.springframework.transaction.annotation.Transactional;
 class ComprobanteFiscalService {
 	
 	def selladorService
-	CadenaOriginalBuilder cadenaBuilder=new CadenaOriginalBuilder();
+	def cadenaBuilder
 
 	
     def generarComprobanteFiscalDigital(long ventaId) {

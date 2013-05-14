@@ -14,8 +14,8 @@ class CuentaContableController {
 
     def list() {
         params.max = 100
-		//params.sort='clave'
-		//params.order='asc'
+		params.sort='clave'
+		params.order='asc'
 		def cuentas=CuentaContable.findAllByDetalle(false,params)
         [cuentaContableInstanceList:cuentas, cuentaContableInstanceTotal: cuentas.size()]
     }

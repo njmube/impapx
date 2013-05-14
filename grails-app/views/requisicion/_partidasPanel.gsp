@@ -4,6 +4,20 @@
 	
 
 	<div class="btn-group ">
+	
+		<g:link action="create" controller="requisicionDet"
+				params="['requisicionId':requisicionInstance.id]"
+				class="btn btn-primary" >
+			<i class="icon-ok icon-white"></i> Agregar concepto
+		</g:link>
+		
+		<g:link action="selectorDeFacturas" 
+				params="['requisicionId':requisicionInstance?.id]"
+				class="btn btn-primary" >
+			<i class="icon-ok icon-white"></i> Agregar Factura
+		</g:link>
+		
+		<%-- 
 		<g:if test="  ${requisicionInstance.concepto.startsWith('ANTICIPO') || requisicionInstance.concepto.startsWith('FLETE')} ">
 			<g:link action="create" controller="requisicionDet"
 				params="['requisicionId':requisicionInstance.id]"
@@ -19,7 +33,7 @@
 			<i class="icon-ok icon-white"></i> Agregar
 			</g:link>
 		</g:else>
-		
+		--%>
   		<button id="eliminarBtn" class="btn btn-danger">
   			<i class="icon-trash icon-white"></i>Eliminar
   		</button>

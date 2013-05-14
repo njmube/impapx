@@ -4,6 +4,7 @@ package com.luxsoft.impapx.contabilidad
 
 import grails.converters.JSON
 import grails.validation.Validateable;
+import groovy.transform.ToString;
 
 
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -230,6 +231,7 @@ class PolizaController {
 }
 
 @Validateable
+@ToString
 class PeriodoContable{
 	int year
 	int month

@@ -23,4 +23,8 @@ databaseChangeLog = {
 	include file: 'cancelacionDeCheques.groovy'
 
 	
+
+	
+
+	include file: 'cambiosProveedor.groovy'
 }

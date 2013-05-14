@@ -75,7 +75,7 @@ class PolizaDeDiarioAplicacionAnticipoController {
 		//Salvar la poliza
 		poliza.debe=poliza.partidas.sum (0.0,{it.debe})
 		poliza.haber=poliza.partidas.sum(0.0,{it.haber})
-		poliza=polizaService.salvarPoliza(poliza)
+		poliza=polizaService.salvarPolizaDiario(poliza)
 		redirect action: 'mostrarPoliza', params: [id:poliza.id]
 	}
 	

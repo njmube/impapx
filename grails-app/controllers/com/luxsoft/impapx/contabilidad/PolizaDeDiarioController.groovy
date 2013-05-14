@@ -88,7 +88,7 @@ class PolizaDeDiarioController {
 		//Salvar la poliza
 		poliza.debe=poliza.partidas.sum (0.0,{it.debe})
 		poliza.haber=poliza.partidas.sum(0.0,{it.haber})
-		poliza=polizaService.salvarPoliza(poliza)
+		poliza=polizaService.salvarPolizaDiario(poliza)
 		//poliza.folio=polizaService.nextFolio(poliza)
 		//poliza.save(failOnError:true)
 		redirect action: 'mostrarPoliza', params: [id:poliza.id]
@@ -156,7 +156,7 @@ class PolizaDeDiarioController {
 			def costoNeto=fac.partidas.sum(0.0,{it.embarque.costoBruto})
 			def embarque=fac.partidas.embarque.embarque.id			
 			
-			System.out.println("******** embarque_id:"+embarque+" **********");
+			
 			
 			//Abono al inventario
 			poliza.addToPartidas(
@@ -738,13 +738,13 @@ class PolizaDeDiarioController {
 		}
 		
 		Map facturasPorProveedor=facturas.groupBy({
-			//println it
+			
 			it.proveedor
 			})
 		
 		facturasPorProveedor.entrySet().each{
 			def proveedor=it.key
-			//println 'Procesando diferencia cambiara para proveedor: '+proveedor
+			//println 'Procesando diferencia cambiara para proveedor: '+proveedor+ " CtaOper: "+proveedor.subCuentaOperativa
 			def facs=it.value
 			
 			def saldo=0.0
@@ -768,39 +768,36 @@ class PolizaDeDiarioController {
 					saldoActualizado+=fac.saldoAlCorte*tcCorte.factor
 					//println " $proveedor, $fac.documento, $fac.saldoAlCorte, $tc, $tcCorte.factor "
 				}
-				
-				
-				
-				
 			}
 			
 			def diferencia=saldo-saldoActualizado
 			def periodo=dia.asPeriodoText()
-					System.out.println("******************"+$proveedor.nombre);
-			poliza.addToPartidas(
-				cuenta:CuentaContable.buscarPorClave("201-$proveedor.subCuentaOperativa"),
-				debe:diferencia>0?diferencia.abs():0.0,
-				haber:diferencia<0?diferencia.abs():0.0,
-				asiento:asiento,
-				descripcion:"Variacion cambiaria $periodo ",
-				referencia:"$proveedor.id",
-				,fecha:poliza.fecha
-				,tipo:poliza.tipo
-				,entidad:'NA'
-				,origen:0)
-			
-			def clave=diferencia>0?"701-0002":"705-0002"
-			poliza.addToPartidas(
-				cuenta:CuentaContable.buscarPorClave(clave),
-				debe:diferencia<0?diferencia.abs():0.0,
-				haber:diferencia>0?diferencia.abs():0.0,
-				asiento:asiento,
-				descripcion:"Variacion cambiaria $periodo ",
-				referencia:"$proveedor.id",
-				,fecha:poliza.fecha
-				,tipo:poliza.tipo
-				,entidad:'NA'
-				,origen:0)
+			if(diferencia.abs()>0){
+				poliza.addToPartidas(
+					cuenta:CuentaContable.buscarPorClave("201-${proveedor.subCuentaOperativa}"),
+					debe:diferencia>0?diferencia.abs():0.0,
+					haber:diferencia<0?diferencia.abs():0.0,
+					asiento:asiento,
+					descripcion:"Variacion cambiaria $periodo ",
+					referencia:"$proveedor.id",
+					,fecha:poliza.fecha
+					,tipo:poliza.tipo
+					,entidad:'NA'
+					,origen:0)
+				
+				def clave=diferencia>0?"701-0002":"705-0002"
+				poliza.addToPartidas(
+					cuenta:CuentaContable.buscarPorClave(clave),
+					debe:diferencia<0?diferencia.abs():0.0,
+					haber:diferencia>0?diferencia.abs():0.0,
+					asiento:asiento,
+					descripcion:"Variacion cambiaria $periodo ",
+					referencia:"$proveedor.id",
+					,fecha:poliza.fecha
+					,tipo:poliza.tipo
+					,entidad:'NA'
+					,origen:0)
+			}		
 			
 		}
 		
@@ -860,18 +857,7 @@ class PolizaDeDiarioController {
 	}
 	
 	private procesarProvisionDeGastos(Poliza poliza ,Date dia){
-		/*
-		Calendar cal=Calendar.instance
-		cal.setTime(dia);
-		println 'Calendar: '+cal.getTime()
-		println 'Find de mes: '+cal.getActualMaximum(Calendar.DATE)
 		
-		
-		cal.set(Calendar.DATE, cal.getActualMaximum(Calendar.DATE))
-		
-		def finDeMes=cal.getTime().clearTime()
-		println 'Registrando provision de gastos: '+dia+ " Fin de mes: "+finDeMes
-		*/
 		def finDeMes=dia.finDeMes().clearTime()
 		if(dia.clearTime()!=finDeMes)
 			return
@@ -880,18 +866,22 @@ class PolizaDeDiarioController {
 		
 		def facturasList=FacturaDeGastos.executeQuery("from FacturaDeGastos f where year(f.fecha)=? and month(f.fecha)=?",[dia.toYear(),dia.toMonth()])
 		
-		println 'Factuars de gastos en el periodo: '+facturasList.size()
 		
 		def facturas=facturasList.findAll { fac->
 			
 			def aplicaciones=Aplicacion.executeQuery("from Aplicacion a where a.factura=? and date(a.fecha)<=?",[fac,dia])
-			
-			println "Gasto fac: $fac.documento por $fac.total pagos: $aplicaciones.size"
-			
 			return !aplicaciones
 		}
 		
-		println 'Facturas de gastos con saldo al fin de mes: '+facturas.size()
+		facturas=facturas.findAll{ fac->
+			fac.conceptos.each{ c->
+				if (!c.concepto.clave.startsWith("600-F"))
+				return true
+			}
+			return false;
+		}
+		
+		
 		
 		facturas.each{ fac->
 			fac.conceptos.each{c->
@@ -1003,36 +993,41 @@ class PolizaDeDiarioController {
 			
 		}
 		
-		int year=dia.toYear()
-		int mes=dia.toMonth()
-		def saldos=SaldoPorCuentaContable.findAll("from SaldoPorCuentaContable s where s.cuenta.id=248 and s.year=? and s.mes=?"
-			,[year,mes])
-		saldos.each { s->
-			
-			poliza.addToPartidas(
-				cuenta:s.cuenta,
-				debe:s.saldoInicial.abs(),
-				haber:0.0,
-				asiento:asiento,
-				descripcion:"Pago impuestos ISR "+diaImpuesto.asPeriodoText(),
-				referencia:"",
-				,fecha:poliza.fecha
-				,tipo:poliza.tipo
-				,entidad:'SaldoPorCuentaContable'
-				,origen:s.id)
-			
-			poliza.addToPartidas(
-				cuenta:CuentaContable.buscarPorClave("118-0001"),
-				debe:0.0,
-				haber:s.saldoInicial.abs(),
-				asiento:asiento,
-				descripcion:"Pago impuestos ISR "+diaImpuesto.asPeriodoText(),
-				referencia:"",
-				,fecha:poliza.fecha
-				,tipo:poliza.tipo
-				,entidad:'SaldoPorCuentaContable'
-				,origen:s.id)
-			
+		def finDeMes=dia.finDeMes().clearTime()
+		if(dia.clearTime()==finDeMes){
+			int year=dia.toYear()
+			int mes=dia.toMonth()
+			def saldos=SaldoPorCuentaContable.findAll("from SaldoPorCuentaContable s where s.cuenta.id=248 and s.year=? and s.mes=?"
+				,[year,mes])
+			saldos.each { s->
+				
+				poliza.addToPartidas(
+					cuenta:s.cuenta,
+					debe:s.saldoInicial.abs(),
+					haber:0.0,
+					asiento:asiento,
+					descripcion:"Pago impuestos ISR "+diaImpuesto.asPeriodoText(),
+					referencia:"",
+					,fecha:poliza.fecha
+					,tipo:poliza.tipo
+					,entidad:'SaldoPorCuentaContable'
+					,origen:s.id)
+				
+				poliza.addToPartidas(
+					cuenta:CuentaContable.buscarPorClave("118-0001"),
+					debe:0.0,
+					haber:s.saldoInicial.abs(),
+					asiento:asiento,
+					descripcion:"Pago impuestos ISR "+diaImpuesto.asPeriodoText(),
+					referencia:"",
+					,fecha:poliza.fecha
+					,tipo:poliza.tipo
+					,entidad:'SaldoPorCuentaContable'
+					,origen:s.id)
+				
+			}
 		}
+		
+		
 	}
 }

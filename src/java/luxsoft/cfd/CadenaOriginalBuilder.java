@@ -22,14 +22,16 @@ import mx.gob.sat.cfd.x2.ComprobanteDocument;
 import mx.gob.sat.cfd.x2.ComprobanteDocument.Comprobante;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.util.Assert;
 
 
 
 
-public class CadenaOriginalBuilder {
+public class CadenaOriginalBuilder implements InitializingBean{
 	
-	
+	 
 	
 	public String obtenerCadena(ComprobanteDocument comprobante) throws RuntimeException{		
 		
@@ -91,11 +93,14 @@ public class CadenaOriginalBuilder {
 	
 	private Transformer transformer;
 	
+	private String xsltPath;
+	
 	public Transformer getTransofrmer(){
 		if(transformer==null){
 			TransformerFactory transformerFactory=TransformerFactory.newInstance();			
-			String xslPath=System.getProperty("cfd.xslt.path","Z:\\CFD\\xslt\\v2.2\\cadenaoriginal_2_2.xslt");
-			FileSystemResource xsltResource=new FileSystemResource(xslPath);
+			//String xslPath=System.getProperty("cfd.xslt.path","Z:\\CFD\\xslt\\v2.2\\cadenaoriginal_2_2.xslt");
+			//String xslPath=System.getProperty("cfd.xslt.path");
+			FileSystemResource xsltResource=new FileSystemResource(getXsltPath());
 			StreamSource xslt;
 			try {
 				xslt = new StreamSource(xsltResource.getInputStream());
@@ -167,5 +172,20 @@ public class CadenaOriginalBuilder {
 		return tempDir;
 		
 	}
+
+	public String getXsltPath() {
+		return xsltPath;
+	}
+
+	public void setXsltPath(String xsltPath) {
+		this.xsltPath = xsltPath;
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		Assert.hasLength(xsltPath,"Se debe indicar la ruta de los archivos XSLT para la cadena original");
+		
+	}
+	
 
 }

@@ -22,7 +22,7 @@ class EmbarqueController {
     }
 	
 	def filter(){
-		if(!params.max) params.max = 20
+		if(!params.max) params.max = 50
 		println filterPaneService?'OK':'ERROR'
 		render( view:'list',
 			model:[ embarqueInstanceList: filterPaneService.filter( params, Embarque.class),

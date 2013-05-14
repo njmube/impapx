@@ -76,8 +76,8 @@ class PolizaDeIngresosController {
 					debe:0.0,
 					haber:aplic.total,
 					asiento:asiento,
-					descripcion:desc,
-					referencia:"$aplic.factura.cfd.folio"
+					descripcion:"Cobro Fac: ${aplic?.factura?.cfd?.folio} ${pago.tc>1?'T.C'+pago.tc:''} ",
+					referencia:"$pago.referenciaBancaria"
 					,fecha:poliza.fecha
 					,tipo:poliza.tipo
 					,entidad:'CXCAplicacion'
@@ -111,8 +111,8 @@ class PolizaDeIngresosController {
 					debe:impuesto,
 					haber:0.0,
 					asiento:asiento,
-					descripcion:desc,
-					referencia:"$aplic.factura.cfd.folio"
+					descripcion:"Cobro Fac: ${aplic?.factura?.cfd?.folio} ${pago.tc>1?'T.C'+pago.tc:''} ",
+					referencia:"$pago.referenciaBancaria"
 					,fecha:poliza.fecha
 					,tipo:poliza.tipo
 					,entidad:'CXCAplicacion'
@@ -138,7 +138,7 @@ class PolizaDeIngresosController {
 				haber:pago.importe.abs()*pago.tc,
 				asiento:asiento,
 				descripcion:"Cobro de facturas",
-				referencia:"$pago.referenciaBancaria"
+				referencia:"${pago.referenciaBancaria}"
 				,fecha:poliza.fecha
 				,tipo:poliza.tipo
 				,entidad:'CXCPago'

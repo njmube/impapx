@@ -11,9 +11,29 @@ import com.luxsoft.impapx.tesoreria.SaldoDeCuenta;
 
 class PolizaService implements ApplicationListener<PolizaUpdateEvent>{
 	
-	def saldoPorCuentaContableService 
+	def saldoPorCuentaContableService
+	
+	def salvarPolizaDiario(Poliza poliza){
+		if(poliza.tipo=='DIARIO'){
+			def found=Poliza.findByTipoAndDescripcionAndFecha(poliza.tipo,poliza.descripcion,poliza.fecha)
+			if(found){
+				poliza.folio=found.folio
+				found.delete(flush:true)
+			}else{
+				poliza.folio=nextFolio(poliza)
+			}
+			poliza.cuadrar()
+			poliza.save(failOnError:true)
+			return poliza
+		}else{
+			throw new RuntimeException("No es poliza de diario")
+		}
+	}
 	
 	def salvarPoliza(Poliza poliza){
+		if(poliza.tipo=='DIARIO'){
+			throw new RuntimeException("Poliza de diario no se puede salvar por este metodo")
+		}
 		def found=Poliza.findByTipoAndFecha(poliza.tipo,poliza.fecha)
 		if(poliza.tipo=='EGRESO'){
 			found=Poliza.findByTipoAndDescripcionAndFecha(poliza.tipo,poliza.descripcion,poliza.fecha)

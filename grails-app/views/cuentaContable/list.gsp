@@ -76,7 +76,7 @@ $(function(){
       		"sUrl":"<g:resource dir="js" file="dataTables.spanish.txt" />"
 	    },
     	"aoColumnDefs": [
-        	{ "sType": "numeric","bSortable": true,"aTargets":[0] }
+        	//{ "sType": "numeric","bSortable": true,"aTargets":[0] }
          ],
          "bPaginate": false  
 	});

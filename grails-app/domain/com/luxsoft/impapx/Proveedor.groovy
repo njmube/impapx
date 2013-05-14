@@ -17,6 +17,9 @@ class Proveedor {
 	boolean vencimentoBl=false
 	//CuentaContable cuentaContable
 	String subCuentaOperativa
+	String paisDeOrigen
+	String nacionalidad
+	
 	
 	Date dateCreated
 	Date lastUpdated
@@ -36,6 +39,8 @@ class Proveedor {
 		nacional(nullable:true)
 		//cuentaContable(nullable:true)
 		subCuentaOperativa(nullable:true,maxSize:4)
+		paisDeOrigen(nullable:true)
+		nacionalidad(nullable:true)
     }
 	
 	String toString(){

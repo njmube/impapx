@@ -7,12 +7,15 @@
 		<fieldset>
 			<f:with bean="proveedorInstance">
 				<f:field property="nombre" value="${proveedorInstance?.nombre}" input-class="span7"/>
+				<f:field property="rfc" label="RFC/ID Fiscal"/>
 				<f:field property="factorDeUtilidad" input-class="numericEditField"/>
 				<f:field property="tipoDeCosteo" />
 				<f:field property="plazo" />
 				<f:field property="vencimentoBl" />
 				<f:field property="lineaDeCredito" label="Línea de Crédito"/>
 				<f:field property="nacional"/>
+				<f:field property="paisDeOrigen"/>
+				<f:field property="nacionalidad"/>
 				<f:field property="subCuentaOperativa"/>
 				<%-- <f:field property="cuentaContable">
 					<g:select id="cuentaContable" name="cuentaContable.id" from="${CuentaContable.findAllByClaveLike('20%')}"
