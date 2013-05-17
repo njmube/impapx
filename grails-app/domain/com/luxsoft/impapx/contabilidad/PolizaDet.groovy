@@ -15,6 +15,7 @@ class PolizaDet {
 	String entidad
 	Date fecha
 	String tipo
+	String concepto
 	
 	static belongsTo = [poliza:Poliza]
 
@@ -22,6 +23,7 @@ class PolizaDet {
 		tipo(inList:['INGRESO','EGRESO','DIARIO','COMPRAS','GENERICA'])
 		entidad(nullable:true,maxSize:50)
 		origen(nullable:true)
+		concepto(nullable:true,maxSize:50)
     }
 	
 	static mapping ={

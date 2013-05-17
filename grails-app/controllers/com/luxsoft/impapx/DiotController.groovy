@@ -68,7 +68,7 @@ class DiotController {
 	   rows.each {d->
 		   String line = MessageFormat.format(pattern,
 				d.getTipoTercero()?:''
-			   ,d.tipo?:''
+			   ,d.getTipoModificado()?:''
 			   ,d.getRfcFinal()?:''
 			   ,d.getIdFiscal()?:''
 			   ,d.nacional?'':d.proveedor=='PROVEEDOR GLOBAL'?'':d.proveedor
@@ -78,7 +78,7 @@ class DiotController {
 			   ,d.nacional?'':d.base?.toPlainString()
 			   ,d.excento?.toPlainString()?:''
 			   );
-		  writer << line << "\n"
+		  writer << line 
 	   }
 	   //response.setHeader "Content-disposition", "attachment; filename=${file.name}"
 	   response.setHeader "Content-disposition", "attachment; filename=DIOT_${params.downloadFile}.txt"
@@ -126,6 +126,14 @@ class Diot{
 		}else{
 			return ''
 		}
+	}
+	
+	
+	def getTipoModificado(){
+		if(proveedor.startsWith("RSM BOGARIN"))
+			return '03'
+		else
+			return tipo
 	}
 
 	

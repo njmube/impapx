@@ -17,7 +17,7 @@
 			<tbody>
 				<g:each in="${diots}" var="row">
 					<tr>
-						<td>${row.tipo}</td>
+						<td>${row.getTipoModificado()}</td>
 						<td>${row.proveedor}</td>					
 						<td>${row.rfc}</td>
 						<td>${row.nacional}</td>
