@@ -42,7 +42,7 @@ class DiotController {
 	   def fecha=new Date().parse('dd/MM/yyyy',params.downloadFile)
 	   def rows=diotService.generarDiot(fecha).gdiots
 	   
-	   String pattern = "|{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}||||||{8}||||||{9}||\n"
+	   String pattern = "{0}|{1}|{2}|{3}|{4}|{5}|{6}|{7}|||{10}|||{8}||||||{9}|{11}||\n"
 	   //File file=new File("C:/diot/diot.txt")
 	   /*
 	   File file = File.createTempFile("DIOT_",".txt")
@@ -66,6 +66,10 @@ class DiotController {
 	   */
 	   StringWriter writer=new StringWriter()
 	   rows.each {d->
+		   def e=(d.base-d.base11).setScale(0, BigDecimal.ROUND_HALF_UP)
+		   
+		   System.out.println("base 11 "+d.base11);
+		   
 		   String line = MessageFormat.format(pattern,
 				d.getTipoTercero()?:''
 			   ,d.getTipoModificado()?:''
@@ -74,9 +78,11 @@ class DiotController {
 			   ,d.nacional?'':d.proveedor=='PROVEEDOR GLOBAL'?'':d.proveedor
 			   ,d.nacional?'':d.pais?:''
 			   ,d.nacional?'':d.nacionalidad?:''
-			   ,d.nacional?d.base?.toPlainString():''
-			   ,d.nacional?'':d.base?.toPlainString()
-			   ,d.excento?.toPlainString()?:''
+			   ,d.nacional?e?.toPlainString():''
+			   ,d.nacional?'':d.base.setScale(0, BigDecimal.ROUND_HALF_UP)?.toPlainString()
+			   ,d.excento?d.excento.setScale(0, BigDecimal.ROUND_HALF_UP)?.toPlainString():''
+			   ,d.nacional?d.base11.setScale(0, BigDecimal.ROUND_HALF_UP)?.toPlainString():''
+			   ,d.nacional?d.ret1.setScale(0, BigDecimal.ROUND_HALF_UP)?.toPlainString():''
 			   );
 		  writer << line 
 	   }
@@ -101,6 +107,9 @@ class Diot{
 	String tipo
 	String pais
 	String nacionalidad
+	BigDecimal base11
+	BigDecimal ret1
+	
 	
 	def getTipoTercero(){
 		if(proveedor=='PROVEEDOR GLOBAL')

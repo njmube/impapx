@@ -19,6 +19,8 @@
 					<th>Nal</th>
 					<th>Pais</th>
 					<th>Nacionalidad</th>
+					<th>Base11</th>
+					<th>Ret1</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -39,6 +41,8 @@
 						<td>${row.nacional}</td>
 						<td>${row.pais}</td>
 						<td>${row.nacionalidad}</td>
+						<td>${row.base11}</td>
+						<td>${row.ret1}</td>
 					</tr>
 				</g:each>
 			</tbody>

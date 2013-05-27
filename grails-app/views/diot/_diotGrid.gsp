@@ -11,6 +11,8 @@
 					<th>Pais</th>
 					<th>Nacionalidad</th>
 					<th>Base</th>
+					<th>Base11</th>
+					<th>Ret1</th>
 					<th>Excento</th>					
 				</tr>
 			</thead>
@@ -24,6 +26,8 @@
 						<td>${row.pais}</td>
 						<td>${row.nacionalidad}</td>
 						<td><lx:moneyFormat number="${row.base}"/></td>
+						<td><lx:moneyFormat number="${row.base11}"/></td>
+						<td><lx:moneyFormat number="${row.ret1}"/></td>
 						<td><lx:moneyFormat number="${row.excento}"/></td>					
 					</tr>
 				</g:each>
