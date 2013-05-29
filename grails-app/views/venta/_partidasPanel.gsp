@@ -1,10 +1,20 @@
 <div class="btn-group">
 	
-	<button  class="btn btn-success" data-target="#agregarContendorDialog" data-toggle="modal">
-		<i class="icon-plus icon-white"></i>
-  		 Agregar Contenedor
-  	</button>
-
+	
+	<g:if test="${ventaInstance.clase=='generica'}">
+		<g:link action="agregarConcepto" class="btn btn-primary" id="${ventaInstance.id}">
+			<i class="icon-plus icon-white"></i>
+  			 Agregar concepto
+		</g:link>
+	</g:if>
+	
+	<g:if test="${ventaInstance.clase!='generica'}">
+		<button  class="btn btn-success" data-target="#agregarContendorDialog" data-toggle="modal">
+			<i class="icon-plus icon-white"></i>
+  			 Agregar contenedor
+  		</button>
+	</g:if>
+	
 	<button id="elimiarBtn" class="btn btn-danger" >
 		<i class="icon-trash icon-white"></i>
 		<g:message code="default.button.delete.label" default="Delete" />

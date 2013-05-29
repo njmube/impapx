@@ -1,6 +1,7 @@
 package com.luxsoft.cfd
 
 
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -57,16 +58,20 @@ class PrintService {
 		parametros.put("SERIE", cfd.getSerie());
 		parametros.put("CONDICIONES_PAGO",cfd.getFormaDePago());
 		parametros.put("METODO_PAGO", cfd.getMetodoDePago());
-		NumberFormat nf=NumberFormat.getInstance();
-		parametros.put("IMPORTE_BRUTO", nf.format(cfd.getSubTotal().doubleValue()));
+		//NumberFormat nf=NumberFormat.getInstance();
+		DecimalFormat df=new DecimalFormat("#,##0.00")
+		parametros.put("IMPORTE_BRUTO", df.format(cfd.getSubTotal().doubleValue()));
 		if(cfd.getDescuento()!=null)
-			parametros.put("DESCUENTOS", nf.format(cfd.getDescuento().doubleValue()));
-		parametros.put("IVA", nf.format(cfd.getImpuestos().getTotalImpuestosTrasladados().doubleValue()));
-		parametros.put("TOTAL", nf.format(cfd.getTotal().doubleValue()));	
-		parametros.put("PINT_IVA", nf.format(cfd.getImpuestos().getTraslados().getTrasladoArray(0).getTasa()));
+			parametros.put("DESCUENTOS", df.format(cfd.getDescuento().doubleValue()));
+		if(cfd.getImpuestos()!=null && (cfd.getImpuestos().getTotalImpuestosTrasladados()!=null))
+			parametros.put("IVA", df.format(cfd.getImpuestos().getTotalImpuestosTrasladados().doubleValue()));
+		parametros.put("TOTAL", df.format(cfd.getTotal().doubleValue()));
+		if(cfd.getImpuestos()!=null && (cfd.getImpuestos().getTotalImpuestosTrasladados()!=null))
+			parametros.put("PINT_IVA", df.format(cfd.getImpuestos().getTraslados().getTrasladoArray(0).getTasa()));
 		parametros.put("CADENA_ORIGINAL",cadenaOriginalBuilder.obtenerCadena(cfd));
 		//System.out.println(cfd);
-		
+		//println 'Sub Total: '+nf.format(cfd.getSubTotal().doubleValue())
+		//println 'Total: '+nf.format(cfd.getTotal().doubleValue())
 		return parametros;
 	}
 }

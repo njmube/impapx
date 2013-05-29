@@ -39,11 +39,11 @@ class VentaController {
 			def venta=new Venta(params)
 			venta.fecha=new Date()
 			venta.cuentaDePago="0000"
-			
+			venta.clase=params.clase
         	[ventaInstance:venta]
 			break
 		case 'POST':
-			
+			println 'Generando venta: '+params
 			//params.cliente=Cliente.get(params.cliente)
 			params.vencimiento=new Date()
 			params.importe=0
@@ -288,6 +288,33 @@ class VentaController {
 	
 	def refacturar(long id){
 		ventaService.refacturar(id)
+	}
+	
+	def agregarConcepto(long id){
+		def venta=Venta.findById(id,[fetch:[partidas:'eager']])
+		switch (request.method) {
+			case 'GET': 
+				def ventaDet=new VentaDet()
+				[ventaInstance:venta,ventaDetInstance:ventaDet]
+				break
+			case 'POST':
+				println 'Agrgando partida: '+params
+				params.kilos=0
+				
+				def ventaDetInstance=new VentaDet(params)
+				ventaDetInstance.actualizarImportes()
+				ventaDetInstance.costo=0
+				venta.addToPartidas(ventaDetInstance)
+				if (!venta.save(flush: true)) {
+					render view: 'agregarConcepto', model: ['ventaInstance':venta,ventaDetInstance:ventaDetInstance]
+					//render view: 'edit', model: ['ventaInstance': venta]
+					return
+				}
+	
+				flash.message = 'Partida agregada'
+				redirect action: 'edit', id: venta.id
+				break
+			}
 	}
 	
 }

@@ -1,7 +1,5 @@
 package com.luxsoft.impapx
 
-import java.math.BigDecimal;
-
 import com.luxsoft.cfd.ComprobanteFiscal;
 
 import util.Rounding;
@@ -40,6 +38,7 @@ class Venta {
 	BigDecimal pagosAplicados=0
 	
 	String tipo="VENTA";
+	String clase="IMPORTACION"
 	
 	static hasMany = [partidas:VentaDet]
 
@@ -63,6 +62,7 @@ class Venta {
 		cfd(nullable:true)
 		saldo(nullable:true)
 		tipo(inList:['VENTA','NOTA_DE_CARGO'])
+		clase(nullable:true,maxSize:40)
     }
 	
 	static mapping = {
@@ -86,8 +86,11 @@ class Venta {
 			importe=Rounding.round(importe, 2)
 			
 			subtotal=importe-descuentos
+			
 			impuestos=subtotal*0.16
 			impuestos=Rounding.round(impuestos, 2)
+			if(cliente.rfc=='XEXX010101000')
+				impuestos=0.0
 			total=subtotal+impuestos
 		} 
 	}

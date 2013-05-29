@@ -34,7 +34,7 @@
 				<tr id="${fieldValue(bean:row, field:"id")}" >
 					
 					<td>
-						<g:link controller='ventaDet' action='edit' id="${row.embarque.embarque.id}" target="_blank"> 
+						<g:link controller='ventaDet' action='edit' id="${row?.embarque?.embarque?.id}" target="_blank"> 
 						${fieldValue(bean:row, field:"producto.clave")}
 						</g:link>
 					</td>
@@ -42,7 +42,7 @@
 					<td>${fieldValue(bean:row, field:"producto.descripcion")}</td>
 					<td>${fieldValue(bean:row, field:"contenedor")}</td>
 					<td>
-						<g:link controller='embarque' action='edit' id="${row.embarque.embarque.id}" target="_blank"> 
+						<g:link controller='embarque' action='edit' id="${row?.embarque?.embarque?.id}" target="_blank"> 
 						${fieldValue(bean:row, field:"embarque.embarque.bl")}
 						</g:link>
 					</td>
@@ -55,5 +55,43 @@
 				</tr>
 			</g:each>
 		</tbody>
+		<tfoot>
+			<tr>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th>Importe</th>
+				<th><lx:moneyFormat number="${ventaInstance.importe }"/> </th>
+			</tr>
+			<tr>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th>Impuesto</th>
+				<th><lx:moneyFormat number="${ventaInstance.impuestos }"/> </th>
+			</tr>
+			<tr>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th>Total</th>
+				<th><lx:moneyFormat number="${ventaInstance.total }"/> </th>
+			</tr>
+		</tfoot>
 	</table>
 </div>

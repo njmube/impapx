@@ -21,12 +21,20 @@
 						<li class="active"><g:link class="list" action="list">
 								<i class="icon-list icon-white"></i>
 								Todas
-							</g:link></li>
-						<li><g:link class="create" action="create">
-								<i class="icon-plus"></i>
-								<g:message code="default.create.label" args="[entityName]" />
-							</g:link></li>
-						
+							</g:link>
+						</li>
+						<li>
+							<g:link class="create" action="create">
+								<i class="icon-shopping-cart"></i>
+								<g:message code="venta.importacion.label" default="Venta de Importaciones" />
+							</g:link>
+						</li>
+						<li>
+							<g:link class="create" action="create" params="[clase:'generica']">
+								<i class="icon-shopping-cart"></i>
+								<g:message code="venta.generica.label" default="Venta Genérica" />
+							</g:link>
+						</li>
 					</ul>
 				</div>
 			</div>

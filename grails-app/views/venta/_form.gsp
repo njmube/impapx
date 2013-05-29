@@ -3,6 +3,7 @@
 	<g:form class="form-horizontal" action="create">
 		<fieldset>
 			<f:with bean="ventaInstance" >
+				<g:hiddenField name="clase" value="${ventaInstance.clase}"/>
 				<f:field property="cliente"/>
 				<f:field property="fecha" input-id="fecha"/>
 				<f:field property="moneda"/>

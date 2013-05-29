@@ -45,7 +45,7 @@ import org.springframework.transaction.annotation.Transactional;
 class ComprobanteFiscalService {
 	
 	def selladorService
-	def cadenaBuilder
+	def cadenaOriginalBuilder
 
 	
     def generarComprobanteFiscalDigital(long ventaId) {
@@ -229,9 +229,9 @@ class ComprobanteFiscalService {
 			c.setValorUnitario(det.precio);
 			c.setImporte(det.importe);
 			
-			println 'Pedimento aduanal: '+det.embarque.pedimento+ ' EmbarqueDet: '+det.id 
+			//println 'Pedimento aduanal: '+det?.embarque?.pedimento+ ' EmbarqueDet: '+det.id 
 			
-			def pedimento=det.embarque.pedimento
+			def pedimento=det.embarque?.pedimento
 			
 			if(pedimento){
 				
@@ -262,8 +262,8 @@ class ComprobanteFiscalService {
 	
 	
 	def String registrarSelloDigital(ComprobanteDocument document){
-		
-		String cadena=cadenaBuilder.obtenerCadena(document)
+		//println 'Registrando sello digital....'+cadenaBuilder
+		String cadena=cadenaOriginalBuilder.obtenerCadena(document)
 		String sello= selladorService.getSello(cadena);
 		document.getComprobante().setSello(sello);
 		try {

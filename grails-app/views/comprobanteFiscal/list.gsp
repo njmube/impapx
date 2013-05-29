@@ -23,10 +23,12 @@
 			<g:render template="cambiarPeriodo" bean="${session.periodoContable}"/>
  		</li>
 		<li>
+		<%--
 			<g:link class="list" action="actualizar">
 				<i class="icon-list"></i>
 				Actualizar CFD's
 			</g:link>
+			 --%>
 		</li>
 		<li>
 			<g:link class="list" action="generarArchivo">

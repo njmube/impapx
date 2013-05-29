@@ -13,6 +13,8 @@ import com.luxsoft.impapx.contabilidad.PeriodoContable;
 import com.luxsoft.impapx.cxc.CancelacionDeCargo;
 
 class ComprobanteFiscalController {
+	
+	
 
     def index() { 
 		redirect action: 'list', params: params
@@ -63,6 +65,7 @@ class ComprobanteFiscalController {
     }
 	 
 	 def actualizar(){
+		 /*
 		 println 'Actualizando CFDs'
 		 def year=2013
 		 def month=3
@@ -98,13 +101,13 @@ class ComprobanteFiscalController {
 			 	println ExceptionUtils.getRootCauseMessage(ex);
 			 }
 			 
-		 }
+		 }*/
 	 }
 	 
 	 def generarArchivo(){
-		 
-		 def year=2013
-		 def month=3
+		 def periodo=session.periodoContable
+		 def year=periodo.year
+		 def month=periodo.month		 
 		 def res=[]
 		 
 		 def list= ComprobanteFiscal.findAll("from ComprobanteFiscal c where year(c.fecha)=? and month(c.fecha)=?",[year,month],[readOnly:true])
@@ -126,8 +129,9 @@ class ComprobanteFiscalController {
 			 it.fecha
 		 }
 		 def empresa=Empresa.list().iterator().next()
-		 def fileName="1$empresa.rfc$month$year"+'.txt'
-		 def file=new File('z://sat//mensual//'+fileName).withWriter('UTF-8', {file ->
+		 def sm=month.toString().padLeft(2,'0')
+		 def fileName="1$empresa.rfc$sm$year"+'.txt'
+		 def file=new File(grailsApplication.config.cfd.report.path+fileName).withWriter('UTF-8', {file ->
 			 res.each{ it ->
 				 def fecha=new Date(it.fecha.time).format("dd/MM/yyyy hh:mm:ss")
 				 def fechaPedimento= it.fechaPedimento ? new Date(it.fechaPedimento.time).format("dd/MM/yyyy")  : ''

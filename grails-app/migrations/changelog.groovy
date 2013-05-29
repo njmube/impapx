@@ -29,4 +29,6 @@ databaseChangeLog = {
 	include file: 'cambiosProveedor.groovy'
 
 	include file: 'cambiosPolizaDet.groovy'
+
+	include file: 'ventaGenerica.groovy'
 }

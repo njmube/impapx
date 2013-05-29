@@ -128,7 +128,7 @@ class ProductoController {
 	def productosJSONList(){
 		def productos=Producto.findAllByClaveIlike(params.term+"%",[max:50,sort:"clave",order:"desc"])
 		def productosList=productos.collect { prov ->
-			[id:prov.id,label:prov.toString(),value:prov.toString()]
+			[id:prov.id,label:prov.toString(),value:prov.toString(),precioCredito:prov.precioCredito]
 		}
 		//def jsonResult=[provs:proveedoresList]
 		render productosList as JSON

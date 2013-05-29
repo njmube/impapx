@@ -133,8 +133,11 @@ jqueryDateTimePicker {
 environments {
 	development {
 		cfd.xslt.path="Z:\\CFD\\xslt\\v2.2\\cadenaoriginal_2_2.xslt"
+		cfd.report.path="c:\\PRUEBAS\\sat\\mensual\\"
 	}
 	production {
 		cfd.xslt.path="/usr/etc/cfd/cert/xslt/cadenaoriginal_2_2.xslt"
+		//cfd.xslt.path="Z:\\CFD\\xslt\\v2.2\\cadenaoriginal_2_2.xslt"
+		cfd.reporte.path="/usr/etc/cfd/mensual/"
 	}
 }
