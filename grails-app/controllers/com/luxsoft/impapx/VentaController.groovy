@@ -150,6 +150,8 @@ class VentaController {
     }
 	
 	def contenedoresPendientes(){
+		
+		//println 'Buscando contenedores pendientes...'+params
 		/*
 		def contenedores=EmbarqueDet.executeQuery("\
 			select distinct(d.contenedor) from DistribucionDet d \
@@ -161,8 +163,9 @@ class VentaController {
 			 where d.precioDeVenta>0\
 			 and upper(d.contenedor) like ?\
 			 and d.pedimento!=null \
-			 and d not in(select x.embarque.id from VentaDet x )\
-			 order by d.contenedor ",[params.term+'%'])
+			 and d not in(select x.embarque from VentaDet x )\
+			 order by d.contenedor ",[params.term+'%'],[max: 10])
+		//println 'Contenedores registrados: '+contenedores.size()
 		def res=contenedores.collect{ row ->
 			[id:row,label:row,value:row]
 		}
