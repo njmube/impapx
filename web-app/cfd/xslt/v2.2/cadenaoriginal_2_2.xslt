@@ -6,25 +6,25 @@
 	<!--
 		En esta sección se define la inclusión de las plantillas de utilería
 	-->
-	<xsl:include href="file:/z:/cfd/xslt/v2.2/utilerias.xslt"/>
+	<xsl:include href="utilerias.xslt"/>
 	<!-- 
 		En esta sección se define la inclusión de las demás plantillas de transformación para 
 		la generación de las cadenas originales de los complementos fiscales 
 	-->
-	<xsl:include href="file:/z:/cfd/xslt/v2.2/ecc.xslt"/>
-	<xsl:include href="file:/z:/cfd/xslt/v2.2/psgecfd.xslt"/>
-	<xsl:include href="file:/z:/cfd/xslt/v2.2/donat11.xslt"/>
-	<xsl:include href="file:/z:/cfd/xslt/v2.2/divisas.xslt"/>
-	<xsl:include href="file:/z:/cfd/xslt/v2.2/ecb.xslt"/>
-	<xsl:include href="file:/z:/cfd/xslt/v2.2/detallista.xslt"/>
-	<xsl:include href="file:/z:/cfd/xslt/v2.2/implocal.xslt"/>
-	<xsl:include href="file:/z:/cfd/xslt/v2.2/terceros11.xslt"/>
-	<xsl:include href="file:/z:/cfd/xslt/v2.2/iedu.xslt"/>
-	<xsl:include href="file:/z:/cfd/xslt/v2.2/ventavehiculos.xslt"/>
-	<xsl:include href="file:/z:/cfd/xslt/v2.2/pfic.xslt"/>
-	<xsl:include href="file:/z:/cfd/xslt/v2.2/TuristaPasajeroExtranjero.xslt"/>
-	<xsl:include href="file:/z:/cfd/xslt/v2.2/leyendasFisc.xslt"/>
-	<xsl:include href="file:/z:/cfd/xslt/v2.2/psgcfdsp.xslt"/>
+	<xsl:include href="ecc.xslt"/>
+	<xsl:include href="psgecfd.xslt"/>
+	<xsl:include href="donat11.xslt"/>
+	<xsl:include href="divisas.xslt"/>
+	<xsl:include href="ecb.xslt"/>
+	<xsl:include href="detallista.xslt"/>
+	<xsl:include href="implocal.xslt"/>
+	<xsl:include href="terceros11.xslt"/>
+	<xsl:include href="iedu.xslt"/>
+	<xsl:include href="ventavehiculos.xslt"/>
+	<xsl:include href="pfic.xslt"/>
+	<xsl:include href="TuristaPasajeroExtranjero.xslt"/>
+	<xsl:include href="leyendasFisc.xslt"/>
+	<xsl:include href="psgcfdsp.xslt"/>
 	<!-- Aquí iniciamos el procesamiento de la cadena original con su | inicial y el terminador || -->
 	<xsl:template match="/">|<xsl:apply-templates select="/cfd:Comprobante"/>||</xsl:template>
 	<!--  Aquí iniciamos el procesamiento de los datos incluidos en el comprobante -->

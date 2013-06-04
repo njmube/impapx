@@ -54,8 +54,8 @@ grails.project.dependency.resolution = {
 
         build ":tomcat:$grailsVersion"
 
-        runtime ":database-migration:1.1"
-
+        //runtime ":database-migration:1.1"
+		runtime ":database-migration:1.3.2"
         compile ':cache:1.0.0'
 		//compile ':jquery-validation-ui:1.4'
 		runtime ':jasper:1.6.1'

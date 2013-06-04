@@ -1,7 +1,13 @@
 package com.luxsoft.cfd
 
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult
+import javax.xml.transform.stream.StreamSource
+
 import mx.gob.sat.cfd.x2.ComprobanteDocument.Comprobante;
 import mx.gob.sat.cfd.x2.ComprobanteDocument.Comprobante.Conceptos.Concepto;
+import mx.gob.sat.cfd.x2.ComprobanteDocument;
 import mx.gob.sat.cfd.x2.TInformacionAduanera;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
@@ -11,6 +17,7 @@ import com.luxsoft.impapx.Empresa;
 import com.luxsoft.impapx.Venta;
 import com.luxsoft.impapx.contabilidad.PeriodoContable;
 import com.luxsoft.impapx.cxc.CancelacionDeCargo;
+import groovy.util.XmlParser;
 
 class ComprobanteFiscalController {
 	
@@ -170,5 +177,25 @@ class ComprobanteFiscalController {
 			 c.pedimeno=aduana.numero
 			 c.fechaPedimento=aduana.fecha.getTime()
 		 }
+	 }
+
+	 def probarCadena(){
+	 	def res=applicationContext.getResource('/cfd/xslt/v2.2/cadenaoriginal_2_2.xslt')
+	 	def xslt=res.getFile()
+		def factory=TransformerFactory.newInstance()
+		def transformer=factory.newTransformer(new StreamSource(xslt));
+		
+		//def cfd=new XmlParser().parse(new File('/Users/rubencancinoramos/pruebas/CFD_VAET36132.xml'))
+		//println cfd.text()
+		
+		ComprobanteDocument comprobanteDocument=ComprobanteDocument.Factory.parse(new File('/Users/rubencancinoramos/pruebas/CFD_VAET36132.xml'))
+		println comprobanteDocument
+		//DOMSource input=new DOMSource(comprobanteDocument)
+		StringReader input=new StringReader(comprobanteDocument.toString())
+		StringWriter out=new StringWriter();
+		StreamResult result=new StreamResult(out)
+		transformer.transform(new StreamSource(input), result)
+		println out.toString()
+	 	render "Current home: "+xslt.getText("UTF-8").size()+ "  XML : "+comprobanteDocument
 	 }
 }
