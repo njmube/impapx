@@ -62,11 +62,15 @@ class PolizaDeDiarioController {
 		Poliza poliza=new Poliza(tipo:'DIARIO',folio:1, fecha:dia,descripcion:'Poliza '+dia.text(),partidas:[])
 		
 		//Collecciones usadas mas de una vez
-		def facturas=Venta.findAll("from Venta v  where date(v.cfd.fecha)=? and v.tipo=?",[dia,'VENTA'])
+		def facturas=Venta.findAll("from Venta v  where date(v.cfd.fecha)=? and v.tipo=? and (v.clase is null or v.clase='IMPORTACION') ",[dia,'VENTA'])
+		
+		//Collecciones usadas mas de una vez
+		def servicios=Venta.findAll("from Venta v  where date(v.cfd.fecha)=? and v.tipo=? and v.clase='generica' ",[dia,'VENTA'])
 		
 		// Procesadores
 		
 		procesarFacturacion(poliza, dia, facturas)
+		procesarFacturasServicios(poliza, dia, servicios)
 		procesarCostoDeVentas(poliza, dia, facturas)		
 		//procesarAltaDeAnticipos(poliza, dia)
 		procesarCobroSaldoDeudor(poliza, dia)
@@ -144,6 +148,65 @@ class PolizaDeDiarioController {
 				,tipo:poliza.tipo
 				,entidad:'Venta'
 				,origen:fac.id)
+				
+				
+		}
+	}
+	
+	
+	//---------
+	
+	
+	private procesarFacturasServicios(def poliza,def dia,def servicios){
+		
+		def asientos="PRESTACION SERVICIOS"
+		servicios.each{ srv->
+			
+			//Cargo a clientes
+			def clave="106-$srv.cliente.subCuentaOperativa"
+			def cuenta=CuentaContable.findByClave(clave)
+			//println 'Cuenta localizada: '+cuenta
+			if(!cuenta) throw new RuntimeException("No existe la cuenta para el cliente: "+srv.cliente+ 'Clave: '+clave)
+			poliza.addToPartidas(
+					cuenta:cuenta,
+					debe:srv.total,
+					haber:0.0,
+					asiento:asientos,
+					descripcion:"Fecha:$srv.cfd.fecha $srv.cliente.nombre",
+					referencia:"$srv.cfd.folio"
+					,fecha:poliza.fecha
+					,tipo:poliza.tipo
+					,entidad:'Venta'
+					,origen:srv.id)
+			
+			//Abono a ventas
+			clave="401-$srv.cliente.subCuentaOperativa"
+			cuenta=CuentaContable.findByClave(clave)
+			if(!cuenta) throw new RuntimeException("No existe la cuenta para el cliente: "+srv.cliente+ 'Clave: '+clave)
+			poliza.addToPartidas(
+				cuenta:cuenta,
+				debe:0.0,
+				haber:srv.importe,
+				asiento:asientos,
+				descripcion:"Fecha:$srv.cfd.fecha $srv.cliente.nombre",
+				referencia:"$srv.cfd.folio"
+				,fecha:poliza.fecha
+				,tipo:poliza.tipo
+				,entidad:'Venta'
+				,origen:srv.id)
+			
+			//Abono a iva por trasladar
+			poliza.addToPartidas(
+				cuenta:CuentaContable.findByClave('206-0002'),
+				debe:0.0,
+				haber:srv.impuestos,
+				asiento:asientos,
+				descripcion:"Fecha:$srv.cfd.fecha $srv.cliente.nombre",
+				referencia:"$srv.cfd.folio"
+				,fecha:poliza.fecha
+				,tipo:poliza.tipo
+				,entidad:'Venta'
+				,origen:srv.id)
 				
 				
 		}

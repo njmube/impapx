@@ -243,7 +243,23 @@ class ImportadorController {
 	}
 	
 	def importarProducto(){
+		//println 'Importando productos '+params
 		def db = new Sql(dataSource_importacion)
+		
+		
+		def rows=db.rows("""
+			select a.clave,a.descripcion,precioContado,precioCredito,b.nombre as linea,c.nombre as marca,d.nombre as clase,e.unidad as unidad
+				   ,a.kilos,a.gramos,a.largo,a.ancho,a.calibre,a.caras,a.acabado,a.color,a.M2MILLAR as m2
+						 from sx_productos a 
+						 left join sx_lineas b on(a.linea_id=b.linea_id) 
+						 left join sx_marcas c on (a.marca_id=c.marca_id) 
+						 left join sx_clases d on (a.clase_id=d.clase_id)
+						 left join sx_unidades e on(a.unidad=e.unidad)
+						 where a.clave=?
+			""",[params.clave]
+			)
+		 
+		//println 'Productos a importar: '+rows
 		def res=db.eachRow("""
 			select a.clave,a.descripcion,precioContado,precioCredito,b.nombre as linea,c.nombre as marca,d.nombre as clase,e.unidad as unidad
 				   ,a.kilos,a.gramos,a.largo,a.ancho,a.calibre,a.caras,a.acabado,a.color,a.M2MILLAR as m2
