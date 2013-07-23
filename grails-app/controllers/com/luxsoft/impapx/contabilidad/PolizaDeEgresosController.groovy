@@ -117,7 +117,7 @@ class PolizaDeEgresosController {
 						debe:importeMN,
 						haber:0.0,
 						asiento:asiento,
-						descripcion:"F Fac:$fechaDocto Imp:$det.total TC:$tc F.Ped:"+pedimento?.fecha.text()+' F.Pag:'+egreso?.fecha.text(),
+						descripcion:"F Fac:$fechaDocto Imp:$det.total TC:$tc F.Ped:"+pedimento?.fecha?.text()+' F.Pag:'+egreso?.fecha?.text(),
 						referencia:"$fac.documento"
 						,fecha:poliza.fecha
 						,tipo:poliza.tipo
@@ -210,7 +210,6 @@ class PolizaDeEgresosController {
 		
 			def req=it.requisicion
 			req.partidas.each{ det ->
-				println 'Procesando factura: '+det.factura.class
 				if(det.factura && det.factura.instanceOf(FacturaDeGastos)){
 					pagos.add(it)
 					
@@ -685,7 +684,9 @@ class PolizaDeEgresosController {
 			
 			//Cargo a proveedor
 			def proveedor=pago.requisicion.proveedor
+			
 			def clave="203-$proveedor.subCuentaOperativa"
+			println 'Localizando cuenta operativa contable para Proveedor: '+proveedor
 			def cuenta=CuentaContable.buscarPorClave(clave)
 			def requisicion=pago.requisicion
 			poliza.addToPartidas(

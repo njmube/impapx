@@ -27,8 +27,9 @@ class CompraDeMonedaController {
         	[compraDeMonedaInstance: new CompraDeMoneda(params)]
 			break
 		case 'POST':
+			println 'Salvando compra: '+params
 	        def compraDeMonedaInstance = new CompraDeMoneda(params)
-			compraDeMonedaInstance=compraDeMonedaService.registrarCompra(compraDeMonedaInstance)
+			compraDeMonedaInstance=compraDeMonedaService.registrarCompra2(compraDeMonedaInstance)
 	        if (compraDeMonedaInstance.hasErrors()) {
 	            render view: 'create', model: [compraDeMonedaInstance: compraDeMonedaInstance]
 	            return

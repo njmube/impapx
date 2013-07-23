@@ -84,7 +84,8 @@ class DiotController {
 			   ,d.nacional?d.base11.setScale(0, BigDecimal.ROUND_HALF_UP)?.toPlainString():''
 			   ,d.nacional?d.ret1.setScale(0, BigDecimal.ROUND_HALF_UP)?.toPlainString():''
 			   );
-		  writer << line 
+	//	  writer << line 
+		  writer << line << "\n"
 	   }
 	   //response.setHeader "Content-disposition", "attachment; filename=${file.name}"
 	   response.setHeader "Content-disposition", "attachment; filename=DIOT_${params.downloadFile}.txt"

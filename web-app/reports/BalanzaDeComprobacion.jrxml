@@ -28,7 +28,10 @@
 	</parameter>
 	<parameter name="YEAR" isForPrompting="true" class="java.lang.String"/>
 	<parameter name="MES" isForPrompting="true" class="java.lang.String"/>
-	<queryString><![CDATA[SELECT 'ENERO' AS MES_NOMBRE,
+	<parameter name="INICIAL" isForPrompting="false" class="java.math.BigDecimal">
+		<defaultValueExpression ><![CDATA[$F{SALDO_INICIAL}]]></defaultValueExpression>
+	</parameter>
+	<queryString><![CDATA[SELECT 
 X.ID,X.CLAVE AS NoCUENTA,X.DESCRIPCION AS CUENTA,C.ID,C.CLAVE,C.DESCRIPCION AS CONCEPTO,S.SALDO_INICIAL,S.DEBE,S.HABER,S.SALDO_FINAL
 FROM saldo_por_cuenta_contable S 
 JOIN cuenta_contable C ON(C.ID=S.CUENTA_ID)  
@@ -36,7 +39,6 @@ JOIN cuenta_contable X ON(X.ID=C.PADRE_ID)
 WHERE S.YEAR=$P{YEAR} AND S.MES=$P{MES}
 ORDER BY X.CLAVE,C.CLAVE]]></queryString>
 
-	<field name="MES_NOMBRE" class="java.lang.String"/>
 	<field name="ID" class="java.lang.Long"/>
 	<field name="NoCUENTA" class="java.lang.String"/>
 	<field name="CUENTA" class="java.lang.String"/>
@@ -194,37 +196,6 @@ ORDER BY X.CLAVE,C.CLAVE]]></queryString>
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="91"
-						y="34"
-						width="187"
-						height="13"
-						forecolor="#000000"
-						key="textField-18"/>
-					<box></box>
-					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-BoldOblique" size="10" isBold="true" isItalic="true" isUnderline="true" isStrikeThrough="false" />
-					</textElement>
-				<textFieldExpression   class="java.lang.String"><![CDATA[$F{MES_NOMBRE}.concat( " - " ).concat($P{YEAR}.toString())]]></textFieldExpression>
-				</textField>
-				<staticText>
-					<reportElement
-						x="10"
-						y="34"
-						width="77"
-						height="13"
-						key="staticText-24"/>
-					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-					<bottomPen lineWidth="0.0" lineColor="#000000"/>
-					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
-</box>
-					<textElement textAlignment="Center" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-Oblique" size="10" isBold="false" isItalic="true" isUnderline="false" isStrikeThrough="false" />
-					</textElement>
-				<text><![CDATA[P E R I O D O :]]></text>
-				</staticText>
-				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
-					<reportElement
 						x="345"
 						y="1"
 						width="237"
@@ -241,6 +212,78 @@ ORDER BY X.CLAVE,C.CLAVE]]></queryString>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$P{COMPANY}]]></textFieldExpression>
 				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="238"
+						y="30"
+						width="32"
+						height="13"
+						key="textField-31"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-BoldOblique" size="10" isBold="true" isItalic="true" isUnderline="false" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{YEAR}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="152"
+						y="30"
+						width="64"
+						height="13"
+						key="textField-32"/>
+					<box></box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-BoldOblique" size="10" isBold="true" isItalic="true" isUnderline="false" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{MES}.equals("1") ? "ENERO" :
+$P{MES}.equals("2") ? "FEBRERO" :
+$P{MES}.equals("3") ? "MARZO" :
+$P{MES}.equals("4") ? "ABRIL" :
+$P{MES}.equals("5") ? "MAYO" :
+$P{MES}.equals("6") ? "JUNIO" :
+$P{MES}.equals("7") ? "JULIO" :
+$P{MES}.equals("8") ? "AGOSTO" :
+$P{MES}.equals("9") ? "SEPTIEMBRE" :
+$P{MES}.equals("10") ? "OCTUBRE" :
+$P{MES}.equals("11") ? "NOVIEMBRE" :
+$P{MES}.equals("12") ? "DICIEMBRE" :
+ "ND"]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement
+						x="14"
+						y="30"
+						width="138"
+						height="13"
+						key="staticText-28"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-BoldOblique" size="10" isBold="true" isItalic="true" isUnderline="false" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[PERIODO:  DE   ENERO    A ]]></text>
+				</staticText>
+				<staticText>
+					<reportElement
+						x="222"
+						y="30"
+						width="16"
+						height="13"
+						key="staticText-29"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font pdfFontName="Helvetica-Oblique" size="10" isBold="false" isItalic="true" isUnderline="false" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[/]]></text>
+				</staticText>
 			</band>
 		</pageHeader>
 		<columnHeader>

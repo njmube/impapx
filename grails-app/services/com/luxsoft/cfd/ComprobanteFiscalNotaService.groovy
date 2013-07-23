@@ -46,7 +46,8 @@ import org.springframework.transaction.annotation.Transactional;
 class ComprobanteFiscalNotaService {
 	
 	def selladorService
-	CadenaOriginalBuilder cadenaBuilder=new CadenaOriginalBuilder();
+	//CadenaOriginalBuilder cadenaBuilder=new CadenaOriginalBuilder();
+	def cadenaOriginalBuilder
 
 	
     def generarComprobanteFiscalDigital(long notaId) {
@@ -207,7 +208,8 @@ class ComprobanteFiscalNotaService {
 	
 	def String registrarSelloDigital(ComprobanteDocument document){
 		
-		String cadena=cadenaBuilder.obtenerCadena(document)
+		String cadena=cadenaOriginalBuilder.obtenerCadena(document)
+		
 		String sello= selladorService.getSello(cadena);
 		document.getComprobante().setSello(sello);
 		try {

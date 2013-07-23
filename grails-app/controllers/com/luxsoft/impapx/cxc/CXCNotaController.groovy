@@ -16,7 +16,8 @@ class CXCNotaController {
     static allowedMethods = [create: ['GET', 'POST'], edit: ['GET', 'POST'], delete: 'POST']
 
 	def cobranzaService
-	def comprobanteFiscalNotaService 
+	def comprobanteFiscalNotaService
+	def printService
 	
     def index() {
         redirect action: 'list', params: params
@@ -169,7 +170,8 @@ class CXCNotaController {
 			}
 			return res
 		}
-		def repParams=CFDIPrintServices.resolverParametros(nota.getCfd().getComprobante())
+		//def repParams=CFDIPrintServices.resolverParametros(nota.getCfd().getComprobante())
+		def repParams=printService.resolverParametros(nota.getCfd().getComprobante())
 		params<<repParams
 		params.FECHA=cfd.fecha.getTime().format("yyyy-MM-dd'T'HH:mm:ss")
 		chain(controller:'jasper',action:'index',model:[data:modelData],params:params)

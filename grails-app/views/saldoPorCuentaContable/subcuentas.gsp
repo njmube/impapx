@@ -46,14 +46,49 @@
 			<g:render template="cambiarPeriodo" bean="${session.periodoContable}"/>
  		</li>
  		
- 		<g:jasperReport
+ 		<li>
+ 			<g:jasperReport
  			jasper="BalanzaDeComprobacion" 
- 			format="PDF,HTML" 
- 			name="Balanza"
+ 			format="PDF" 
+ 			name="Balanza de comprobación"
  			buttonPosition="top">
 						<g:hiddenField name="YEAR" value="${session.periodoContable.year}"/>
 						<g:hiddenField name="MES" value="${session.periodoContable.month}"/>
-		</g:jasperReport>
+			</g:jasperReport>
+ 		</li>
+ 		
+ 		<li>
+ 			<g:jasperReport
+ 			jasper="BalanceGeneral" 
+ 			format="PDF" 
+ 			name="Balance general"
+ 			buttonPosition="top">
+						<g:hiddenField name="YEAR" value="${session.periodoContable.year}"/>
+						<g:hiddenField name="MES" value="${session.periodoContable.month}"/>
+			</g:jasperReport>
+ 		</li>
+ 		
+ 		<li>
+ 			<g:jasperReport
+ 			jasper="EstadoDeResultados" 
+ 			format="PDF" 
+ 			name="Estado de resultados"
+ 			buttonPosition="top">
+						<g:hiddenField name="YEAR" value="${session.periodoContable.year}"/>
+						<g:hiddenField name="MES" value="${session.periodoContable.month}"/>
+			</g:jasperReport>
+ 		</li>
+ 		
+ 		<li>
+ 			<g:jasperReport
+ 			jasper="AuxiliarContablePorPeriodo" 
+ 			format="PDF" 
+ 			name="Auxiliar "
+ 			buttonPosition="top">
+						<g:hiddenField name="YEAR" value="${session.periodoContable.year}"/>
+						<g:hiddenField name="MES" value="${session.periodoContable.month}"/>
+			</g:jasperReport>
+ 		</li>
  		
  	</content>
  	
