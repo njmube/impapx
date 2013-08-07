@@ -7,7 +7,7 @@
 			  <span class="icon-bar"></span>
 			  <span class="icon-bar"></span>
 		  </a>
-		  <a class="brand" href="#">ImpapEx</a>
+		  <a class="brand" href="#">${grailsApplication.config.impapx.empresa}</a>
 		  
 		  <div class="nav-collapse">
 			  <ul class="nav">

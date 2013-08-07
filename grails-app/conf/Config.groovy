@@ -67,6 +67,9 @@ environments {
         grails.logging.jul.usebridge = false
         // TODO: grails.serverURL = "http://www.changeme.com"
     }
+	paper{
+		grails.app.context = '/paperx'
+	}
 }
 
 // log4j configuration
@@ -130,15 +133,24 @@ jqueryDateTimePicker {
 	}
 }
 
+impapx.empresa='IMPAP'
 environments {
+	
 	development {
 		cfd.xslt.path="Z:\\CFD\\xslt\\v2.2\\cadenaoriginal_2_2.xslt"
 		cfd.report.path="c:\\PRUEBAS\\sat\\mensual\\"
+		//impapx.empresa='IMPAP S.A. de C.V.'
 	}
 	production {
 		//cfd.xslt.path="/usr/etc/cfd/cert/xslt/cadenaoriginal_2_2.xslt"
 		//cfd.report.path="/usr/etc/cfd/mensual/"
 		cfd.xslt.path="Z:\\CFD\\xslt\\v2.2\\cadenaoriginal_2_2.xslt"
 		cfd.report.path="Z:\\sat\\mensual\\"
+	}
+	
+	paper {
+		cfd.xslt.path="Z:\\CFD\\xslt\\v2.2\\cadenaoriginal_2_2.xslt"
+		cfd.report.path="Z:\\sat\\paperx\\mensual\\"
+		impapx.empresa='PAPER'
 	}
 }

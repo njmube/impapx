@@ -7,7 +7,7 @@ class HomeController {
 
 	def index() {
 		if(!isLoggedIn()){
-			redirect controller:'login'
+			redirect (controller:'login',params: [empresa: 'SIN EMPRESA REGISTRADA'])
 		}
 		/*
 		println 'Home controller'

@@ -36,11 +36,12 @@ environments {
 		
 		
 		dataSource {
-			dbCreate = ""
+			dbCreate = "update"
 			dialect = org.hibernate.dialect.MySQLInnoDBDialect
 			driverClassName = 'com.mysql.jdbc.Driver'
 			username = 'root'
 			password = 'sys'
+			//url = 'jdbc:mysql://localhost/paperx_dev?autoReconnect=true'
 			url = 'jdbc:mysql://localhost/impapx_dev?autoReconnect=true'
 			pooled = true
 			properties {
@@ -118,5 +119,32 @@ environments {
 			}
         }
     }
+	
+	paper {
+		dataSource {
+			dbCreate = ""
+			dialect = org.hibernate.dialect.MySQLInnoDBDialect
+			driverClassName = 'com.mysql.jdbc.Driver'
+			username = 'root'
+			password = 'sys'
+			//url = 'jdbc:mysql://10.10.1.228/paperx'
+			url = 'jdbc:mysql://10.10.1.228/paperx'
+			pooled = true
+			properties {
+			   maxActive = 5
+			   maxIdle = 3
+			   initialSize = 3
+			   minEvictableIdleTimeMillis=1800000
+			   timeBetweenEvictionRunsMillis=1800000
+			   numTestsPerEvictionRun=3
+			   testOnBorrow=true
+			   testWhileIdle=true
+			   testOnReturn=true
+			   validationQuery = "/* ping */"
+			   maxWait = 10000
+			   
+			}
+		}
+	}
 	
 }

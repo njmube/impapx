@@ -4,8 +4,8 @@ package com.luxsoft.impapx
 
 import grails.test.mixin.*
 
-@Mock(ContabilidadFilters)
-class ContabilidadFiltersTests {
+@Mock(ImpapFilters)
+class ImpapFiltersSpec {
 
     void testSomething() {
         fail "Implement me"
