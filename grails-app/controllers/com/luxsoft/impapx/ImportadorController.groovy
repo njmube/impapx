@@ -181,13 +181,14 @@ class ImportadorController {
 	
 	def importarCompra(long folio){
 		println 'Importando compra folio:'+folio
+		def proveedorOrigenParaCompras=grailsApplication.config.proveedorOrigenParaCompras
 		Compra found=Compra.findByFolio(folio,[fetch:['partidas']])
 		if(found){
 			throw new RuntimeException("Compra $folio ya importada, borrar si se requiere re importar");
 		}
 		def db=new Sql(dataSource_importacion)
-		def res=db.eachRow("select * from SX_COMPRAS2  where PROVEEDOR_ID=60  and folio=? and fecha>'2012-01-01' "
-			,[folio]) { row ->
+		def res=db.eachRow("select * from SX_COMPRAS2  where PROVEEDOR_ID=?  and folio=? and fecha>'2012-01-01' "
+			,[proveedorOrigenParaCompras,folio]) { row ->
 			println 'Procesando: '+row
 			Compra c=Compra.findOrCreateByOrigen(row.COMPRA_ID)
 			Proveedor p=Proveedor.findOrSaveByNombre(row.nombre)

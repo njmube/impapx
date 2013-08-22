@@ -134,6 +134,7 @@ jqueryDateTimePicker {
 }
 
 impapx.empresa='IMPAP'
+proveedorOrigenParaCompras=60
 environments {
 	
 	development {
@@ -152,5 +153,6 @@ environments {
 		cfd.xslt.path="Z:\\CFD\\xslt\\v2.2\\cadenaoriginal_2_2.xslt"
 		cfd.report.path="Z:\\sat\\paperx\\mensual\\"
 		impapx.empresa='PAPER'
+		proveedorOrigenParaCompras=42
 	}
 }
