@@ -52,6 +52,12 @@ class MonedaUtils {
 	}
 	
 	
+	public static final BigDecimal calcularImporteDelTotal(BigDecimal total,BigDecimal tasaIva){
+		BigDecimal val=BigDecimal.valueOf(1).add(tasaIva);
+		BigDecimal importe=total.divide(val,2,RoundingMode.HALF_EVEN);
+		return importe;
+	}
+	
 	
 	public static final BigDecimal aplicarDescuentosEnCascadaSinRedondeo(
 			final BigDecimal importe,double... descuentos){

@@ -35,7 +35,7 @@ class TraspasoService {
 				,ingreso:false)
 			egreso.tipo='TRANSFERENCIA'
 			egreso.origen='TESORERIA'
-			egreso.concepto="Traspado: $traspaso.cuentaDestino"
+			egreso.concepto="Traspaso: $traspaso.cuentaDestino"
 			traspaso.addToMovimientos(egreso)
 			
 			//Generando el ingreso

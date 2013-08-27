@@ -135,10 +135,10 @@ class AnticipoController {
 	def disponiblesJSONList(){
 		//println 'Embarques disponibles para anticipo: '+params
 		def anticipos=Anticipo.findAll(
-			"from Anticipo a where  a.sobrante is null and a.requisicion.concepto=?"
+			"from Anticipo a where  a.sobrante is null and a.requisicion.concepto=? and a.total-a.requisicion.total>0"
 			,['ANTICIPO'])
 		def anticiposList=anticipos.collect { row ->
-			def label=" ${row.id}  Req: ${row.requisicion}"
+			def label=" ${row.id}  Req: ${row.requisicion} Saldo: ${row.total-row.requisicion.total}"
 			[id:row.id,label:label,value:label]
 		}
 		render anticiposList as JSON

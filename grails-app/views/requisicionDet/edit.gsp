@@ -1,75 +1,76 @@
 <%@ page import="com.luxsoft.impapx.RequisicionDet" %>
 <!doctype html>
 <html>
-	<head>
-		<meta name="layout" content="luxor">
-		<g:set var="entityName" value="${message(code: 'requisicionDet.label', default: 'RequisicionDet')}" />
-		<title><g:message code="default.edit.label" args="[entityName]" /></title>
-	</head>
-	<body>
-		<div class="row-fluid">
-
-			<div class="span3">
-				<div class="well">
-					<ul class="nav nav-list">
-						<li class="nav-header">${entityName}</li>
-						<li>
-							<g:link class="list" action="list">
-								<i class="icon-list"></i>
-								<g:message code="default.list.label" args="[entityName]" />
-							</g:link>
-						</li>
-						<li>
-							<g:link class="create" action="create">
-								<i class="icon-plus"></i>
-								<g:message code="default.create.label" args="[entityName]" />
-							</g:link>
-						</li>
-					</ul>
-				</div>
-			</div>
-			
-			<div class="span9">
-
-				<div class="page-header">
-					<h3><g:message code="default.edit.label" args="[entityName]" /></h3>
-				</div>
-
-				<g:if test="${flash.message}">
-				<bootstrap:alert class="alert-info">${flash.message}</bootstrap:alert>
-				</g:if>
-
-				<g:hasErrors bean="${requisicionDetInstance}">
-				<bootstrap:alert class="alert-error">
-				<ul>
-					<g:eachError bean="${requisicionDetInstance}" var="error">
-					<li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>><g:message error="${error}"/></li>
-					</g:eachError>
-				</ul>
-				</bootstrap:alert>
-				</g:hasErrors>
-
-				<fieldset>
-					<g:form class="form-horizontal" action="edit" id="${requisicionDetInstance?.id}" >
-						<g:hiddenField name="version" value="${requisicionDetInstance?.version}" />
-						<fieldset>
-							<f:all bean="requisicionDetInstance"/>
-							<div class="form-actions">
-								<button type="submit" class="btn btn-primary">
-									<i class="icon-ok icon-white"></i>
-									<g:message code="default.button.update.label" default="Update" />
-								</button>
-								<button type="submit" class="btn btn-danger" name="_action_delete" formnovalidate>
-									<i class="icon-trash icon-white"></i>
-									<g:message code="default.button.delete.label" default="Delete" />
-								</button>
-							</div>
-						</fieldset>
-					</g:form>
-				</fieldset>
-
-			</div>
-
+<head>
+<meta name="layout" content="taskView">
+<title><g:message code="requisicionDet.create.label" default="Detalle de requisición"/></title>
+<r:require module="autoNumeric"/>
+</head>
+<body>
+	
+	<content tag="header">
+		<div class="alert">
+				<g:link controller="requisicion" id="${requisicionInstance?.id}" action="edit">
+					<h4><strong>Req: ${requisicionInstance?.id} (${requisicionInstance?.proveedor?.nombre})</strong></h4>
+				</g:link>
+				
 		</div>
-	</body>
+	<content tag="consultas">
+	</content>
+	
+ 	<content tag="operaciones">
+ 		
+ 	</content>
+ 	
+ 	<content tag="document">
+ 		<g:render template="/shared/messagePanel" model="[beanInstance:requisicionDetInstance]"/>
+
+		<fieldset>
+			<g:form class="form-horizontal" action="edit" controller="requisicionDet"
+				id="${requisicionDetInstance?.id}">
+				<fieldset>
+					<f:with bean="requisicionDetInstance">
+						<g:hiddenField name="requisicionId" value="${requisicionInstance?.id}"/>
+						<f:field property="documento" input-disabled="true"/>
+						<f:field property="fechaDocumento" />
+						<f:field property="total" input-class="moneyField" />
+					</f:with>
+					
+			<div class="form-actions">
+				<button type="submit" class="btn btn-primary">
+					<i class="icon-ok icon-white"></i>
+					<g:message code="default.button.update.label" default="Salvar" />
+				</button>
+			</div>
+		</fieldset>
+	</g:form>
+</fieldset>
+		
+ 	</content>
+ 	
+ <r:script>
+ $(function(){
+ 	$(".moneyField").autoNumeric({vMin:'0.00',wEmpty:'zero',mRound:'B'});
+ 	
+ 	//$("#total").autoNumericSet(0.0).attr("disabled",'disabled');
+ 	/*
+ 	$('#concepto').bind('change',function(e){
+		var selected=$(this).val();
+		if(selected=="ANTICIPO"){
+			$("#total").removeAttr("disabled");
+		}else{
+			$("#total").attr("disabled",'disabled');
+			$("#total").autoNumericSet(0.0);
+		}
+			
+		
+	});
+	*/ 
+ 	
+ });
+ 
+ </r:script>
+	
+</body>
 </html>
+

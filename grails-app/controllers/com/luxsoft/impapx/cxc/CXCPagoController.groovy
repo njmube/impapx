@@ -13,16 +13,28 @@ class CXCPagoController {
     static allowedMethods = [create: ['GET', 'POST'], edit: ['GET', 'POST'], delete: 'POST']
 
 	def cobranzaService
-	
+	def filterPaneService
 	
     def index() {
         redirect action: 'list', params: params
     }
 
     def list() {
-        params.max = Math.min(params.max ? params.int('max') : 100, 500)
+		println 'List: '+params
+        params.max = Math.min(params.max ? params.int('max') : 30, 50)
+		params.sort='id'
+		params.order='desc'
         [CXCPagoInstanceList: CXCPago.list(params), CXCPagoInstanceTotal: CXCPago.count()]
     }
+	
+	def filter(){
+		params.max = Math.min(params.max ? params.int('max') : 30, 50)
+		render( view:'list',
+			model:[CXCPagoInstanceList: filterPaneService.filter( params, CXCPago.class),
+			CXCPagoInstanceTotal: filterPaneService.count( params, CXCPago.class ),
+			filterParams: org.grails.plugin.filterpane.FilterPaneUtils.extractFilterParams(params),
+			params:params ] )
+	}
 
     def create() {
 		switch (request.method) {
@@ -175,4 +187,6 @@ class CXCPagoController {
 		dataToRender.pagoId=pago.id
 		render dataToRender as JSON
 	}
+	
+	
 }

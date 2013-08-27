@@ -12,7 +12,7 @@
  	</content>
 	<content tag="consultas">
 		<li>
-			<g:link controller="movimientoDecuenta" action="list">
+			<g:link controller="movimientoDeCuenta" action="list">
 				Tesorería
 			</g:link>
 		</li>

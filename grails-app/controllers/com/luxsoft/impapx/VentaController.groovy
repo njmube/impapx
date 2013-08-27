@@ -304,7 +304,8 @@ class VentaController {
 				println 'Agrgando partida: '+params
 				params.kilos=0
 				
-				def ventaDetInstance=new VentaDet(params)
+				def ventaDetInstance=new VentaDet()
+				bindData(ventaDetInstance,params,[includes:['producto','cantidad','precio','descuentos','comentarios']])
 				ventaDetInstance.actualizarImportes()
 				ventaDetInstance.costo=0
 				venta.addToPartidas(ventaDetInstance)

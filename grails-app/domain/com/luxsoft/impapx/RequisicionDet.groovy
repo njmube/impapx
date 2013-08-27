@@ -1,6 +1,6 @@
 package com.luxsoft.impapx
 
-import java.math.BigDecimal;
+
 import java.util.Date;
 import org.apache.commons.lang.builder.EqualsBuilder
 import org.apache.commons.lang.builder.HashCodeBuilder

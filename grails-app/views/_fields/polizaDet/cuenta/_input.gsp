@@ -1,7 +1,7 @@
 <div class="input-prepend">
 	<g:hiddenField id="cuentaId" name="cuenta.id" value="${value?.id}" />
 <%
-	def attrs = [type:'text',name: property+'.descripcion', value: value,class:"cuentaAuto",placeholder:"Seleccione una cuenta "]
+	def attrs = [type:'text',name: property+'Descripcion', value: value,class:"cuentaAuto",placeholder:"Seleccione una cuenta "]
 	if (required) attrs.required = ''
 	out << g.field(attrs)
 %>

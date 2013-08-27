@@ -96,7 +96,7 @@
 				<g:field id="periodo" type="string" name="fecha" value="${(new Date()-1).format('dd/MM/yyyy') }"/>
 				<div class="form-actions">
 					<a href="#" class="btn" data-dismiss="modal">Cancelar</a>
-					<button type="submit" class="btn btn-primary">
+					<button id="actualizarBtn" type="submit" class="btn btn-primary">
 						<i class="icon-ok icon-white"></i>
 						<g:message code="default.button.update.label" default="Actualizar" />
 					</button>
@@ -117,7 +117,7 @@
     	 dateFormat: 'dd/mm/yy',
          showOtherMonths: true,
          selectOtherMonths: true,
-         showOn:'focus',
+         showOn:'both',
          showAnim:'fold',
          minDate:'01/10/2012',
          maxDate:'31/12/2015',
@@ -126,6 +126,7 @@
          changeMonth:true,
          changeYear:true,
          closeText:'Cerrar'
+         
       });
  });
  </r:script>

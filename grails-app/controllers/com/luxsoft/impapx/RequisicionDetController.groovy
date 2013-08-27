@@ -3,6 +3,8 @@ package com.luxsoft.impapx
 import grails.converters.JSON
 import org.springframework.dao.DataIntegrityViolationException
 
+import com.luxsoft.impapx.cxp.ConceptoDeGasto;
+
 import util.MonedaUtils;
 
 class RequisicionDetController {
@@ -14,14 +16,46 @@ class RequisicionDetController {
     def index() {
         redirect action: 'list', params: params
     }
-
+	
+	
+	def edit() {
+		switch (request.method) {
+		case 'GET':
+			def det=RequisicionDet.get(params.id)
+			[requisicionDetInstance: det,requisicionInstance:det.requisicion]
+			break
+		case 'POST':
+			println 'Persistiendo requisicionDet: '+params
+			def det=RequisicionDet.get(params.id)
+			
+			bindData(det,params,[include:['total']])
+			
+			if(det?.factura?.conceptos){
+				ConceptoDeGasto cc=det.factura.conceptos.iterator().next()
+				if(cc.impuestoTasa){
+					det.importe=MonedaUtils.calcularImporteDelTotal(det.total,cc.impuestoTasa/100)
+					det.ietu=det.importe
+					det.impuestos=det.importe*(cc.impuestoTasa/100)
+				}
+			}
+			det.requisicion.actualizarImportes()
+			if (det.requisicion.save()) {
+				redirect controller:'requisicion', action: 'edit', id: det.requisicion.id
+				return
+			}
+			flash.message = message(code: 'default.created.message', args: [message(code: 'requisicionDet.label', default: 'RequisicionDet'), requisicionDetInstance.id])
+			redirect controller:'requisicion', action: 'edit', id: requisicion.id
+			break
+		}
+	}
+	
    
 
     def create() {
 		switch (request.method) {
 		case 'GET':
-			def requisicion=Requisicion.get(params.requisicionId)
-        	[requisicionDetInstance: new RequisicionDet(params),requisicionInstance:requisicion]
+			def det=RequisicionDet.get(params.id)
+        	[requisicionDetInstance: det,requisicionInstance:det.requisicion]
 			break
 		case 'POST':
 			/*

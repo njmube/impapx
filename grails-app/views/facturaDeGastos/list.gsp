@@ -20,15 +20,15 @@
  			<i class="icon-list "></i>
 				C X P
 		</g:link>
-		<g:link  action="list">
-				Gastos (Todos)
-		</g:link>
-		<g:link  action="list">
-				Pendientes de pago
-		</g:link>
-		<g:link  action="list">
-				Pagados
-		</g:link>
+<%--		<g:link  action="list">--%>
+<%--				Gastos (Todos)--%>
+<%--		</g:link>--%>
+<%--		<g:link  action="list">--%>
+<%--				Pendientes de pago--%>
+<%--		</g:link>--%>
+<%--		<g:link  action="list">--%>
+<%--				Pagados--%>
+<%--		</g:link>--%>
 		</li>
  	</content>
  	<content tag="operaciones">

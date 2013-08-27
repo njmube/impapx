@@ -7,5 +7,5 @@
 <li><g:link  controller="inversion" action="list">Inversiones</g:link></li>
 <li><g:link  controller="comision" action="list">Comisiones</g:link></li>
 <li><g:link  controller="cheque" action="list">Cheques</g:link></li>
-<li><g:link  action="estadoDeCuenta">Estado de Cuenta</g:link></li>
+<%--<li><g:link  action="estadoDeCuenta">Estado de Cuenta</g:link></li>--%>
 <li><g:link  controller="tipoDeCambio" action="list">Tipo de cambio</g:link></li>
