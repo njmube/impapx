@@ -1,5 +1,7 @@
 package com.luxsoft.cfd
 
+import grails.util.Environment;
+
 import java.awt.print.Printable;
 import java.security.cert.CertificateEncodingException;
 import java.text.SimpleDateFormat;
@@ -142,10 +144,18 @@ class ComprobanteFiscalService {
 		depuracionFinal(document);
 		
 		//Asignacion de serie y folio
+		
 		def serie="IMFACCRE"
 		if(venta.tipo=='NOTA_DE_CARGO'){
 			serie="IMNOTCAR"
 		}
+		Environment.executeForCurrentEnvironment {
+			paper{
+				println 'Series para paper imports'
+				serie='PIFACCRE'
+			}
+		}
+		
 
 		FolioFiscal folio=FolioFiscal.findBySerie(serie)			
 		cfd.setSerie(serie);

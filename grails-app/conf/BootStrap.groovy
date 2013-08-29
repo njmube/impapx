@@ -98,6 +98,20 @@ class BootStrap {
 		}
 		if(!conta1.authorities.contains(role5))
 			UserRole.create(conta1, role5, true)
+			
+		def conta2=User.findByUsername('restrada')
+		if(!conta2){
+			conta2=new User(username:"restrada",password:"re3515",enabled:true).save(flush:true)
+		}
+		if(!conta2.authorities.contains(role5))
+			UserRole.create(conta2, role5, true)
+			
+		def conta3=User.findByUsername('jmorales')
+		if(!conta3){
+			conta3=new User(username:"jmorales",password:"mo4515",enabled:true).save(flush:true)
+		}
+		if(!conta3.authorities.contains(role5))
+			UserRole.create(conta3, role5, true)
 		
     }
 	

@@ -100,7 +100,9 @@ public class CadenaOriginalBuilder implements InitializingBean{
 			TransformerFactory transformerFactory=TransformerFactory.newInstance();			
 			//String xslPath=System.getProperty("cfd.xslt.path","Z:\\CFD\\xslt\\v2.2\\cadenaoriginal_2_2.xslt");
 			//String xslPath=System.getProperty("cfd.xslt.path");
+			//System.out.println("Generando transormer para xsls path:"+);
 			FileSystemResource xsltResource=new FileSystemResource(getXsltPath());
+			Assert.isTrue(xsltResource.exists(),"Imposible localizar los archivos xslt para la cadena orignal usando la llave: "+getXsltPath());
 			StreamSource xslt;
 			try {
 				xslt = new StreamSource(xsltResource.getInputStream());

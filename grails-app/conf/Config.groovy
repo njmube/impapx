@@ -150,8 +150,8 @@ environments {
 	}
 	
 	paper {
-		cfd.xslt.path="Z:\\CFD\\xslt\\v2.2\\cadenaoriginal_2_2.xslt"
-		cfd.report.path="Z:\\sat\\paperx\\mensual\\"
+		cfd.xslt.path="/usr/etc/cfd/cert/xslt/v2.2/cadenaoriginal_2_2.xslt"
+		cfd.report.path="/usr/etc/cfd/mensual/"
 		impapx.empresa='PAPER'
 		proveedorOrigenParaCompras=42
 	}

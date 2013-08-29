@@ -46,6 +46,7 @@
 						<tr>
 							
 							<g:sortableColumn property="anoAprobacion" title="${message(code: 'folioFiscal.anoAprobacion.label', default: 'Ano Aprobacion')}" />
+							<g:sortableColumn property="serie" title="${message(code: 'folioFiscal.serie.label', default: 'Serie')}" />
 						
 							<g:sortableColumn property="asignacion" title="${message(code: 'folioFiscal.asignacion.label', default: 'Asignacion')}" />
 						
@@ -66,6 +67,7 @@
 								
 						<td><g:link action="show" id="${folioFiscalInstance.id}">${fieldValue(bean: folioFiscalInstance, field: "anoAprobacion")}</g:link></td>
 					
+						<td>${fieldValue(bean: folioFiscalInstance, field: "serie")}</td>
 						<td><g:formatDate date="${folioFiscalInstance.asignacion}" /></td>
 					
 						<td>${fieldValue(bean: folioFiscalInstance, field: "folio")}</td>

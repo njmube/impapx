@@ -54,8 +54,10 @@ class RequisicionDetController {
     def create() {
 		switch (request.method) {
 		case 'GET':
-			def det=RequisicionDet.get(params.id)
-        	[requisicionDetInstance: det,requisicionInstance:det.requisicion]
+			//def det=RequisicionDet.get(params.id)
+			def requisicion=Requisicion.get(params.requisicionId)
+        	//[requisicionDetInstance: det,requisicionInstance:det.requisicion]
+			[requisicionDetInstance: new RequisicionDet(params),requisicionInstance:requisicion]
 			break
 		case 'POST':
 			/*
