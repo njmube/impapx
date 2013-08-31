@@ -40,6 +40,7 @@
 					<f:field property="comision" >
 						<g:textField name="comision" readOnly="true" value="${comisionInstance.comision}"/>
 					</f:field>
+					<f:field property="tc" input-class="input-xxlarge" input-readOnly="true"/>
 					<f:field property="impuestoTasa" label="Tasa de impuesto(%)" input-class="porcentField" input-readOnly="true"/>
 					<f:field property="impuesto" input-class="moneyField" input-readOnly="true"/>
 					<f:field property="referenciaBancaria" input-class="input-xxlarge" input-readOnly="true"/>

@@ -28,11 +28,12 @@ class ComisionController {
         	[comisionInstance: new Comision(params)]
 			break
 		case 'POST':
-			 
+			 println 'Alta de comision '+params
 	        def comisionInstance = new Comision(params)
 			
-			if(!comisionInstance.cuenta.moneda==MonedaUtils.PESOS){
+			if(comisionInstance.cuenta.moneda!=MonedaUtils.PESOS){
 				// Pendiente hasta tener el bean de TipoDeCambio
+				/*
 				def fecha=comisionInstance.fecha
 				def tipoDeCambio=TipoDeCambio.findByFechaAndMonedaOrigenAndMonedaFuenta(
 						fecha
@@ -42,7 +43,7 @@ class ComisionController {
 					flash.message="No existe tipo de cambio registrado para la fecha: "+fecha+ " debe solicitar que se registre para poder proceeder"
 					render view: 'create', model: [comisionInstance: comisionInstance]
 					return
-				}
+				}¡*/
 			}else{
 				comisionInstance.tc=1
 			}

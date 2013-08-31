@@ -46,7 +46,9 @@
 	<parameter name="FECHA" isForPrompting="true" class="java.lang.String"/>
 	<parameter name="FOLIO" isForPrompting="true" class="java.lang.String"/>
 	<parameter name="SERIE" isForPrompting="true" class="java.lang.String"/>
-	<parameter name="CONDICIONES_PAGO" isForPrompting="true" class="java.lang.String"/>
+	<parameter name="CONDICIONES_PAGO" isForPrompting="true" class="java.lang.String">
+		<defaultValueExpression ><![CDATA["PAGO EN UNA SOLA EXHIBICION"]]></defaultValueExpression>
+	</parameter>
 	<parameter name="METODO_PAGO" isForPrompting="true" class="java.lang.String"/>
 	<parameter name="IMPORTE_BRUTO" isForPrompting="true" class="java.lang.String"/>
 	<parameter name="DESCUENTOS" isForPrompting="true" class="java.lang.String"/>
@@ -460,6 +462,21 @@
 		</pageHeader>
 		<columnHeader>
 			<band height="233"  isSplitAllowed="true" >
+				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="0"
+						y="3"
+						width="242"
+						height="68"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="textField-146"/>
+					<box></box>
+					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="50" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<textFieldExpression   class="java.lang.String"><![CDATA[$P{EMISOR_RFC}.equals( "PIM050124GY7" ) ? "P A P E R" : "I M P A P" ]]></textFieldExpression>
+				</textField>
 				<rectangle>
 					<reportElement
 						mode="Transparent"
@@ -1012,46 +1029,6 @@
 						<font fontName="Arial" pdfFontName="Times-Roman" isBold="false"/>
 					</textElement>
 				<text><![CDATA[RECEPTOR]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						mode="Transparent"
-						x="0"
-						y="3"
-						width="242"
-						height="68"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="staticText-190"/>
-					<box>					<topPen lineWidth="0.0"/>
-					<leftPen lineWidth="0.0"/>
-					<bottomPen lineWidth="0.0"/>
-					<rightPen lineWidth="0.0"/>
-</box>
-					<textElement textAlignment="Left" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="50" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
-					</textElement>
-				<text><![CDATA[IMPAP]]></text>
-				</staticText>
-				<staticText>
-					<reportElement
-						mode="Transparent"
-						x="174"
-						y="18"
-						width="69"
-						height="36"
-						forecolor="#000000"
-						backcolor="#FFFFFF"
-						key="staticText-191"/>
-					<box>					<topPen lineWidth="0.0"/>
-					<leftPen lineWidth="0.0"/>
-					<bottomPen lineWidth="0.0"/>
-					<rightPen lineWidth="0.0"/>
-</box>
-					<textElement textAlignment="Left" verticalAlignment="Bottom" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica-Bold" size="6" isBold="true" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
-					</textElement>
-				<text><![CDATA[S. A.   DE   C. V.]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
