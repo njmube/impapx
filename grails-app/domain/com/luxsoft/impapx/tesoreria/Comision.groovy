@@ -62,7 +62,7 @@ class Comision {
 			,fecha:this.fecha
 			,moneda:this.cuenta.moneda
 			,tc:this.tc
-			,importe:getComisionMN().abs()*-1.0
+			,importe:comision.abs()*-1.0
 			,ingreso:false
 			,tipo:'TRANSFERENCIA'
 			,origen:'TESORERIA'
