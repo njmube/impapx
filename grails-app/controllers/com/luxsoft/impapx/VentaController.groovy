@@ -160,7 +160,7 @@ class VentaController {
 			  */
 		def contenedores=DistribucionDet.executeQuery("\
 			select distinct(d.contenedor) from EmbarqueDet d \
-			 where d.precioDeVenta>0\
+			 where d.precioDeVenta>=0\
 			 and upper(d.contenedor) like ?\
 			 and d.pedimento!=null \
 			 and d not in(select x.embarque from VentaDet x )\
@@ -175,7 +175,9 @@ class VentaController {
 	def agregarContenedor(long ventaId,String contenedor){
 		try {
 			def venta=ventaService.agregarContenedor(ventaId, contenedor)
-			render template:"partidas",model:[partidas:venta.partidas]
+			venta=Venta.findById(venta.id,[fetch:[partidas:'select']])
+			//render template:"partidas",model:[partidas:venta.partidas]
+			render template:"partidas",model:[partidas:venta.partidas,ventaInstance:venta]
 		} catch (VentaException e) {
 			flash.gridMessage=e.message
 			def partidas=VentaDet.findAll("from VentaDet d where d.venta.id=?",[e.venta.id])

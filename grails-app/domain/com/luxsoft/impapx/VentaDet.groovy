@@ -1,5 +1,9 @@
 package com.luxsoft.impapx
 
+
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 class VentaDet {
 	
 	
@@ -28,7 +32,8 @@ class VentaDet {
     static constraints = {
 		producto(nullable:false)
 		cantidad(nullable:false,scale:3)
-		precio(nullable:false,scale:2,validator:{return it>0})
+		//precio(nullable:false,scale:2,validator:{return it>0})
+		precio(nullable:false,scale:2)
 		importe(nullable:false,scale:2)
 		descuentos(nullable:false,scale:2)
 		subtotal(nullable:false,scale:2)
@@ -60,5 +65,29 @@ class VentaDet {
 	
 	def BigDecimal getCantidadEnUnidad(){
 		return cantidad/producto.unidad.factor
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(! (obj.instanceOf(Producto)) )
+			return false
+		if(this.is(obj))
+			return true
+		def eb=new EqualsBuilder()
+		eb.append(producto, obj.producto)
+		eb.append(cantidad, obj.cantidad)
+		eb.append(cantidad, obj.precio)
+		eb.append(comentario, obj.comentario)
+		return eb.isEquals()
+	}
+	
+	@Override
+	public int hashCode() {
+		def hcb=new HashCodeBuilder(17,35)
+		hcb.append(producto)
+		hcb.append(cantidad)
+		hcb.append(precio)
+		hcb.append(comentario)
+		return hcb.toHashCode()
 	}
 }

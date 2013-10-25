@@ -49,7 +49,7 @@
 					<td><g:formatNumber number="${row.kilos}" format="###,###,###.###"/></td>
 					<td><g:formatNumber number="${row.cantidad}" format="###,###,###.###"/></td>
 					<td><lx:moneyFormat number="${row.precio}"/> </td>
-					<td><lx:moneyFormat number="${row.importe}"/> </td>
+					<td><lx:moneyFormat number="${row?.importe}"/> </td>
 					<td><lx:moneyFormat number="${row.descuentos}"/> </td>
 					<td><lx:moneyFormat number="${row.subtotal}"/> </td>
 				</tr>
@@ -66,7 +66,7 @@
 				<th></th>
 				<th></th>
 				<th>Importe</th>
-				<th><lx:moneyFormat number="${ventaInstance.importe }"/> </th>
+				<th><lx:moneyFormat number="${ventaInstance?.importe }"/> </th>
 			</tr>
 			<tr>
 				<th></th>
