@@ -5,7 +5,8 @@ class SaldoPorCuentaContableService {
     def actualizarSaldos(int year,int mes){
 		
 		def cuentas=CuentaContable.findAllByDetalle('false')
-		println 'cuentas registradas: '+cuentas
+		//println 'cuentas registradas: '+cuentas
+		println 'Actualizando saldos para cuentas en el periodo: '+year+'/'+mes
 		cuentas.each{ c->
 			
 			c.subCuentas.each{
@@ -19,11 +20,19 @@ class SaldoPorCuentaContableService {
 	}
 	
 	def actualizarSaldo(int year,int mes, def cuenta){
+		println 'Mes :'+mes+ 'Year: '+year
 		def calendar=Calendar.getInstance()
-		calendar.set(Calendar.YEAR, year)
 		calendar.set(Calendar.MONTH,mes-1)
+		calendar.set(Calendar.YEAR, year)
+		calendar.set(Calendar.DATE,1)
+		//calendar.setTime(new Date(2013,8,1))
+		
+		
+		
 		
 		def fecha=calendar.getTime().inicioDeMes()
+		//def fecha=new Date(2013,8,1)
+		println 'Actualizando saldo para cuenta '+cuenta+' Per:'+mes+' /'+year+ 'icio de mes: '+fecha
 		if(cuenta.detalle){
 			
 			//println 'Actualizando saldo para cuenta: '+cuenta
@@ -32,7 +41,7 @@ class SaldoPorCuentaContableService {
 			def row=PolizaDet.executeQuery("select sum(d.debe),sum(d.haber) from PolizaDet d where d.cuenta=? and year(d.poliza.fecha)=? and month(d.poliza.fecha)=?"
 				,[cuenta,year,mes])
 			
-			//println 'Saldo inicial: '+saldoInicial.get(0)
+			println 'Saldo inicial: '+saldoInicial.get(0)
 			def debe=row.get(0)[0]?:0.0
 			
 			def haber=row.get(0)[1]?:0.0
@@ -43,9 +52,10 @@ class SaldoPorCuentaContableService {
 			saldo.debe=debe
 			saldo.haber=haber
 			saldo.saldoFinal=saldo.saldoInicial+debe-haber
-			saldo.save(failOnError:true)
+			def res=saldo.save(failOnError:true)
+			println res
 		}else{
-			println 'Actualizando saldo para cuenta de mayor: '+cuenta
+			//println 'Actualizando saldo para cuenta de mayor: '+cuenta
 			def saldoInicial=PolizaDet.executeQuery("select sum(d.debe-d.haber) from PolizaDet d where d.cuenta.padre=? and date(d.poliza.fecha)<?",[cuenta,fecha])
 		
 			def row=PolizaDet.executeQuery("select sum(d.debe),sum(d.haber) from PolizaDet d where d.cuenta.padre=? and year(d.poliza.fecha)=? and month(d.poliza.fecha)=?"

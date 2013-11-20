@@ -67,9 +67,13 @@ class PolizaDeEgresosController {
 				def tc=0
 				
 				//NUEVO
+				//System.out.println("Localizando embarqueDet de factura:******************************************"+fac.id);
 				def embarqueDet=EmbarqueDet.find("from EmbarqueDet x where x.factura=?",[fac])
+				if(embarqueDet==null) 
+					throw new RuntimeException("La factura ${fac} (${fac.proveedor.nombre}) no esta relacionada en algun embarque por lo tanto no se puede acceder al pedimento ")
 				def pedimento=embarqueDet.pedimento
-				System.out.println("*********************************************************"+pedimento?.fecha);
+				
+					
 				if(!pedimento){
 				
 					def fechaTc=egreso.fecha-1
@@ -420,30 +424,34 @@ class PolizaDeEgresosController {
 			
 		   }
 			
-			//IETU
-			poliza.addToPartidas(
-				cuenta:cuentaCargo,
-				debe:ietu,
-				haber:0.0,
-				asiento:asiento,
-				descripcion:"$fp-$egreso.referenciaBancaria $req.proveedor",
-				referencia:"$egreso.referenciaBancaria"
-				,fecha:poliza.fecha
-				,tipo:poliza.tipo
-				,entidad:'MovimientoDeCuenta'
-				,origen:egreso.id)
+			if(c!=null && c.tipo!='HONORARIOS AL CONSEJO ADMON'){
+				//IETU
+				poliza.addToPartidas(
+					cuenta:cuentaCargo,
+					debe:ietu,
+					haber:0.0,
+					asiento:asiento,
+					descripcion:"$fp-$egreso.referenciaBancaria $req.proveedor",
+					referencia:"$egreso.referenciaBancaria"
+					,fecha:poliza.fecha
+					,tipo:poliza.tipo
+					,entidad:'MovimientoDeCuenta'
+					,origen:egreso.id)
+				
+				poliza.addToPartidas(
+					cuenta:cuentaAbono,
+					debe:0.0,
+					haber:ietu,
+					asiento:asiento,
+					descripcion:"$fp-$egreso.referenciaBancaria $req.proveedor",
+					referencia:"$egreso.referenciaBancaria"
+					,fecha:poliza.fecha
+					,tipo:poliza.tipo
+					,entidad:'MovimientoDeCuenta'
+					,origen:egreso.id)
+			}
 			
-			poliza.addToPartidas(
-				cuenta:cuentaAbono,
-				debe:0.0,
-				haber:ietu,
-				asiento:asiento,
-				descripcion:"$fp-$egreso.referenciaBancaria $req.proveedor",
-				referencia:"$egreso.referenciaBancaria"
-				,fecha:poliza.fecha
-				,tipo:poliza.tipo
-				,entidad:'MovimientoDeCuenta'
-				,origen:egreso.id)
+			
 			
 			if(c!=null && c.tipo=='SEGUROS Y FIANZAS'){
 				//Amorti de activo diferido
@@ -595,9 +603,8 @@ class PolizaDeEgresosController {
 					,fecha:poliza.fecha
 					,tipo:poliza.tipo
 					,entidad:'PagoProveedor'
-					,origen:pago.id)
-				
-			
+					,origen:pago.id)				
+
 				//IETU
 				poliza.addToPartidas(
 					cuenta:CuentaContable.buscarPorClave("900-0002"),
@@ -622,6 +629,7 @@ class PolizaDeEgresosController {
 					,tipo:poliza.tipo
 					,entidad:'MovimientoDeCuenta'
 					,origen:egreso.id)
+		
 			}
 			
 			

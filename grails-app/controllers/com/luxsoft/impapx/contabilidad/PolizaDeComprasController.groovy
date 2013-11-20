@@ -310,7 +310,9 @@ class PolizaDeComprasController {
 			
 			clave="109-"+pedimento.proveedor.subCuentaOperativa
 			cuenta=CuentaContable.findByClave(clave)
-			
+			if(cuenta==null){
+				throw new RuntimeException("No existe la sub cuenta  $clave")
+			}
 			poliza.addToPartidas(
 				cuenta:cuenta,
 				debe:0.0,
