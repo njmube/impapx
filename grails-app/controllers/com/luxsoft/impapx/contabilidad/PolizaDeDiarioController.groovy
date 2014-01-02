@@ -76,10 +76,10 @@ class PolizaDeDiarioController {
 		procesarCobroSaldoDeudor(poliza, dia)
 		procesarCompraDeMonedaExtranjera(poliza, dia)
 		procesarComisionesBancarias(poliza, dia)
-		procesarTraspasosBancarios(poliza, dia)
 		
-		procesarInversionesAlta(poliza, dia)
-		procesarInversionesRetorno(poliza, dia)
+		procesarTraspasosBancarios(poliza, dia)
+		//procesarInversionesAlta(poliza, dia)
+		//procesarInversionesRetorno(poliza, dia)
 		procesarVariacionCambiariaBancos(poliza, dia)
 		procesarVariacionCambiariaProveedores(poliza, dia)
 		
@@ -452,40 +452,42 @@ class PolizaDeDiarioController {
 		traspasos.each{ traspaso ->
 			
 			
+			if(traspaso.comentario!='RE-INVERSION AUTOMATICA'){
+				//Cargo a la cuenta destino
+				def cuentaDeBanco=traspaso.cuentaDestino
+				if(cuentaDeBanco.cuentaContable==null)
+					throw new RuntimeException("Cuenta de banco sin cuenta contable asignada: $cuentaDeBanco")
+				
+				poliza.addToPartidas(
+					cuenta:cuentaDeBanco.cuentaContable,
+					debe:traspaso.importe.abs(),
+					haber:0.0,
+					asiento:asiento,
+					descripcion:"$traspaso.cuentaDestino ",
+					referencia:traspaso.comentario,
+					,fecha:poliza.fecha
+					,tipo:poliza.tipo
+					,entidad:'Traspaso'
+					,origen:traspaso.id)
+				
+				//Abono a la cuenta origen
+				cuentaDeBanco=traspaso.cuentaOrigen
+				if(cuentaDeBanco.cuentaContable==null)
+					throw new RuntimeException("Cuenta de banco sin cuenta contable asignada: $cuentaDeBanco")
+				
+				poliza.addToPartidas(
+					cuenta:cuentaDeBanco.cuentaContable,
+					debe:0.0,
+					haber:traspaso.importe.abs(),
+					asiento:asiento,
+					descripcion:"$traspaso.cuentaOrigen  ",
+					referencia:traspaso.comentario,
+					,fecha:poliza.fecha
+					,tipo:poliza.tipo
+					,entidad:'Traspaso'
+					,origen:traspaso.id)
+			}
 			
-			//Cargo a la cuenta destino
-			def cuentaDeBanco=traspaso.cuentaDestino
-			if(cuentaDeBanco.cuentaContable==null)
-				throw new RuntimeException("Cuenta de banco sin cuenta contable asignada: $cuentaDeBanco")
-			
-			poliza.addToPartidas(
-				cuenta:cuentaDeBanco.cuentaContable,
-				debe:traspaso.importe.abs(),
-				haber:0.0,
-				asiento:asiento,
-				descripcion:"$traspaso.cuentaDestino ",
-				referencia:traspaso.comentario,
-				,fecha:poliza.fecha
-				,tipo:poliza.tipo
-				,entidad:'Traspaso'
-				,origen:traspaso.id)
-			
-			//Abono a la cuenta origen
-			cuentaDeBanco=traspaso.cuentaOrigen
-			if(cuentaDeBanco.cuentaContable==null)
-				throw new RuntimeException("Cuenta de banco sin cuenta contable asignada: $cuentaDeBanco")
-			
-			poliza.addToPartidas(
-				cuenta:cuentaDeBanco.cuentaContable,
-				debe:0.0,
-				haber:traspaso.importe.abs(),
-				asiento:asiento,
-				descripcion:"$traspaso.cuentaOrigen  ",
-				referencia:traspaso.comentario,
-				,fecha:poliza.fecha
-				,tipo:poliza.tipo
-				,entidad:'Traspaso'
-				,origen:traspaso.id)
 			
 		}
 	}
