@@ -50,3 +50,9 @@
  		Genérica
  	</g:link>
  </li>
+ <li>
+ 	<g:link controller="polizaDeProvisionAnual" action="list">
+ 		<i class="icon-list"></i>
+ 		Prov Anual (Compras)
+ 	</g:link>
+ </li>

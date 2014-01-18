@@ -10,9 +10,11 @@ class FacturaDeImportacion extends CuentaPorPagar{
 	
 	Pedimento pedimento
 	Date fechaBL
+	Integer provisionada
 
     static constraints = {
 		pedimento(nullable:true)
+		provisionada(nullable:true)
     }
 	
 	def beforeUpdate() {

@@ -127,7 +127,7 @@ class SaldoDeCuentaController {
 		def fechaFin=periodo.finDeMes()
 		
 		def saldoInicial=MovimientoDeCuenta.executeQuery("select sum(x.importe) from MovimientoDeCuenta x where x.cuenta=? and date(fecha) < ?"
-			,[cuenta,fechaIni])[0]?:00
+			,[cuenta,fechaIni])[0]?:0.0
 		//Calculando los movimientos del mes
 		def hql="select sum(x.importe) from MovimientoDeCuenta x where x.cuenta=? and date(x.fecha) between ? and ? and ingreso=?  "
 		def ingresos=MovimientoDeCuenta.executeQuery(hql,[cuenta,fechaIni,fechaFin,true])[0]?:00
