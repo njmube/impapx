@@ -55,6 +55,7 @@
 				</ul>
 				<div class="tab-content">
 					<div class="tab-pane " id="venta">
+						
 						<g:render template="editForm" bean="${ventaInstance}"/>
 					</div>
 					<div class="tab-pane active" id="partidas">

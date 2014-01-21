@@ -47,6 +47,7 @@
 				  		<%-- <li><g:link controller="requisicion" action="list">Requisiciones</g:link></li> --%>
 				  		<li><g:link controller="distribucion" action="list">Distribución</g:link></li>
 				  		<li><g:link controller="venta" action="list">Ventas</g:link></li>
+				  		<li><g:link controller="cfdi" action="list">CFDIs</g:link></li>
 				  		<li><g:link controller="notaDeCargo" action="list">Notas de Cargo</g:link></li>
 				  		<li><g:link controller="cuentasPorCobrar" action="index">C x C</g:link></li>
 				  		<li><g:link controller="anticipo" action="index">Anticipos</g:link></li>

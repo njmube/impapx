@@ -10,6 +10,7 @@ import org.codehaus.groovy.grails.web.json.JSONArray
 import org.springframework.dao.DataIntegrityViolationException
 
 import com.luxsoft.cfd.ComprobanteFiscal;
+import com.luxsoft.cfdi.Cfdi;
 
 
 
@@ -71,22 +72,23 @@ class VentaController {
             redirect action: 'list'
             return
         }
-
-        [ventaInstance: ventaInstance]
+		def cfdi=Cfdi.findByOrigen(params.id.toString())
+        [ventaInstance: ventaInstance,cfdi:cfdi]
     }
 
     def edit() {
 		switch (request.method) {
 		case 'GET':
-	        
+			
 			def ventaInstance=Venta.findById(params.id,[fetch:[partidas:'select']])
 	        if (!ventaInstance) {
 	            flash.message = message(code: 'default.not.found.message', args: [message(code: 'venta.label', default: 'Venta'), params.id])
 	            redirect action: 'list'
 	            return
 	        }
-
-	        [ventaInstance: ventaInstance,partidas:ventaInstance.partidas]
+			def cfdi=Cfdi.findByOrigen(params.id.toString())
+			println 'Cfdi localizado: '+cfdi
+	        [ventaInstance: ventaInstance,partidas:ventaInstance.partidas,cfdi:cfdi]
 			break
 		case 'POST':
 	        def ventaInstance = Venta.findById(params.id,[fetch:[partidas:'select']])

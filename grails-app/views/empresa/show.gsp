@@ -1,5 +1,6 @@
 
 <%@ page import="com.luxsoft.impapx.Empresa" %>
+<%@ page import="com.luxsoft.cfdi.CFDIUtils" %>
 <!doctype html>
 <html>
 	<head>
@@ -68,6 +69,19 @@
 							<dd><g:fieldValue bean="${empresaInstance}" field="direccion"/></dd>
 						
 					</g:if>
+					
+					<g:if test="${empresaInstance}">
+						<dt>Certificado digital</dt>
+							<dd>${certificadoDigital?.subjectX500Principal}</dd>
+						
+					</g:if>
+					
+					<g:if test="${empresaInstance}">
+						
+						<dt>Llave privada</dt>
+							<dd>${llavePrivada}</dd>
+					</g:if>
+				
 				
 				</dl>
 

@@ -30,18 +30,29 @@ grails.project.dependency.resolution = {
         // uncomment these (or add new ones) to enable remote dependency resolution from public Maven repositories
         mavenRepo "http://snapshots.repository.codehaus.org"
         mavenRepo "http://repository.codehaus.org"
-		
+		mavenRepo "http://luxsoftnet.com/m2/repository"
+		mavenRepo "https://repository.jboss.org/nexus/"
+		mavenRepo "http://repo.spring.io/milestone/"
         //mavenRepo "http://download.java.net/maven/2/"
         //mavenRepo "http://repository.jboss.com/maven2/"
     }
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
 
-        runtime 'mysql:mysql-connector-java:5.1.20'
+        //runtime 'mysql:mysql-connector-java:5.1.20'
+		runtime 'mysql:mysql-connector-java:5.1.27'
 		compile 'org.apache.xmlbeans:xmlbeans:2.4.0'
 		compile 'mx.gob.sat:cfd:2.2'
 		compile 'org.bouncycastle:bcprov-jdk14:1.45'
 		test "org.spockframework:spock-grails-support:0.7-groovy-2.0"
+		
+		compile 'org.apache.xmlbeans:xmlbeans:2.4.0'
+		compile 'com.luxsoft:cfdi:2.3'
+		compile 'axis:axis:1.4'
+		compile 'com.edicom.ediwinws:cfdiClient:1.0'
+		compile 'org.apache.commons:commons-compress:1.1'
+		compile 'net.glxn:qrgen:1.2'
+		
     }
 
     plugins {

@@ -1,4 +1,5 @@
 import com.luxsoft.impapx.sec.*
+import org.bouncycastle.jce.provider.BouncyCastleProvider
 import util.Rounding;
 
 class BootStrap {
@@ -112,6 +113,7 @@ class BootStrap {
 		}
 		if(!conta3.authorities.contains(role5))
 			UserRole.create(conta3, role5, true)
+		java.security.Security.addProvider(new BouncyCastleProvider())
 		
     }
 	

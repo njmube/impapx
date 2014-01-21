@@ -2,6 +2,8 @@ package com.luxsoft.impapx
 
 import org.springframework.dao.DataIntegrityViolationException
 
+import com.luxsoft.cfdi.CFDIUtils;
+
 class EmpresaController {
 
     static allowedMethods = [create: ['GET', 'POST'], edit: ['GET', 'POST'], delete: 'POST']
@@ -42,8 +44,9 @@ class EmpresaController {
             redirect action: 'list'
             return
         }
-
-        [empresaInstance: empresaInstance]
+		def certificadoDigital=CFDIUtils.leerCertificado(empresaInstance)
+		def pk=CFDIUtils.leerLlavePrivada(empresaInstance)
+        [empresaInstance: empresaInstance,certificadoDigital:certificadoDigital,llavePrivada:pk]
     }
 
     def edit() {

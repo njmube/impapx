@@ -42,7 +42,7 @@ environments {
 			username = 'root'
 			password = 'sys'
 			//url = 'jdbc:mysql://localhost/paperx_dev?autoReconnect=true'
-			url = 'jdbc:mysql://localhost/impapx_dev?autoReconnect=true'
+			url = 'jdbc:mysql://localhost/impapx?autoReconnect=true'
 			pooled = true
 			properties {
 			   maxActive = 3
@@ -70,7 +70,7 @@ environments {
 			driverClassName = 'com.mysql.jdbc.Driver'
 			username = 'root'
 			password = 'sys'
-			url = 'jdbc:mysql://10.10.1.228/produccion'
+			url = 'jdbc:mysql://localhost/produccion'
 			dbCreate = ''
 			readOnly=true
 			properties {

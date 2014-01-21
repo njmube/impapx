@@ -1,5 +1,7 @@
 <%@ page import="com.luxsoft.impapx.Venta"%>
+<%@ page import="com.luxsoft.cfdi.Cfdi"%>
 <g:set var="mnEnabled" value="${ventaInstance.moneda.currencyCode=='MXN'}"/>
+
 <fieldset>
 	<g:form class="form-horizontal" action="edit" id="${ventaInstance.id}">
 		<fieldset>
@@ -18,15 +20,26 @@
 					<i class="icon-ok icon-white"></i>
 					<g:message code="default.button.update.label" default="Actualizar" />
 				</button>
-				<g:link  action="facturar" class="btn btn-info" 
-					onclick="return myConfirm2(this,'Facturar venta: ${ventaInstance.id}','Facturación');"
-					id="${ventaInstance.id}">
-  		 			Facturar
-  				</g:link>
-				<button class="btn btn-danger" type="submit" name="_action_delete">
-					<i class="icon-trash icon-white"></i>
-					<g:message code="default.button.delete.label" default="Delete" />
-				</button>
+				<g:if test="${cfdi}" >
+					<g:link controller="cfdi" action="show" class="btn  btn-success" id="${cfdi?.id}">
+						CFDI :${cfdi.id}   UUID: ${cfdi.uuid?:'Por Timbrar' }
+					</g:link>
+				</g:if>
+				<g:else>
+					<g:link  controller="cfdi" action="facturar" class="btn btn-info" 
+						onclick="return myConfirm2(this,'Facturar venta: ${ventaInstance.id}','Facturación');"
+						id="${ventaInstance.id}">
+  		 				Facturar
+  					</g:link>
+  					
+  					<button class="btn btn-danger" type="submit" name="_action_delete">
+						<i class="icon-trash icon-white"></i>
+						<g:message code="default.button.delete.label" default="Delete" />
+					</button>
+  					
+				</g:else>
+				
+				
 			</div>
 		</fieldset>
 	</g:form>
