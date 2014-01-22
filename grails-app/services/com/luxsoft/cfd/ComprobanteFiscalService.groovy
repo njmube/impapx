@@ -51,7 +51,8 @@ class ComprobanteFiscalService {
 
 	
     def generarComprobanteFiscalDigital(long ventaId) {
-		
+		throw new RuntimeException("YA NO SE PERMITE GENERAR CFD'S")
+		/*
 		def venta=Venta.findById(ventaId,[fetch:[partidas:'select']])
 		System.out.println("generando comprobante fiscal para la venta "+ventaId);
 		if(venta.cfd){
@@ -206,6 +207,7 @@ class ComprobanteFiscalService {
 		
 		
 		def res=['venta':venta,'cfd':cfd]
+		*/
     }
 	
 	def generarConceptos(Comprobante cfd, Venta venta){

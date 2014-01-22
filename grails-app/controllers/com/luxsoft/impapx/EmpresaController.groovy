@@ -44,9 +44,9 @@ class EmpresaController {
             redirect action: 'list'
             return
         }
-		def certificadoDigital=CFDIUtils.leerCertificado(empresaInstance)
-		def pk=CFDIUtils.leerLlavePrivada(empresaInstance)
-        [empresaInstance: empresaInstance,certificadoDigital:certificadoDigital,llavePrivada:pk]
+		//def certificadoDigital=CFDIUtils.leerCertificado(empresaInstance)
+		//def pk=CFDIUtils.leerLlavePrivada(empresaInstance)
+        [empresaInstance: empresaInstance,certificadoDigital:empresaInstance.certificado,llavePrivada:empresaInstance.privateKey]
     }
 
     def edit() {

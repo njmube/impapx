@@ -26,7 +26,7 @@
 					<thead>
 						<tr>
 							<g:sortableColumn property="id"    title="Id"/>
-							<th class="Documento">Documento</th>
+							<th class="Documento">Documento2</th>
 							<th class="header">Fecha</th>
 							<th class="header">Vencimiento</th>
 							<th class="header">Moneda</th>
@@ -37,8 +37,8 @@
 					</thead>
 					<tbody>
 						<g:each in="${facturas}" var="row">
-						<tr id="${fieldValue(bean:row, field:"id")}">	
-							<td>${fieldValue(bean: row, field: "id")}</td>
+						<tr id="${row.id}">	
+							<td>${row.id}</td>
 							<td>${fieldValue(bean: row, field: "cfd.folio")}</td>
 							<td>${fieldValue(bean: row, field: "cfd.fecha")}</td>
 							<td><lx:shortDate date="${row.vencimiento }"/></td>

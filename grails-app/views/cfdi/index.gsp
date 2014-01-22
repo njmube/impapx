@@ -8,7 +8,7 @@
 	</head>
 	<body>
 		<content tag="header">
-			<h3>Reporte mensual de CFDs : ${session.periodoContable}</h3>
+			<h3>Lista de CFDI's : ${session.periodoContable}</h3>
  		</content>
  		
  		<content tag="document">

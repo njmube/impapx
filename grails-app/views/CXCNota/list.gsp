@@ -67,45 +67,18 @@
  
  <r:script>
  $(function(){
- 	var oTable=$("#notasGrid").dataTable({
-		"sDom": "<'row'<'span4'f>r>t<'row'<'span6'i><'span6'p>>",
+	$("#notasGrid").dataTable({
+		aLengthMenu: [[100, 150, 200, 250, -1], [100, 150, 200, 250, "Todos"]],
+        iDisplayLength: 50,
         "oLanguage": {
       		"sUrl":"<g:resource dir="js" file="dataTables.spanish.txt" />"
-    	},
-    	bProcessing: true,
-		bServerSide:false,
-		/*sAjaxSource: '${createLink(controller:'CXCPago',action:'pagosAsJSON')}', 
-		"aoColumns":[
-			{"sName": "id", "sTitle": "Folio",sWidth:"5%", "bSortable": "true"}
-			,{"sName": "cliente", "sTitle": "Cliente", "bSortable": "true"}
-			,{"sName": "fecha", "sTitle": "Fecha", "bSortable": "true"}
-			,{"sName": "formaDePago", "sTitle": "F.P", "bSortable": "true"}
-			,{"sName": "moneda", "sTitle": "Mon", "bSortable": "false"}
-			,{"sName": "tc", "sTitle": "TC", "bSortable": "false"}
-			,{"sName": "total", "sTitle": "Total", "bSortable": "false"}
-			,{"sName": "disponible", "sTitle": "Disponible", "bSortable": "false"}
-			],
-		"fnCreatedRow":function(nRow,aData,iDataIndex){
-			$(nRow).attr("id",aData[0]);
-		},
-		"fnRowCallback":function(nRow, aData, iDisplayIndex, iDisplayIndexFull){
-			if(aData[0]){
-				//$('td:eq(0)', nRow).replaceWith( '<td><g:link action="edit" id="">'+$('td:eq(0)', nRow).html()+'</g:link></td>' );
-			}
-		},*/
-		//"bDeferRender": false,
-    	//"bPaginate": false,
-    	"bInfo": false,
-    	iDisplayLength: 1000
+	    },
+    	"aoColumnDefs": [
+        	{ "sType": "numeric","bSortable": true,"aTargets":[0] }
+         ],
+         "bPaginate": false  
 	});
-	
-	$("#refreshBtn").live('click',function(e){
-		oTable.fnReloadAjax();
-	});
-	
- });
- 
- 
+}); 
  </r:script>
 	
 </body>

@@ -84,40 +84,44 @@
 						<dd><g:formatDate date="${cfdiInstance.lastUpdated }" format="dd/MM/yyyy hh:mm"/></dd>
 					</g:if>
 				</dl>
+				
+				<g:if test="${cfdiInstance.uuid }">
+					<g:jasperReport
+						controller="cfdi"
+						action="imprimirCfdi"
+						jasper="CFDI" 
+						format="PDF" 
+						name="">
+				<g:hiddenField name="id" value="${cfdiInstance.id}"/>
+			</g:jasperReport>
+				</g:if>
+		
+		<g:form action="delete" id="${cfdiInstance.id }" method="POST">
+			<fieldset>
+			<div class="">
+				
+				<g:link class="btn btn-info" action="mostrarXml" id="${cfdiInstance.id}">Ver XML</g:link>
+				<g:if test="${cfdiInstance.uuid }">
+					
+					<g:link class="btn btn-success" action="descargarXml" resource="${cfdiInstance}"><i class="icon-download icon-white"></i> Descargar XML</g:link>
+					<g:actionSubmit class="btn btn-danger" action="cancelar" value="${message(code: 'default.button.cancel.label', default: 'Cancelar')}" 
+						onclick="return confirm('${message(code: 'default.button.cancel.confirm.message', default: 'Seguro que desa cancelar?')}');" />
+				</g:if>
+				<g:else>
+					<g:link class="btn btn-primary" action="timbrar" id="${cfdiInstance.id}"><i class="icon-qrcode icon-white"></i> Timbrar</g:link>
+					<g:actionSubmit class="btn btn-danger" action="delete" value="Eliminar" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
+				</g:else>
+			</div>
+			</fieldset>
+		</g:form>				
+				
+				
 			</div>
 			
 		</div>
-	
-	
 		
-		<div id="show-cfdi" class="content scaffold-show" role="main">
-			
-			<fieldset class="buttons">
-				<g:jasperReport
-					controller="cfdi"
-					action="imprimirCfdi"
-					jasper="CFDI" 
-					format="PDF" 
-					name="Imprimir CFDI">
-							<g:hiddenField name="id" value="${cfdiInstance.id}"/>
-				</g:jasperReport>
-			</fieldset>
-			<g:form url="[resource:cfdiInstance, action:'delete']" method="DELETE">
-				<fieldset class="buttons">
-					<g:link class="edit" action="timbrar" resource="${cfdiInstance}">Timbrar</g:link>
-					<g:link class="edit" action="mostrarXml" resource="${cfdiInstance}">XML</g:link>
-					<g:link class="create" action="descargarXml" resource="${cfdiInstance}">Descargar XML</g:link>
-					<g:if test="${cfdiInstance.uuid }">
-						<g:actionSubmit class="delete" action="cancelar" value="${message(code: 'default.button.cancel.label', default: 'Cancelar')}" 
-							onclick="return confirm('${message(code: 'default.button.cancel.confirm.message', default: 'Seguro que desa cancelar?')}');" />
-					</g:if>
-					<g:else>
-						<g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
-					</g:else>
-					
-				</fieldset>
-			</g:form>
-		</div>
+		
+		
 		
 		
 	</body>

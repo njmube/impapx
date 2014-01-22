@@ -187,12 +187,12 @@
 	<div class="modal-body">
 		<g:form controller="venta" action="cancelar">
 			<g:hiddenField name="id" value="${ventaInstance?.id}" />
-			<input id="comentario" type="text" name="comentario" value="" placeholder="Comentario de cancelación" class="input-xxlarge" required="true">
-			<div class="form-actions">	
-				<button class="btn btn-danger" type="submit" name="cancelar"
-						<i class="icon-trash icon-white"></i>
-						<g:message code="default.button.cancel.label" default="Cancelar" />
-				</button>
+			<input id="comentario" type="text" name="comentario" value="${ventaInstance?.comentario}" placeholder="Comentario de cancelación" class="input-xxlarge" required="true">
+			<div class="form-actions">
+				<button class="btn btn-danger" type="submit" name="cancelar">
+					<i class="icon-trash icon-white"></i>
+					<g:message code="default.button.cancel.label" default="Cancelar" />
+				</button>	
 			</div>
 		</g:form>
 	</div>

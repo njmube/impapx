@@ -97,7 +97,7 @@ class CFDIUtils {
 		return receptor
 	}
 	
-	
+	/*
 	static leerCertificado(Empresa empresa){
 		File certificado=new File("web-app/cfd/00001000000202323568.cer")
 		assert certificado.exists(),"No existe el ceertificado de prueba: "+certificado.path
@@ -113,5 +113,6 @@ class CFDIUtils {
 		empresa.llavePrivada=pk.readBytes()
 		return empresa.privateKey
 	}
+	*/
 	
 }

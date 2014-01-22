@@ -10,6 +10,32 @@ import com.luxsoft.cfdi.CfdiTimbrador;
 
 // Place your Spring DSL code here
 beans = {
+	
+	
+	switch(Environment.current){
+		
+		case Environment.PRODUCTION:
+			cfdiTimbrador(CfdiTimbrador){
+				timbradoDePrueba=false
+			}
+			break
+		case Environment.DEVELOPMENT:
+			cfdiTimbrador(CfdiTimbrador){
+			timbradoDePrueba=true
+			}
+			break
+		case Environment.TEST:
+			cfdiTimbrador(CfdiTimbrador){
+				timbradoDePrueba=true
+			}
+		case 'paper':
+			cfdiTimbrador(CfdiTimbrador){
+				timbradoDePrueba=false
+			}
+		
+		
+	}
+	
 	customPropertyEditorRegistar(util.CustomPropertyEditorRegistar){
 		dateEditor={util.CustomDateEditor e->
 			formats=['dd/MM/yyyy','dd/MM/yy']
@@ -31,27 +57,12 @@ beans = {
 	}
 	
 	cfdiCadenaBuilder(CfdiCadenaBuilder){
-		xsltFile="web-app/sat/cadenaoriginal_3_2.xslt"
+		//xsltFileName="web-app/sat/cadenaoriginal_3_2.xslt"
 	}
 	
 	cfdiSellador(CfdiSellador){
 		cadenaBuilder=ref("cfdiCadenaBuilder")
 	}
-	switch(Environment.current){
-		
-		case Environment.PRODUCTION:
-			cfdiTimbrador(CfdiTimbrador){
-				timbradoDePrueba=false
-			}
-			break
-		case Environment.DEVELOPMENT:
-			cfdiTimbrador(CfdiTimbrador){
-			timbradoDePrueba=true
-		}
-			break
-		
-	}
-	cfdiTimbrador(CfdiTimbrador){
-		timbradoDePrueba=false
-	}
+	
+	
 }

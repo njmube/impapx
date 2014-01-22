@@ -27,7 +27,7 @@
 	</thead>
 	<tbody>
 		<g:each in="${aplicaciones}" var="row">
-			<tr id="${fieldValue(bean:row, field:"id")}">
+			<tr id="${row.id}">
 			    
 				<td><g:link controller="CXCAplicacion" action="edit" id="${row.id}">
 					${fieldValue(bean: row, field: "id")}</g:link>

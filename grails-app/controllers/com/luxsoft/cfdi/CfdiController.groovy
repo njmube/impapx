@@ -40,15 +40,7 @@ class CfdiController {
 		[cfdiInstance:cfdi]
     }
 	
-	def timbrar(){
-		def cfdi=Cfdi.findById(params.id)
-		if(cfdi==null){
-			flash.message = message(code: 'default.not.found.message', args: [message(code: 'cfdiInstance.label', default: 'Cfdi'), params.id])
-            redirect action: "index", method: "GET"
-		}
-		cfdi=cfdiTimbrador.timbrar(cfdi,"PAP830101CR3", "yqjvqfofb")
-		redirect action:'index' 
-	}
+	
 	
     
 	
@@ -63,13 +55,18 @@ class CfdiController {
 	
 	
 	def delete() {
+		//println 'Eliminando CFDI: '+params.id
 		def cfdi=Cfdi.findById(params.id)
 		if(cfdi==null){
 			flash.message = message(code: 'default.not.found.message', args: [message(code: 'cfdiInstance.label', default: 'Cfdi'), params.id])
 			redirect action: "index", method: "GET"
 		}
 		cfdi.delete flush:true
+		flash.message="CFDI: $params.id eliminado exitosamente"
+		redirect action:'index'
 	}
+	
+	
 	
 	def facturar(){
 		println 'Facturando venta: '+params.id
@@ -79,7 +76,21 @@ class CfdiController {
 			redirect controller:'venta',action:'edit',params:params
 		}
 		def cfdi=cfdiService.generarCfdi(venta)
-		render view:'/cfdi/show',model:[cfdi:cfdi]
+		render view:'/cfdi/show',model:[cfdiInstance:cfdi]
+	}
+	
+	def timbrar(){
+		println 'Tratando de timbrar: '+params.id
+		def cfdi=Cfdi.findById(params.id)
+		
+		if(cfdi==null){
+			flash.message = message(code: 'default.not.found.message', args: [message(code: 'cfdiInstance.label', default: 'Cfdi'), params.id])
+			redirect action: "index", method: "GET"
+		}
+		println "Timbrando en ${cfdiTimbrador.timbradoDePrueba? 'En modo de prueba':'En modo real'} el cfdi: $cfdi "
+		
+		cfdi=cfdiTimbrador.timbrar(cfdi,"PAP830101CR3", "yqjvqfofb")
+		render view:'/cfdi/show',model:[cfdiInstance:cfdi]
 	}
 	
 	def imprimirCfdi(){

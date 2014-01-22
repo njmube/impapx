@@ -36,7 +36,7 @@ environments {
 		
 		
 		dataSource {
-			dbCreate = "update"
+			dbCreate = ""
 			dialect = org.hibernate.dialect.MySQLInnoDBDialect
 			driverClassName = 'com.mysql.jdbc.Driver'
 			username = 'root'

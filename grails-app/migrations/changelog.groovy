@@ -29,4 +29,8 @@ databaseChangeLog = {
 
 
 	 */
+
+	//include file: 'add-cfdi-model.groovy'
+
+	//include file: 'add-cfdi-model.groovy'
 }

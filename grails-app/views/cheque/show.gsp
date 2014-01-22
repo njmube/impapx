@@ -81,26 +81,16 @@
 					</g:if>
 				
 				</dl>
-				<%-- 
-				<g:form>
-					<g:hiddenField name="id" value="${chequeInstance?.id}" />
-					<div class="form-actions">
-						
-						<button class="btn btn-danger" type="submit" name="_action_delete">
-							<i class="icon-trash icon-white"></i>
-							<g:message code="default.button.delete.label" default="Delete" />
-						</button>
-					</div>
-				</g:form>
 				
-				<g:if test="${!chequeInstance.fechaImpresion}">
-					
-					<g:jasperReport jasper="${chequeInstance.cuenta.nombre}-Cheque" format="PDF,HTML" name="Imprimir">
+				<g:jasperReport jasper="${chequeInstance.cuenta.nombre}-Cheque" format="PDF" name="Cheque">
 						<g:hiddenField name="ID" value="${chequeInstance.id}"/>
 						<g:hiddenField name="IMPLETRA" value="${importeALetra}"/>
 					</g:jasperReport>
-				</g:if>
-						--%>
+				
+				<g:jasperReport jasper="PolizaCheque" format="PDF" name=" Póliza">
+						<g:hiddenField name="ID" value="${chequeInstance.id}"/>
+						<g:hiddenField name="IMPLETRA" value="${importeALetra}"/>
+					</g:jasperReport>
 								
 
 			</div>

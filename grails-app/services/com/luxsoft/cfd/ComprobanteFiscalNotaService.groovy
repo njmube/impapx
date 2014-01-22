@@ -49,8 +49,11 @@ class ComprobanteFiscalNotaService {
 	//CadenaOriginalBuilder cadenaBuilder=new CadenaOriginalBuilder();
 	def cadenaOriginalBuilder
 
+	def generarComprobanteFiscalDigital(long notaId) {
+		return new RuntimeException("YA NO ES VALIDO INTENTAR GENERAR CFD")
+	}
 	
-    def generarComprobanteFiscalDigital(long notaId) {
+    def generarComprobanteFiscalDigitalOLD(long notaId) {
 		
 		def nota=CXCNota.findById(notaId,[fetch:[partidas:'select']])
 		if(nota.cfd){

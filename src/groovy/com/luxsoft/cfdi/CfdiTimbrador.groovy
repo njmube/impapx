@@ -19,6 +19,7 @@ class CfdiTimbrador {
 	
 	Cfdi timbrar(Cfdi cfdi,String user,String password){
 		try {
+			println 'Timbrando: '+cfdi
 			String nombre=cfdi.xmlName
 			byte[] xml=cfdi.xml
 			assert xml,'El cfdi esta mal generado no contiene datos xml'
@@ -42,11 +43,11 @@ class CfdiTimbrador {
 			cfdi.timbreFiscal=new TimbreFiscal(cfdi.getComprobante())
 			cfdi.uuid=cfdi.timbreFiscal.UUID
 			cfdi.timbrado=df.parse(cfdi.timbreFiscal.FechaTimbrado)
-			cfdi.save(failOnError:true)
+			//cfdi.save(failOnError:true)
 			return cfdi
 		} catch (Exception e) {
 			e.printStackTrace()
-			String msg="Imposible timbrar cfdi $cfdi.id Error: "+ExceptionUtils.getRootCauseMessage(e)
+			String msg="Imposible timbrar cfdi $cfdi.id Error: "+ExceptionUtils.getMessage(e)
 			throw new CfdiException(message:msg,cfdi:cfdi)
 		}
 	}

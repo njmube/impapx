@@ -1,6 +1,7 @@
 package com.luxsoft.impapx
 
 import com.luxsoft.cfd.ComprobanteFiscal;
+import com.luxsoft.cfdi.Cfdi;
 
 import util.Rounding;
 
@@ -73,12 +74,16 @@ class Venta {
 		pagosAplicados formula:'(select ifnull(sum(x.total),0) from CXCAplicacion x where x.factura_id=id)'
 	}
 	
-	static transients = ['saldoActual']
+	static transients = ['saldoActual','cfdi']
 	
 	public BigDecimal getSaldoActual(){
 		def pag=pagosAplicados?:0.0
 		return total-pag
 	}
+	
+	def getCfdi(){
+		return Cfdi.findByOrigen(id)?.id
+	} 
 	
 	def beforeUpdate(){
 		if(tipo=='VENTA'){

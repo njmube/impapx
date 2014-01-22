@@ -19,6 +19,8 @@ class CfdiService {
 	
 	def cfdiSellador
 	
+	def cfdiTimbrador
+	
     def Cfdi generarCfdi(def source) {
 		
 		def empresa=Empresa.last()
@@ -28,8 +30,9 @@ class CfdiService {
 		def ComprobanteDocument document=CfdiConverters.toComprobante(source, empresa)
 		
 		Comprobante comprobante=document.getComprobante()
-		comprobante.setSello(cfdiSellador.sellar(CFDIUtils.leerLlavePrivada(empresa),document))
-		byte[] encodedCert=Base64.encode(CFDIUtils.leerCertificado(empresa).getEncoded())
+		//comprobante.setSello(cfdiSellador.sellar(CFDIUtils.leerLlavePrivada(empresa),document))
+		comprobante.setSello(cfdiSellador.sellar(empresa.privateKey,document))
+		byte[] encodedCert=Base64.encode(empresa.getCertificado().getEncoded())
 		comprobante.setCertificado(new String(encodedCert))
 		
 		XmlOptions options = new XmlOptions()
@@ -45,8 +48,9 @@ class CfdiService {
 		cfdi.setXml(os.toByteArray())
 		cfdi.setXmlName("$cfdi.rfc-$cfdi.serie-$cfdi.folio"+".xml")
 		
-		validarDocumento(document)
-		cfdi.save()
+		validarDocumento(document)		
+		cfdi.save(failOnError:true)
+		cfdi=cfdiTimbrador.timbrar(cfdi,"PAP830101CR3", "yqjvqfofb")
 		return cfdi
     }
 	
