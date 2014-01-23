@@ -79,5 +79,6 @@ grails.project.dependency.resolution = {
 		}
 		runtime ":filterpane:2.1.6"
 		compile ':jquery-date-time-picker:0.1.0'
+		compile ":standalone:1.2.3"
     }
 }

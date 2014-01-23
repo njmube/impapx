@@ -156,3 +156,5 @@ environments {
 		proveedorOrigenParaCompras=42
 	}
 }
+
+grails.plugin.standalone.useJetty = true

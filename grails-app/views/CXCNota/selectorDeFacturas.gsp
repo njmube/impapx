@@ -39,7 +39,7 @@
 						<g:each in="${facturas}" var="row">
 						<tr id="${row.id}">	
 							<td>${row.id}</td>
-							<td>${fieldValue(bean: row, field: "cfd.folio")}</td>
+							<td>${fieldValue(bean: row, field: "factura")}</td>
 							<td>${fieldValue(bean: row, field: "cfd.fecha")}</td>
 							<td><lx:shortDate date="${row.vencimiento }"/></td>
 							<td>${fieldValue(bean: row, field: "moneda")}</td>

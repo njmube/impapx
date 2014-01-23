@@ -18,7 +18,7 @@ class CXCNotaController {
 	def cobranzaService
 	def comprobanteFiscalNotaService
 	def printService
-	
+	def cfdiService
     def index() {
         redirect action: 'list', params: params
     }
@@ -143,8 +143,13 @@ class CXCNotaController {
 	
 	def generarCFD(long id){
 		println 'Generando CFD para nota: '+params
-		def res=comprobanteFiscalNotaService.generarComprobanteFiscalDigital(id)
-		render view:"show",model:[CXCNotaInstance:res['nota']]
+		//def res=comprobanteFiscalNotaService.generarComprobanteFiscalDigital(id)
+		def nota=CXCNota.get(id)
+		assert nota,"Debe existir la nota: "+id
+		
+		def cfdi=cfdiService.generarCfdi(nota)
+		render view:'/cfdi/show',model:[cfdiInstance:cfdi]
+		//render view:"show",model:[CXCNotaInstance:res['nota']]
 	}
 	
 	def imprimirCfd(){

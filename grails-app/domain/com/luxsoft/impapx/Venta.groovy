@@ -74,7 +74,7 @@ class Venta {
 		pagosAplicados formula:'(select ifnull(sum(x.total),0) from CXCAplicacion x where x.factura_id=id)'
 	}
 	
-	static transients = ['saldoActual','cfdi']
+	static transients = ['saldoActual','cfdi','factura']
 	
 	public BigDecimal getSaldoActual(){
 		def pag=pagosAplicados?:0.0
@@ -84,6 +84,13 @@ class Venta {
 	def getCfdi(){
 		return Cfdi.findByOrigen(id)?.id
 	} 
+	
+	def getFactura(){
+		if(getCfd())
+			return getCfd().getSerie()+' - '+getCfd().getFolio()
+		else
+			return "CFDI:"+getCfdi()
+	}
 	
 	def beforeUpdate(){
 		if(tipo=='VENTA'){

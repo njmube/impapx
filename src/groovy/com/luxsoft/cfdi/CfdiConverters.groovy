@@ -9,6 +9,7 @@ import util.MonedaUtils;
 
 import com.luxsoft.impapx.Empresa;
 import com.luxsoft.impapx.Venta;
+import com.luxsoft.impapx.cxc.CXCNota;
 
 import mx.gob.sat.cfd.x3.ComprobanteDocument
 import mx.gob.sat.cfd.x3.ComprobanteDocument.Comprobante;
@@ -25,13 +26,18 @@ import mx.gob.sat.cfd.x3.TInformacionAduanera;
 
 class CfdiConverters {
 	
-	static Cfdi toCfdi(Venta source,Empresa empresa){
+	static Cfdi toCfdi(def source,Empresa empresa){
+		if(source instanceof Venta)
+			return fromVenta(source,empresa)
+		else if(source instanceof CXCNota)
+			return fromNota(source, empresa)
+	}
+	
+	static Cfdi fromVenta(Venta source,Empresa empresa){
 		def cfdi=new Cfdi(
 			tipo:'FACTURA'
 			,tipoDeCfdi:'I'
 			,fecha:source.fecha
-			,serie:'VENTA'
-			,folio:source.id.toString()
 			,origen:source.id.toString()
 			,emisor:empresa.nombre
 			,receptor:source.cliente.nombre
@@ -45,7 +51,15 @@ class CfdiConverters {
 		return cfdi
 	}
 	
-	static ComprobanteDocument toComprobante(Venta source,Empresa empresa){
+	static ComprobanteDocument toComprobante(def source,Empresa empresa){
+		if(source instanceof Venta)
+			return toComprobanteFromVenta(source, empresa)
+		else if(source instanceof CXCNota)
+			return toComprobanteFromNota(source, empresa)
+		
+	}
+	
+	static ComprobanteDocument toComprobanteFromVenta(Venta source,Empresa empresa){
 		final ComprobanteDocument document=ComprobanteDocument.Factory.newInstance()
 		final Comprobante comprobante=document.addNewComprobante()
 		CFDIUtils.depurar(document)
@@ -63,8 +77,6 @@ class CfdiConverters {
 		Receptor receptor=CFDIUtils.registrarReceptor(comprobante, source.cliente)
 		comprobante.setTotal(source.total)
 		comprobante.setSubTotal(source.importe)
-		comprobante.setSerie("$empresa.rfc"+'-FACTURA')
-		comprobante.setFolio(source.id.toString())
 		comprobante.setNoCertificado(empresa.numeroDeCertificado)
 		
 		Impuestos impuestos=comprobante.addNewImpuestos();
@@ -122,6 +134,87 @@ class CfdiConverters {
 		return document
 	}
 	
+	
+	static Cfdi fromNota(CXCNota source,Empresa empresa){
+		def cfdi=new Cfdi(
+			tipo:'CRE'
+			,tipoDeCfdi:'E'
+			,fecha:source.fecha
+			,origen:source.id.toString()
+			,emisor:empresa.nombre
+			,receptor:source.cliente.nombre
+			,rfc:source.cliente.rfc
+			,importe:source.importe
+			,descuentos:source.descuentos
+			,subtotal:source.subtotal
+			,impuesto:source.impuestos
+			,total:source.total
+			)
+		return cfdi
+	}
+	
+	
+	static ComprobanteDocument toComprobanteFromNota(CXCNota source,Empresa empresa){
+		final ComprobanteDocument document=ComprobanteDocument.Factory.newInstance()
+		final Comprobante comprobante=document.addNewComprobante()
+		CFDIUtils.depurar(document)
+		comprobante.setVersion("3.2")
+		comprobante.setFecha(CFDIUtils.toXmlDate(new Date()).getCalendarValue())
+		comprobante.setFormaDePago("PAGO EN UNA SOLA EXHIBICION")
+		comprobante.setMetodoDePago(source.formaDePago)
+		comprobante.setMoneda(source.moneda.getCurrencyCode())
+		comprobante.setTipoCambio(source.tc.toString())
+		
+		comprobante.setTipoDeComprobante(TipoDeComprobante.EGRESO)
+		comprobante.setLugarExpedicion(empresa.direccion.pais)
+		
+		Emisor emisor=CFDIUtils.registrarEmisor(comprobante, empresa)
+		
+		Receptor receptor=CFDIUtils.registrarReceptor(comprobante, source.cliente)
+		
+		comprobante.setTotal(source.total)
+		comprobante.setSubTotal(source.importe)
+		comprobante.setNoCertificado(empresa.numeroDeCertificado)
+		
+		Impuestos impuestos=comprobante.addNewImpuestos();
+		String rfc=comprobante.getReceptor().getRfc();
+		
+		//Facturacion a clientes extranjero
+		if(rfc=="XEXX010101000"){
+			comprobante.setSubTotal(source.importe);
+			comprobante.setTotal(source.subtotal);
+		}else if(rfc=="XAXX010101000" || StringUtils.isBlank(rfc)){
+			comprobante.setSubTotal(source.importe*(1+MonedaUtils.IVA));
+			comprobante.setDescuento(source.descuentos*(1+MonedaUtils.IVA));
+			comprobante.setTotal(source.total);
+		}else{
+			impuestos.setTotalImpuestosTrasladados(source.impuestos);
+			Traslados traslados=impuestos.addNewTraslados();
+			Traslado traslado=traslados.addNewTraslado();
+			traslado.setImpuesto(Traslado.Impuesto.IVA);
+			traslado.setImporte(source.impuestos);
+			traslado.setTasa(MonedaUtils.IVA*100);
+		}
+		
+		
+		Conceptos conceptos=comprobante.addNewConceptos()
+		
+		source.partidas.each {det->
+			
+			Concepto c=conceptos.addNewConcepto()
+			c.setCantidad(det.getCantidad());
+			c.setUnidad(det.unidad);
+			c.setNoIdentificacion(det.numeroDeIdentificacion);
+			
+			String desc = det.descripcion;
+			c.setDescripcion(desc);
+			c.setValorUnitario(det.valorUnitario);
+			c.setImporte(det.importe);
+			
+			
+		}
+		return document 
+	}
 	
 
 }

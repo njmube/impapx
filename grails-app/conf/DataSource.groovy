@@ -40,8 +40,7 @@ environments {
 			dialect = org.hibernate.dialect.MySQLInnoDBDialect
 			driverClassName = 'com.mysql.jdbc.Driver'
 			username = 'root'
-			password = 'sys'
-			//url = 'jdbc:mysql://localhost/paperx_dev?autoReconnect=true'
+			password = 'sys'			
 			url = 'jdbc:mysql://localhost/impapx?autoReconnect=true'
 			pooled = true
 			properties {

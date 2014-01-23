@@ -12,6 +12,8 @@ import mx.gob.sat.cfd.x3.ComprobanteDocument.Comprobante;
 import org.bouncycastle.util.encoders.Base64;
 
 import com.luxsoft.impapx.Empresa;
+import com.luxsoft.impapx.Venta;
+import com.luxsoft.impapx.cxc.CXCNota;
 
 class CfdiService {
 
@@ -25,11 +27,26 @@ class CfdiService {
 		
 		def empresa=Empresa.last()
 		assert empresa,"Debe existir la empresa"
-		def cfdi=CfdiConverters.toCfdi(source,empresa) 
+		
+		def serie=null
+		if(source instanceof Venta)
+			serie='FAC'
+		if(source instanceof CXCNota)
+			serie='CRE'
+			
+		def cfdiFolio=CfdiFolio.findByEmisor(empresa.clave)
+		assert cfdiFolio," Debe registrar folio de $source.empresa.clave para la serie FAC"
+		def folio=CfdiFolio.findByEmisorAndSerie(empresa.clave,serie).next()
+		
+		def cfdi=CfdiConverters.toCfdi(source,empresa)
+		cfdi.serie='FAC'
+		cfdi.folio=folio
 		
 		def ComprobanteDocument document=CfdiConverters.toComprobante(source, empresa)
-		
 		Comprobante comprobante=document.getComprobante()
+		comprobante.serie=serie
+		comprobante.folio=folio
+		
 		//comprobante.setSello(cfdiSellador.sellar(CFDIUtils.leerLlavePrivada(empresa),document))
 		comprobante.setSello(cfdiSellador.sellar(empresa.privateKey,document))
 		byte[] encodedCert=Base64.encode(empresa.getCertificado().getEncoded())
