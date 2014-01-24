@@ -27,15 +27,19 @@ import mx.gob.sat.cfd.x3.TInformacionAduanera;
 class CfdiConverters {
 	
 	static Cfdi toCfdi(def source,Empresa empresa){
-		if(source instanceof Venta)
-			return fromVenta(source,empresa)
+		if(source instanceof Venta){
+			def cfdi=fromVenta(source,empresa)
+			if(source.tipo=='NOTA_DE_CARGO')
+				cfdi.tipo='CAR'
+			return cfdi	
+		}
 		else if(source instanceof CXCNota)
 			return fromNota(source, empresa)
 	}
 	
 	static Cfdi fromVenta(Venta source,Empresa empresa){
 		def cfdi=new Cfdi(
-			tipo:'FACTURA'
+			tipo:'FAC'
 			,tipoDeCfdi:'I'
 			,fecha:source.fecha
 			,origen:source.id.toString()
@@ -51,6 +55,8 @@ class CfdiConverters {
 		return cfdi
 	}
 	
+	
+	
 	static ComprobanteDocument toComprobante(def source,Empresa empresa){
 		if(source instanceof Venta)
 			return toComprobanteFromVenta(source, empresa)
@@ -60,6 +66,7 @@ class CfdiConverters {
 	}
 	
 	static ComprobanteDocument toComprobanteFromVenta(Venta source,Empresa empresa){
+		println "Generando ComprobanteDocument para $source.tipo $source.id"
 		final ComprobanteDocument document=ComprobanteDocument.Factory.newInstance()
 		final Comprobante comprobante=document.addNewComprobante()
 		CFDIUtils.depurar(document)
@@ -102,6 +109,16 @@ class CfdiConverters {
 		
 		Conceptos conceptos=comprobante.addNewConceptos()
 		
+		if(source.tipo=='NOTA_DE_CARGO'){
+			Concepto c=conceptos.addNewConcepto();
+			c.setCantidad(1.00);
+			c.setUnidad("NO APLICA");
+			c.setNoIdentificacion('CARGO');
+			c.setDescripcion(source.comentario);
+			c.setValorUnitario(source.importe);
+			c.setImporte(source.importe);
+		}
+		
 		source.partidas.each {det->
 			
 			Concepto c=conceptos.addNewConcepto()
@@ -131,6 +148,7 @@ class CfdiConverters {
 			
 			
 		}
+		println 'ComprobanteDocument generado: '+document
 		return document
 	}
 	
@@ -145,9 +163,9 @@ class CfdiConverters {
 			,receptor:source.cliente.nombre
 			,rfc:source.cliente.rfc
 			,importe:source.importe
-			,descuentos:source.descuentos
-			,subtotal:source.subtotal
-			,impuesto:source.impuestos
+			,descuentos:0
+			,subtotal:source.importe
+			,impuesto:source.impuesto
 			,total:source.total
 			)
 		return cfdi
@@ -161,7 +179,7 @@ class CfdiConverters {
 		comprobante.setVersion("3.2")
 		comprobante.setFecha(CFDIUtils.toXmlDate(new Date()).getCalendarValue())
 		comprobante.setFormaDePago("PAGO EN UNA SOLA EXHIBICION")
-		comprobante.setMetodoDePago(source.formaDePago)
+		comprobante.setMetodoDePago("NO IDENTIFICADO")
 		comprobante.setMoneda(source.moneda.getCurrencyCode())
 		comprobante.setTipoCambio(source.tc.toString())
 		
@@ -185,14 +203,14 @@ class CfdiConverters {
 			comprobante.setTotal(source.subtotal);
 		}else if(rfc=="XAXX010101000" || StringUtils.isBlank(rfc)){
 			comprobante.setSubTotal(source.importe*(1+MonedaUtils.IVA));
-			comprobante.setDescuento(source.descuentos*(1+MonedaUtils.IVA));
+			//comprobante.setDescuento(source.descuentos*(1+MonedaUtils.IVA));
 			comprobante.setTotal(source.total);
 		}else{
-			impuestos.setTotalImpuestosTrasladados(source.impuestos);
+			impuestos.setTotalImpuestosTrasladados(source.impuesto);
 			Traslados traslados=impuestos.addNewTraslados();
 			Traslado traslado=traslados.addNewTraslado();
 			traslado.setImpuesto(Traslado.Impuesto.IVA);
-			traslado.setImporte(source.impuestos);
+			traslado.setImporte(source.impuesto);
 			traslado.setTasa(MonedaUtils.IVA*100);
 		}
 		

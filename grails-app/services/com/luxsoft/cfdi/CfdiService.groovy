@@ -29,20 +29,27 @@ class CfdiService {
 		assert empresa,"Debe existir la empresa"
 		
 		def serie=null
-		if(source instanceof Venta)
-			serie='FAC'
+		if(source instanceof Venta){
+			if(source.tipo=='NOTA_DE_CARGO')
+				serie='CAR'
+			else
+				serie='FAC'
+		}
 		if(source instanceof CXCNota)
 			serie='CRE'
 			
-		def cfdiFolio=CfdiFolio.findByEmisor(empresa.clave)
-		assert cfdiFolio," Debe registrar folio de $source.empresa.clave para la serie FAC"
-		def folio=CfdiFolio.findByEmisorAndSerie(empresa.clave,serie).next()
+			
+		def cfdiFolio=CfdiFolio.findByEmisorAndSerie(empresa.rfc,serie)
+		assert cfdiFolio," Debe registrar folio de  para la serie "+serie
+		def folio=cfdiFolio.next()
 		
+		println "Generando CFDI folio:$folio  Serie:$serie y rfc:$empresa.rfc  Para entidad: $source.tipo"
 		def cfdi=CfdiConverters.toCfdi(source,empresa)
-		cfdi.serie='FAC'
+		cfdi.serie=serie
 		cfdi.folio=folio
 		
 		def ComprobanteDocument document=CfdiConverters.toComprobante(source, empresa)
+		assert document," Debe existir la conversion a ComprobanteDocument de la entidad: "+source.class
 		Comprobante comprobante=document.getComprobante()
 		comprobante.serie=serie
 		comprobante.folio=folio

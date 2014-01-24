@@ -5,7 +5,7 @@
 	<head>
 		<meta name="layout" content="luxor">
 		<g:set var="entityName" value="${message(code: 'CXCNota.label', default: 'CXCNota')}" />
-		<title><g:message code="default.show.label" args="[entityName]" /></title>
+		<title>Nota : ${CXCNotaInstance.id }</title>
 	</head>
 	<body>
 		<div class="row-fluid">
@@ -32,7 +32,7 @@
 			<div class="span9">
 
 				<div class="page-header">
-					<h3><g:message code="default.show.label" args="[entityName]" /></h3>
+					<h3>Nota : ${CXCNotaInstance.id }</h3>
 				</div>
 
 				<g:if test="${flash.message}">
@@ -129,10 +129,19 @@
 				
 					<g:if test="${CXCNotaInstance?.moneda}">
 						<dt><g:message code="CXCNota.moneda.label" default="Moneda" /></dt>
-						
-							<dd><g:fieldValue bean="${CXCNotaInstance}" field="moneda"/></dd>
+						<dd><g:fieldValue bean="${CXCNotaInstance}" field="moneda"/></dd>
 						
 					</g:if>
+					
+					<g:if test="${CXCNotaInstance.cfdi}">
+						<dt>CFDI</dt>
+						<dd><g:link controller="cfdi" action="show" id="${CXCNotaInstance.cfdi}">
+							${CXCNotaInstance?.cfdi}
+							</g:link>
+						</dd>
+							
+					</g:if>
+					
 				
 					<g:if test="${CXCNotaInstance?.partidas}">
 						<dt><g:message code="CXCNota.partidas.label" default="Partidas" /></dt>
@@ -142,10 +151,12 @@
 							</g:each>
 						
 					</g:if>
+					
+					
 				
 				</dl>
 				
-				<g:if test="${CXCNotaInstance.cfd}">
+				<g:if test="${CXCNotaInstance.comprobanteFiscal}">
 					<button  id="#cancelarCfdBtn" class="btn btn-danger" data-target="#cancelarCfdDialog" data-toggle="modal">
   					Cancelar CFD
   					</button>

@@ -65,6 +65,7 @@
 				  		<li><g:link controller="saldoPorCuentaContable" action="list">Saldos</g:link></li>
 				  		<li><g:link controller="certificado" action="list">Certificados</g:link></li>
 				  		<li><g:link controller="folioFiscal" action="list">Folios fiscales</g:link></li>
+				  		<li><g:link controller="cfdiFolio" action="list">Folios CFDI</g:link></li>
 				  		<li><g:link controller="empresa" action="list">Empresa</g:link></li>
 				  		<li><g:link controller="comprobanteFiscal" action="list">Reporte mensual CFD</g:link></li>
 				  		<li><g:link controller="diferenciaCambiaria" action="list">Diferencias cambiarias</g:link></li>

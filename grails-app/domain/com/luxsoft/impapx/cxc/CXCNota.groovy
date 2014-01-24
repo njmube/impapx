@@ -1,6 +1,7 @@
 package com.luxsoft.impapx.cxc
 
 import com.luxsoft.cfd.ComprobanteFiscal;
+import com.luxsoft.cfdi.Cfdi;
 
 class CXCNota extends CXCAbono{
 	
@@ -25,6 +26,8 @@ class CXCNota extends CXCAbono{
 		partidas cascade:"all-delete-orphan"
 	}
 	
+	static transients = ['cfdi','comprobanteFiscal']
+	
 	def actualizarImportes(){
 		if(cfd==null){
 			importe=partidas.sum(0,{ it.importe*this.tc})
@@ -34,16 +37,22 @@ class CXCNota extends CXCAbono{
 	}
 	
 	def beforeUpdate(){
-		if(cfd!=null){
+		if(getComprobanteFiscal()!=null){
 			//throw new RuntimeException("CFD Generado para la nota, no se puede modificar")
 			actualizarImportes()
 		}
 	}
 	
-	def beforeInsert(){
-		super.beforeInsert()
-		//if(tipo!='DESCUENTO')
-		//descuento=0.0
-		//importe=partidas.sum(0,{ it.importe*this.tc})
+	
+	
+	def getCfdi(){
+		return Cfdi.findBySerieAndOrigen('CRE',id)?.id
+	}
+	
+	def getComprobanteFiscal(){
+		if(cfd) 
+			return cfd.folio
+		else
+			return getCfdi()
 	}
 }

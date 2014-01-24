@@ -24,10 +24,10 @@
 					<i class="icon-ok icon-white"></i>
 					<g:message code="default.button.update.label" default="Actualizar" />
 				</button>
-				<g:link  action="facturar" class="btn btn-info" 
+				<g:link  controller="cfdi" action="facturar" class="btn btn-info" 
 					onclick="return myConfirm2(this,'Facturar cargo: ${ventaInstance.id}','Facturación');"
 					id="${ventaInstance.id}">
-  		 			Generar CFD
+  		 			Generar CFDI
   				</g:link>
 				<button class="btn btn-danger" type="submit" name="_action_delete">
 					<i class="icon-trash icon-white"></i>

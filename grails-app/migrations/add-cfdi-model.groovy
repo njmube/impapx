@@ -126,10 +126,11 @@ databaseChangeLog = {
 		}
 	}
 
-	changeSet(author: "RUBEN (generated)", id: "1390344779462-7") {
+	
+	/*
+	 * changeSet(author: "RUBEN (generated)", id: "1390344779462-7") {
 		modifyDataType(columnName: "descuento", newDataType: "decimal(19,2)", tableName: "compra_det")
 	}
-	/*
 	changeSet(author: "RUBEN (generated)", id: "1390344779462-8") {
 		modifyDataType(columnName: "provisionada", newDataType: "integer", tableName: "cuenta_por_pagar")
 	}

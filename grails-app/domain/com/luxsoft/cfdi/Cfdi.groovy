@@ -47,7 +47,7 @@ class Cfdi {
 
     static constraints = {
 		serie blannk:false,maxSize:15 
-		tipo inList:['FACTURA','NOTA_CREDITO','NOTA_CARGO']
+		tipo inList:['FACTURA','NOTA_CREDITO','NOTA_CARGO','FAC','CRE','CAR']
 		fecha nullable:false
 		folio blank:false,maxSize:20
 		uuid nullable:true,maxSize:300

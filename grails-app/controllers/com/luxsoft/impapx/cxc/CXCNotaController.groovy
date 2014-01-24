@@ -141,15 +141,22 @@ class CXCNotaController {
 		render dataToRender as JSON
 	}
 	
+	/*
 	def generarCFD(long id){
-		println 'Generando CFD para nota: '+params
-		//def res=comprobanteFiscalNotaService.generarComprobanteFiscalDigital(id)
-		def nota=CXCNota.get(id)
-		assert nota,"Debe existir la nota: "+id
 		
+	}
+	*/
+	
+	def generarCFDI(long id){
+		println 'Generando CFD para nota: '+params
+		def nota=CXCNota.get(id)
+		if(nota==null){
+			flash.message='No existe la nota: '+id
+			redirect action:'list'
+		}
 		def cfdi=cfdiService.generarCfdi(nota)
-		render view:'/cfdi/show',model:[cfdiInstance:cfdi]
-		//render view:"show",model:[CXCNotaInstance:res['nota']]
+		//render view:'/cfdi/show',model:[cfdiInstance:cfdi]
+		redirect action:'show',params:[id:id]
 	}
 	
 	def imprimirCfd(){

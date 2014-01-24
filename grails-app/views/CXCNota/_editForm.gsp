@@ -26,11 +26,11 @@
 					<i class="icon-ok icon-white"></i>
 					<g:message code="default.button.update.label" default="Update" />
 				</button>--%>
-				<g:if test="${CXCNotaInstance.cfd==null}">
-					<g:link  action="generarCFD" class="btn btn-info" 
-					onclick="return myConfirm2(this,'Generar comprobante fiscal: ${CXCNotaInstance.id}','CFD');"
-					id="${CXCNotaInstance.id}">
-  		 			Generar CFD
+				<g:if test="${!CXCNotaInstance.comprobanteFiscal}">
+					<g:link  action="generarCFDI" class="btn btn-info" 
+						onclick="return myConfirm2(this,'Generar comprobante fiscal: ${CXCNotaInstance.id}','CFD');"
+						id="${CXCNotaInstance.id}">
+  		 				Generar CFDI
   					</g:link>
   					<button type="submit" class="btn btn-danger" name="_action_delete"
 						formnovalidate>
@@ -39,8 +39,8 @@
 					</button>
 				</g:if>
 				<g:else>
-					<g:link  action="cancelarCFD" class="btn btn-info" 
-						onclick="return myConfirm2(this,'Generar comprobante fiscal: ${CXCNotaInstance.id}','CFD');"
+					<g:link  action="cancelarCFDI" class="btn btn-info" 
+						onclick="return myConfirm2(this,'Generar comprobante fiscal: ${CXCNotaInstance.id}','CFDI');"
 						id="${CXCNotaInstance.id}">
   		 				Cancelar CFD
   					</g:link>

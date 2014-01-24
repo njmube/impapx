@@ -11,7 +11,7 @@ hibernate {
 }
 
 dataSource_importacion{
-	dialect = org.hibernate.dialect.MySQLInnoDBDialect
+	dialect = org.hibernate.dialect.MySQL5InnoDBDialect
 	driverClassName = 'com.mysql.jdbc.Driver'
 	username = 'root'
 	password = 'sys'
@@ -37,7 +37,7 @@ environments {
 		
 		dataSource {
 			dbCreate = ""
-			dialect = org.hibernate.dialect.MySQLInnoDBDialect
+			dialect = org.hibernate.dialect.MySQL5InnoDBDialect
 			driverClassName = 'com.mysql.jdbc.Driver'
 			username = 'root'
 			password = 'sys'			
@@ -65,7 +65,7 @@ environments {
         }*/
 		
 		dataSource_importacion{
-			dialect = org.hibernate.dialect.MySQLInnoDBDialect
+			dialect = org.hibernate.dialect.MySQL5InnoDBDialect
 			driverClassName = 'com.mysql.jdbc.Driver'
 			username = 'root'
 			password = 'sys'
@@ -96,7 +96,7 @@ environments {
     production {
         dataSource {
             dbCreate = ""
-			dialect = org.hibernate.dialect.MySQLInnoDBDialect
+			dialect = org.hibernate.dialect.MySQL5InnoDBDialect
 			driverClassName = 'com.mysql.jdbc.Driver'
 			username = 'root'
 			password = 'sys'
@@ -122,7 +122,7 @@ environments {
 	paper {
 		dataSource {
 			dbCreate = ""
-			dialect = org.hibernate.dialect.MySQLInnoDBDialect
+			dialect = org.hibernate.dialect.MySQL5InnoDBDialect
 			driverClassName = 'com.mysql.jdbc.Driver'
 			username = 'root'
 			password = 'sys'

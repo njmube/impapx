@@ -40,6 +40,7 @@ class CfdiPrintUtils {
 		parametros.put("IMP_CON_LETRA", 	ImporteALetra.aLetra(comprobante.getTotal()));
 		parametros['FORMA_DE_PAGO']=comprobante.formaDePago
 		parametros['PINT_IVA']='16 '
+		parametros['TIPO_DE_COMPROBANTE']=comprobante.tipoDeComprobante.toString().toUpperCase()
 		
 		parametros.put("DESCUENTOS", 	comprobante.getDescuento());
 		

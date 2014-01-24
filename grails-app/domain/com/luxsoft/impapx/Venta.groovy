@@ -82,7 +82,7 @@ class Venta {
 	}
 	
 	def getCfdi(){
-		return Cfdi.findByOrigen(id)?.id
+		return Cfdi.findBySerieAndOrigen('FAC',id)?.id
 	} 
 	
 	def getFactura(){
