@@ -156,7 +156,8 @@ class CXCNotaController {
 		}
 		def cfdi=cfdiService.generarCfdi(nota)
 		//render view:'/cfdi/show',model:[cfdiInstance:cfdi]
-		redirect action:'show',params:[id:id]
+		//redirect action:'show',params:[id:id]
+		redirect controller:"cfdi", action:"show",params:[id:cfdi.id]
 	}
 	
 	def imprimirCfd(){

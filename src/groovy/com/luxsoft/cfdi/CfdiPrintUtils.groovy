@@ -42,7 +42,7 @@ class CfdiPrintUtils {
 		parametros['PINT_IVA']='16 '
 		parametros['TIPO_DE_COMPROBANTE']=comprobante.tipoDeComprobante.toString().toUpperCase()
 		
-		parametros.put("DESCUENTOS", 	comprobante.getDescuento());
+		parametros.put("DESCUENTOS", 	comprobante.getDescuento()?:0.0);
 		
 		
 		if(comprobante.getReceptor().rfc=='XAXX010101000'){

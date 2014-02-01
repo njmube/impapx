@@ -46,7 +46,28 @@ class EmpresaController {
         }
 		//def certificadoDigital=CFDIUtils.leerCertificado(empresaInstance)
 		//def pk=CFDIUtils.leerLlavePrivada(empresaInstance)
-        [empresaInstance: empresaInstance,certificadoDigital:empresaInstance.certificado,llavePrivada:empresaInstance.privateKey]
+		def certificadoDigital 
+		def llavePrivada
+		/*
+		if(!certificadoDigital){
+			File archivo=new File("C:\\Basura\\CFDI PFX\\PAPER\\pim050124gy7_1211121031s.cer")
+			empresaInstance.certificadoDigital=archivo.getBytes()
+			
+			
+			empresaInstance.llavePrivada=new File("C:\\Basura\\CFDI PFX\\PAPER\\paper2012.key").getBytes()
+			empresaInstance.certificadoDigitalPfx=new File("C:\\Basura\\CFDI PFX\\PAPER\\certificadopaper.pfx").getBytes()
+			
+			empresaInstance.save(failOnError:true)
+			
+		}*/
+		try {
+			certificadoDigital=empresaInstance.certificado
+			llavePrivada=empresaInstance.privateKey
+		} catch (Exception e) {
+			e.printStackTrace()
+		}
+		
+        [empresaInstance: empresaInstance,certificadoDigital:certificadoDigital,llavePrivada:llavePrivada]
     }
 
     def edit() {

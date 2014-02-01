@@ -6,6 +6,8 @@ import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.security.spec.PKCS8EncodedKeySpec;
 
+import org.apache.commons.lang.exception.ExceptionUtils;
+
 class Empresa {
 	
 	String nombre
@@ -38,16 +40,25 @@ class Empresa {
 	static transients = ['certificado','certificadoPfx','privateKey']
 	
 	X509Certificate getCertificado(){
-		if(!certificado){
-			assert certificadoDigital,'Debe cargar el binario del certificado '
-			log.info('Cargando certificado digital en formato X509')
-			CertificateFactory fact= CertificateFactory.getInstance("X.509","BC")
-			InputStream is=new ByteArrayInputStream(certificadoDigital)
-			certificado = (X509Certificate)fact.generateCertificate(is)
-			certificado.checkValidity()
-				//is.closeQuietly();
-			is.close();
-			this.certificado=certificado
+		
+		if(certificadoDigital && !certificado){
+			//assert certificadoDigital,'Debe cargar el binario del certificado '
+			try {
+				
+				log.info('Cargando certificado digital en formato X509')
+				CertificateFactory fact= CertificateFactory.getInstance("X.509","BC")
+				InputStream is=new ByteArrayInputStream(certificadoDigital)
+				certificado = (X509Certificate)fact.generateCertificate(is)
+				certificado.checkValidity()
+					//is.closeQuietly();
+				is.close();
+				this.certificado=certificado
+			} catch (Exception e) {
+				e.printStackTrace()
+				println 'Error tratando de leer certificado en formato X509 :'+ExceptionUtils.getRootCauseMessage(e)
+			}
+			
+			
 		}
 		
 		return certificado;
@@ -59,10 +70,16 @@ class Empresa {
 	
 	PrivateKey getPrivateKey(){
 		if(!privateKey && llavePrivada){
-			final byte[] encodedKey=llavePrivada
-			PKCS8EncodedKeySpec keySpec=new PKCS8EncodedKeySpec(encodedKey)
-			final  KeyFactory keyFactory=KeyFactory.getInstance("RSA","BC")
-			this.privateKey=keyFactory.generatePrivate(keySpec)
+			try {
+				final byte[] encodedKey=llavePrivada
+				PKCS8EncodedKeySpec keySpec=new PKCS8EncodedKeySpec(encodedKey)
+				final  KeyFactory keyFactory=KeyFactory.getInstance("RSA","BC")
+				this.privateKey=keyFactory.generatePrivate(keySpec)
+			} catch (Exception e) {
+				e.printStackTrace()
+				println 'Error tratando de leer llave privada :'+ExceptionUtils.getRootCauseMessage(e)
+			}
+			
 		}
 		return privateKey;
 	}

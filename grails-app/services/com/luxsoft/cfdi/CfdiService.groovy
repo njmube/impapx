@@ -74,6 +74,9 @@ class CfdiService {
 		
 		validarDocumento(document)		
 		cfdi.save(failOnError:true)
+		if(cfdiTimbrador==null){
+			cfdiTimbrador=new CfdiTimbrador(timbradoDePrueba:false)
+		}
 		cfdi=cfdiTimbrador.timbrar(cfdi,"PAP830101CR3", "yqjvqfofb")
 		return cfdi
     }

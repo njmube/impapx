@@ -70,13 +70,13 @@
 						
 					</g:if>
 					
-					<g:if test="${empresaInstance}">
+					<g:if test="${empresaInstance?.certificadoDigital}">
 						<dt>Certificado digital</dt>
 							<dd>${certificadoDigital?.subjectX500Principal}</dd>
 						
 					</g:if>
 					
-					<g:if test="${empresaInstance}">
+					<g:if test="${empresaInstance?.privateKey}">
 						
 						<dt>Llave privada</dt>
 							<dd>${llavePrivada}</dd>

@@ -4,6 +4,8 @@ package com.luxsoft.cfdi
 
 import static org.springframework.http.HttpStatus.*
 
+import javax.sound.midi.SysexMessage;
+
 import com.luxsoft.impapx.Venta;
 
 import mx.gob.sat.cfd.x3.ComprobanteDocument.Comprobante;
@@ -132,8 +134,11 @@ class CfdiController {
 	}
 	
 	def descargarXml(){
+		
+	
 		Cfdi cfdi=Cfdi.findById(params.id)
 		if(cfdi==null){
+			println "Este cfdi es nulo"
 			notFound()
 			return
 		}
