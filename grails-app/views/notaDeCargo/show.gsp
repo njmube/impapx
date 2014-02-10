@@ -173,7 +173,7 @@
 				<g:form>
 					<g:hiddenField name="id" value="${ventaInstance?.id}" />
 					<div class="form-actions">
-						<g:if test="${!ventaInstance?.cfd}">
+						<g:if test="${!ventaInstance?.factura}">
 							<g:link class="btn" action="edit" id="${ventaInstance?.id}">
 							<i class="icon-pencil"></i>
 							<g:message code="default.button.edit.label" default="Edit" />
@@ -199,6 +199,18 @@
 							
 							>
 							<g:hiddenField name="ID" value="${ventaInstance.id}"/>
+						</g:jasperReport>
+			</g:if>
+			
+			<g:if test="${ventaInstance?.cfdi}">
+				
+				<g:jasperReport
+						controller="cfdi"
+						action="imprimirCfdi"
+						jasper="CFDI" 
+						format="PDF" 
+						name="">
+							<g:hiddenField name="id" value="${ventaInstance.cfdi}"/>
 						</g:jasperReport>
 			</g:if>
 

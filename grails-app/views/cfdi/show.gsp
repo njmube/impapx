@@ -26,7 +26,11 @@
 			
 			<div class="span9">
 				<div class="page-header">
-					<h3>Comprobante fiscal digital CFDI id: ${cfdiInstance.id }</h3>
+					<h3>Comprobante fiscal digital CFDI id: ${cfdiInstance.id }<br>
+						<g:if test="${cfdiInstance?.comentario}">
+							(<g:fieldValue bean="${cfdiInstance}" field="comentario"/>)
+						</g:if>
+					</h3>
 					<g:if test="${flash.message}">
 						<bootstrap:alert class="alert-info">${flash.message}</bootstrap:alert>
 					</g:if>
@@ -39,14 +43,17 @@
 					</g:if>
 					
 					<g:if test="${cfdiInstance?.serie}">
-						<dt>Serie</dt>
-						<dd><g:fieldValue bean="${cfdiInstance}" field="serie"/></dd>
-					</g:if>
-					<g:if test="${cfdiInstance?.folio}">
-						<dt>Folio</dt>
-						<dd><g:fieldValue bean="${cfdiInstance}" field="folio"/></dd>
+						<dt>Serie / Folio</dt>
+						<dd><g:fieldValue bean="${cfdiInstance}" field="serie"/> - <g:fieldValue bean="${cfdiInstance}" field="folio"/></dd>
 					</g:if>
 					
+					<g:if test="${cfdiInstance?.origen}">
+						<dt>Origen</dt>
+						<dd><g:link controller="venta" action="show" id="${cfdiInstance?.origen}">
+								<g:fieldValue bean="${cfdiInstance}" field="origen"/>
+							</g:link>
+						</dd>
+					</g:if>
 					<g:if test="${cfdiInstance?.fecha}">
 						<dt>Fecha</dt>
 						<dd><lx:shortDate date="${cfdiInstance.fecha }"/></dd>
@@ -83,6 +90,10 @@
 						<dt>Modificado</dt>
 						<dd><g:formatDate date="${cfdiInstance.lastUpdated }" format="dd/MM/yyyy hh:mm"/></dd>
 					</g:if>
+					<g:if test="${cfdiInstance?.comentario}">
+						<dt>Comentario</dt>
+						<dd><g:fieldValue bean="${cfdiInstance}" field="comentario"/></dd>
+					</g:if>
 				</dl>
 				
 				<g:if test="${cfdiInstance.uuid }">
@@ -96,7 +107,7 @@
 			</g:jasperReport>
 				</g:if>
 		
-		<g:form action="delete" id="${cfdiInstance.id }" method="POST">
+		<g:form action="cancelar" id="${cfdiInstance.id }" method="POST">
 			<fieldset>
 			<div class="">
 				

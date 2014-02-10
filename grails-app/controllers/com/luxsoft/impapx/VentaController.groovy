@@ -72,7 +72,9 @@ class VentaController {
             redirect action: 'list'
             return
         }
-		def cfdi=Cfdi.findByOrigen(params.id.toString())
+		def cfdi=Cfdi.findBySerieAndOrigen('FAC',params.id)
+		if(cfdi?.comentario?.contains("CANCELADO"))
+			cfdi=null
         [ventaInstance: ventaInstance,cfdi:cfdi]
     }
 
@@ -86,8 +88,9 @@ class VentaController {
 	            redirect action: 'list'
 	            return
 	        }
-			def cfdi=Cfdi.findByOrigen(params.id.toString())
-			println 'Cfdi localizado: '+cfdi
+			//def cfdi=Cfdi.findByOrigen(params.id.toString())
+			def cfdi=Cfdi.findBySerieAndOrigen('FAC',params.id)
+			//println 'Cfdi localizado: '+cfdi
 	        [ventaInstance: ventaInstance,partidas:ventaInstance.partidas,cfdi:cfdi]
 			break
 		case 'POST':
@@ -135,6 +138,11 @@ class VentaController {
         }
 		
 		if(ventaInstance.cfd){
+			flash.message ="Venta facturada imposible eliminar"
+			redirect action: 'list'
+			return
+		}
+		if(ventaInstance.cfdi){
 			flash.message ="Venta facturada imposible eliminar"
 			redirect action: 'list'
 			return
@@ -190,24 +198,27 @@ class VentaController {
 	}
 	
 	def eliminarPartidas(){
+		
 		JSONArray jsonArray=JSON.parse(params.partidas);
 		def venta=null
 		jsonArray.each {
+			println 'Eliminando partida: '+it
 			def det=VentaDet.get(it.toLong())
 			if(venta==null)
 				venta=det.venta
 			def contenedor=det.embarque.contenedor
 				
-			//println 'Eliminando ventas asignadas con contenedor: '+contenedor
+			println 'Eliminando ventas asignadas con contenedor: '+contenedor
 			def partidasPorContenedor=venta.partidas.findAll { ventaDet->
 				ventaDet.embarque.contenedor==contenedor
 			}
-			//println 'Partidas encontradas con contenedor: '+partidasPorContenedor.size()
+			println 'Partidas de la venta: '+venta.partidas.size()
+			println 'Partidas encontradas con contenedor: '+partidasPorContenedor.size()
 			partidasPorContenedor.each {ventaDet->
 				venta.removeFromPartidas(ventaDet)
 			}
+			println 'Partidas de la venta after delete: '+venta.partidas.size()
 			
-			//venta.removeFromPartidas(det)
 		}
 		venta.save(flush:true)
 		render "OK"
@@ -274,7 +285,7 @@ class VentaController {
 		println 'Cancelando venta: '+params
 		def ventaInstance=Venta.findById(params.id,[fetch:[partidas:'eager']])
 		
-		if (!ventaInstance) {
+		if (!ventaInstance) { 
 			flash.message = message(code: 'default.not.found.message', args: [message(code: 'venta.label', default: 'Venta'), params.id])
 			redirect action: 'list'
 			return

@@ -59,7 +59,7 @@
 						<g:each in="${ventaInstanceList}" var="ventaInstance">
 							<tr class="${ventaInstance.cfd?'warning':''}">
 								<td>
-									<g:link action="${ventaInstance.cfd?'show':'edit'}" 
+									<g:link action="${ventaInstance.factura?'show':'edit'}" 
 										id="${ventaInstance.id}">${fieldValue(bean: ventaInstance, field: "id")}
 									</g:link>
 								</td>
@@ -71,9 +71,17 @@
 								<td>${fieldValue(bean: ventaInstance, field: "subtotal")}</td>
 								<td>${fieldValue(bean: ventaInstance, field: "total")}</td>
 								<td>
-									<g:link controller="venta" action="showFactura" id="${ventaInstance?.cfd?.id}">
-										${fieldValue(bean: ventaInstance, field: "cfd.folio")}
-									</g:link>
+									<g:if test="${ ventaInstance.cfd}">
+										<g:link controller="venta" action="showFactura" id="${ventaInstance?.cfd?.id}">
+											${fieldValue(bean: ventaInstance, field: "factura")}
+										</g:link>
+									</g:if>
+									<g:elseif test="${ventaInstance.cfdi}">
+										<g:link controller="cfdi" action="show" id="${ventaInstance.cfdi}">
+											${fieldValue(bean: ventaInstance, field: "factura")}
+										</g:link>
+									</g:elseif>
+									
 								</td>
 								<td><g:formatDate date="${ventaInstance.dateCreated}"/></td> 
 								<td><g:formatDate date="${ventaInstance.lastUpdated}"/></td>

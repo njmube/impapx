@@ -3,6 +3,7 @@ package com.luxsoft.cfdi
 
 
 import static org.springframework.http.HttpStatus.*
+import groovy.sql.Sql;
 
 import javax.sound.midi.SysexMessage;
 
@@ -146,5 +147,33 @@ class CfdiController {
 		response.setHeader("Content-disposition", "attachment; filename=\"$cfdi.xmlName\"")
 		response.outputStream << cfdi.getComprobanteDocument().newInputStream()
 		
+	}
+	
+	def cancelar(long id){
+		Cfdi cfdi=Cfdi.findById(id)
+		if(cfdi==null){
+			notFound()
+			return
+		}
+		println 'Cancelando cfdi: '+id
+		
+		cfdi=cfdiService.cancelar(cfdi)
+		redirect action:'show',params:[id:id]
+	}
+	
+	def dataSource_importacion
+	
+	def archivoDeCancelacionesPapel(){
+		
+		Sql sql=new Sql(dataSource_importacion)
+		def query="""
+			SELECT cc.CARGO_ID,cf.ORIGEN_ID,UUID,cc.COMENTARIO,cf.TIPO,cf.TIPO_CFD
+			FROM sx_cxc_cargos_cancelados cc join sx_cfdi cf on(cc.CARGO_ID=cf.ORIGEN_ID)
+			where date(cf.CREADO) BETWEEN '2014/01/1' and '2014/01/31' and UUID is not null
+			union
+			SELECT a.ABONO_ID,c.ORIGEN_ID,UUID,a.COMENTARIO,c.tipo,c.TIPO_CFD
+			FROM sx_cxc_abonos a join sx_cfdi c on (a.ABONO_ID=c.ORIGEN_ID)
+			where TIPO_ID like 'nota%' and fecha BETWEEN '2014/01/01' and '2014/01/31' and a.total=0
+		"""
 	}
 }

@@ -114,7 +114,7 @@ class PolizaDeDiarioController {
 					haber:0.0,
 					asiento:asiento,
 					descripcion:"Fecha:$fac.cfd.fecha $fac.cliente.nombre",
-					referencia:"$fac.cfd.folio"
+					referencia:"$fac.factura"
 					,fecha:poliza.fecha
 					,tipo:poliza.tipo
 					,entidad:'Venta'
@@ -130,7 +130,7 @@ class PolizaDeDiarioController {
 				haber:fac.importe,
 				asiento:asiento,
 				descripcion:"Fecha:$fac.cfd.fecha $fac.cliente.nombre",
-				referencia:"$fac.cfd.folio"
+				referencia:"$fac.factura"
 				,fecha:poliza.fecha
 				,tipo:poliza.tipo
 				,entidad:'Venta'
@@ -143,7 +143,7 @@ class PolizaDeDiarioController {
 				haber:fac.impuestos,
 				asiento:asiento,
 				descripcion:"Fecha:$fac.cfd.fecha $fac.cliente.nombre",
-				referencia:"$fac.cfd.folio"
+				referencia:"$fac.factura"
 				,fecha:poliza.fecha
 				,tipo:poliza.tipo
 				,entidad:'Venta'
@@ -173,7 +173,7 @@ class PolizaDeDiarioController {
 					haber:0.0,
 					asiento:asientos,
 					descripcion:"Fecha:$srv.cfd.fecha $srv.cliente.nombre",
-					referencia:"$srv.cfd.folio"
+					referencia:"$srv.factura"
 					,fecha:poliza.fecha
 					,tipo:poliza.tipo
 					,entidad:'Venta'
@@ -189,7 +189,7 @@ class PolizaDeDiarioController {
 				haber:srv.importe,
 				asiento:asientos,
 				descripcion:"Fecha:$srv.cfd.fecha $srv.cliente.nombre",
-				referencia:"$srv.cfd.folio"
+				referencia:"$srv.factura"
 				,fecha:poliza.fecha
 				,tipo:poliza.tipo
 				,entidad:'Venta'
@@ -202,7 +202,7 @@ class PolizaDeDiarioController {
 				haber:srv.impuestos,
 				asiento:asientos,
 				descripcion:"Fecha:$srv.cfd.fecha $srv.cliente.nombre",
-				referencia:"$srv.cfd.folio"
+				referencia:"$srv.factura"
 				,fecha:poliza.fecha
 				,tipo:poliza.tipo
 				,entidad:'Venta'
@@ -228,7 +228,7 @@ class PolizaDeDiarioController {
 				haber:costoNeto,
 				asiento:asiento,
 				descripcion:"Fecha:$fac.cfd.fecha $fac.cliente.nombre Pedimento:$fac.cfd.pedimento",
-				referencia:"$fac.cfd.folio"
+				referencia:"$fac.factura"
 				,fecha:poliza.fecha
 				,tipo:poliza.tipo
 				,entidad:'Venta'
@@ -241,7 +241,7 @@ class PolizaDeDiarioController {
 				haber:0.0,
 				asiento:asiento,
 				descripcion:"Fecha:$fac.cfd.fecha $fac.cliente.nombre Pedimento:$fac.cfd.pedimento",
-				referencia:"$fac.cfd.folio"
+				referencia:"$fac.factura"
 				,fecha:poliza.fecha
 				,tipo:poliza.tipo
 				,entidad:'Venta'
@@ -676,7 +676,7 @@ class PolizaDeDiarioController {
 				haber:nota.total,
 				asiento:asiento,
 				descripcion:"NC: $nota.tipo $nota?.cfd?.folio  ",
-				referencia:"$nota?.cfd?.folio",
+				referencia:"$nota?.comprobanteFiscal",
 				,fecha:poliza.fecha
 				,tipo:poliza.tipo
 				,entidad:'CXCNota'
@@ -688,8 +688,8 @@ class PolizaDeDiarioController {
 				debe:nota.importe,
 				haber:0.0,
 				asiento:asiento,
-				descripcion:"NC: $nota.tipo $nota?.cfd.folio  ",
-				referencia:"$nota?.cfd.folio",
+				descripcion:"NC: $nota.tipo $nota?.factura  ",
+				referencia:"$nota?.comprobanteFiscal",
 				,fecha:poliza.fecha
 				,tipo:poliza.tipo
 				,entidad:'NotaDeCredito'
@@ -701,8 +701,8 @@ class PolizaDeDiarioController {
 				debe:nota.impuesto,
 				haber:0.0,
 				asiento:asiento,
-				descripcion:"NC: $nota.tipo $nota?.cfd.folio  ",
-				referencia:"$nota?.cfd.folio",
+				descripcion:"NC: $nota.tipo $nota?.comprobanteFiscal  ",
+				referencia:"$nota?.comprobanteFiscal",
 				,fecha:poliza.fecha
 				,tipo:poliza.tipo
 				,entidad:'NotaDeCredito'
@@ -883,8 +883,8 @@ class PolizaDeDiarioController {
 				debe:nota.total,
 				haber:0.0,
 				asiento:asiento,
-				descripcion:"N.Cargo:$nota.cfd.folio  $nota.cliente ",
-				referencia:"$nota.cfd.folio",
+				descripcion:"N.Cargo:$nota.factura  $nota.cliente ",
+				referencia:"$nota.factura",
 				,fecha:poliza.fecha
 				,tipo:poliza.tipo
 				,entidad:'Venta'
@@ -897,8 +897,8 @@ class PolizaDeDiarioController {
 				debe:0.0,
 				haber:nota.importe,
 				asiento:asiento,
-				descripcion:"N.Cargo:$nota.cfd.folio  $nota.cliente ",
-				referencia:"$nota.cfd.folio",
+				descripcion:"N.Cargo:$nota.factura  $nota.cliente ",
+				referencia:"$nota.factura",
 				,fecha:poliza.fecha
 				,tipo:poliza.tipo
 				,entidad:'Venta'
@@ -911,8 +911,8 @@ class PolizaDeDiarioController {
 				debe:0.0,
 				haber:nota.impuestos,
 				asiento:asiento,
-				descripcion:"N.Cargo:$nota.cfd.folio  $nota.cliente ",
-				referencia:"$nota.cfd.folio",
+				descripcion:"N.Cargo:$nota.factura  $nota.cliente ",
+				referencia:"$nota.factura",
 				,fecha:poliza.fecha
 				,tipo:poliza.tipo
 				,entidad:'Venta'

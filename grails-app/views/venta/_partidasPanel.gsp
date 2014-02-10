@@ -68,23 +68,15 @@ $(function(){
 	
 		
 	$("#partidasGrid").dataTable({
-		"sDom": "<'row'<'span6'l><'span6'f>r>t<'row'<'span6'i><'span6'p>>",
 		aLengthMenu: [[100, 150, 200, 250, -1], [100, 150, 200, 250, "Todos"]],
-        iDisplayLength: 100,
+        iDisplayLength: 50,
         "oLanguage": {
-      		"oPaginate": {
-        		"sFirst": "Inicio",
-        		"sNext": "Siguiente",
-        		"sPrevious": "Página anterior"
-      			},
-      		"sSearch": "Filtrar:",
-      		"sEmptyTable": "No hay datos disponibles",
-      		"sLoadingRecords": "Cargando datos",
-      		"sProcessing": "procesando...."
-    	},
-    	"bPaginate": false,
-    	"bInfo": false,
-    	"bSort": false
+      		"sUrl":"<g:resource dir="js" file="dataTables.spanish.txt" />"
+	    },
+    	"aoColumnDefs": [
+        	{ "sType": "numeric","bSortable": true,"aTargets":[0] }
+         ],
+         "bPaginate": false  
 	});
 	
 	$("#elimiarBtn").live('click',function(e){

@@ -82,14 +82,17 @@ class Venta {
 	}
 	
 	def getCfdi(){
-		return Cfdi.findBySerieAndOrigen('FAC',id)?.id
+		def serie='FAC'
+		if(tipo=='NOTA_DE_CARGO')
+			serie='CAR'
+		return Cfdi.findBySerieAndOrigen(serie,id)?.id
 	} 
 	
 	def getFactura(){
 		if(getCfd())
 			return getCfd().getSerie()+' - '+getCfd().getFolio()
 		else
-			return "CFDI:"+getCfdi()
+			return getCfdi()
 	}
 	
 	def beforeUpdate(){

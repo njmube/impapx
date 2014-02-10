@@ -69,7 +69,7 @@ class VentaDet {
 	
 	@Override
 	public boolean equals(Object obj) {
-		if(! (obj.instanceOf(Producto)) )
+		if(! (obj.instanceOf(VentaDet)) )
 			return false
 		if(this.is(obj))
 			return true
