@@ -56,3 +56,9 @@
  		Prov Anual (Compras)
  	</g:link>
  </li>
+  <li>
+ 	<g:link controller="polizaDeCierreAnual" action="list">
+ 		<i class="icon-list"></i>
+ 		Cierre anual
+ 	</g:link>
+ </li>

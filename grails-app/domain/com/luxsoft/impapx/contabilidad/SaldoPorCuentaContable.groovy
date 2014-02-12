@@ -25,7 +25,8 @@ class SaldoPorCuentaContable {
     }
 	
 	def beforeInsert(){
-		mes=fecha.toMonth()
+		if(mes!=13)
+			mes=fecha.toMonth()
 		year=fecha.toYear()
 	}
 }

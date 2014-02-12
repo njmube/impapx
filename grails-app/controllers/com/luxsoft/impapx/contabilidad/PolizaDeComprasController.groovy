@@ -93,6 +93,80 @@ class PolizaDeComprasController {
 			def peds=EmbarqueDet.executeQuery('select d.pedimento.pedimento from EmbarqueDet d where d.factura=?',[factura]) as Set	
 			def pedimentos=peds.join(',')	
 			
+			//Verificar si la factura es provisionada
+			int periodoAnterior=dia.toYear()-1
+			if(periodoAnterior==factura.provisionada){
+				
+				asiento="Cancelacion de Provision"
+				
+				//Cancelar provision
+				// 1. Abono al inventario
+				def cuenta=CuentaContable.buscarPorClave('119-0003')
+				def fechaTc=factura.fecha-1
+				def tipoDeCambioInstance=TipoDeCambio.find("from TipoDeCambio t where date(t.fecha)=? and t.monedaFuente=?",[fechaTc,factura.moneda])
+				assert tipoDeCambioInstance,"Debe existir tipo de cambio para el :"+fechaTc.text()
+				def tipoCambioPed=EmbarqueDet.executeQuery('select d.pedimento.tipoDeCambio from EmbarqueDet d where d.factura=?',[factura]).get(0)
+				
+				def valorFactTC=factura.importe*tipoDeCambioInstance.factor
+				def valorProvTC=factura.importe*tipoCambioPed
+				def variacionCambiaria=valorFactTC-valorProvTC
+				poliza.addToPartidas(
+					cuenta:cuenta,
+					debe:0.0,
+					haber:valorFactTC,
+					asiento:asiento,
+					descripcion:"Canc provision $factura.proveedor ($fechaF) $factura.importe T.C:$tipoDeCambioInstance.factor",
+					referencia:"$factura.documento",
+					,fecha:poliza.fecha
+					,tipo:poliza.tipo
+					,entidad:'CuentaPorPagar'
+					,origen:factura.id)
+				// Cargo a proveedor
+				def clave="201-$factura.proveedor.subCuentaOperativa"
+				cuenta=CuentaContable.buscarPorClave(clave)
+				poliza.addToPartidas(
+					cuenta:cuenta,
+					debe:valorProvTC,
+					haber:0.0,
+					asiento:asiento,
+					descripcion:"Canc provision $factura.proveedor ($fechaF) $factura.importe T.C:$tipoCambioPed",
+					referencia:"$factura.documento",
+					,fecha:poliza.fecha
+					,tipo:poliza.tipo
+					,entidad:'CuentaPorPagar'
+					,origen:factura.id)
+				if(variacionCambiaria>0){
+					cuenta=CuentaContable.buscarPorClave("705-0002")
+					poliza.addToPartidas(
+						cuenta:cuenta,
+						debe:variacionCambiaria,
+						haber:0.0,
+						asiento:asiento,
+						descripcion:"Canc prov variacion $factura.proveedor ($fechaF) ",
+						referencia:"$factura.documento",
+						,fecha:poliza.fecha
+						,tipo:poliza.tipo
+						,entidad:'CuentaPorPagar'
+						,origen:factura.id)
+				}
+				if(variacionCambiaria<0){
+					cuenta=CuentaContable.buscarPorClave("701-0002")
+					poliza.addToPartidas(
+						cuenta:cuenta,
+						debe:0.0,
+						haber:variacionCambiaria.abs(),
+						asiento:asiento,
+						descripcion:"Canc prov variacion $factura.proveedor ($fechaF)",
+						referencia:"$factura.documento",
+						,fecha:poliza.fecha
+						,tipo:poliza.tipo
+						,entidad:'CuentaPorPagar'
+						,origen:factura.id)
+				}
+			}
+			
+			asiento="Cuenta por pagar"
+			
 			// 1. Cargo al inventario
 			def cuenta=CuentaContable.findByClave('119-0001')
 			if(cuenta==null){

@@ -57,12 +57,14 @@
 			<tbody>
 				<g:each in="${polizaInstanceList}" var="row">
 					<tr>
-						<td><g:link action="mostrarPoliza" id="${row.id}">
+						<td><g:link controller="poliza" action="edit" id="${row.id}">
 							${fieldValue(bean: row, field: "folio")}
 							</g:link>
 						</td>
 						<td><lx:shortDate date="${row.fecha }"/></td>
-						<td>${fieldValue(bean: row, field: "descripcion")}</td>
+						<td><g:link action="mostrarPoliza" id="${row.id}">
+							${fieldValue(bean: row, field: "descripcion")}</g:link>
+						</td>
 						<td><lx:moneyFormat number="${row.debe}"/></td>
 						<td><lx:moneyFormat number="${row.haber}"/></td>
 						<td><lx:moneyFormat number="${row.cuadre}"/></td>
