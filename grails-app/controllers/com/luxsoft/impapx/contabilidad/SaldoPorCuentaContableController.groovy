@@ -1,9 +1,11 @@
 	package com.luxsoft.impapx.contabilidad
 
 import grails.converters.JSON
+
 import java.text.NumberFormat;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.codehaus.groovy.grails.web.json.JSONArray
 import org.springframework.dao.DataIntegrityViolationException
 
@@ -177,5 +179,39 @@ class SaldoPorCuentaContableController {
 			data.error=ExceptionUtils.getRootCauseMessage(e)
 		}
 		render data as JSON
+	}
+	
+	def cierreAnual(){
+		
+		if(!session.periodoCierre){
+		   session.periodoCierre=new Date()
+	   }
+		if(params.year){
+			
+			session.periodoCierre=params.year
+			
+		}
+		def periodoCierre=session.periodoCierre
+		println 'Presentando cierre del periodo:'+periodoCierre.toYear()
+		
+		def sort=params.sort?:'fecha'
+		def order=params.order?:'desc'
+		
+		def saldos=SaldoPorCuentaContable.findAll("from SaldoPorCuentaContable c where c.cuenta.detalle=? and c.year=? and c.mes=? order by c.cuenta.clave"
+			,[false,periodoCierre.toYear(),13])
+		//println 'Saldos existentes:'+saldos.size()
+		[saldoPorCuentaContableInstanceList: saldos
+			, saldoPorCuentaContableInstanceTotal: saldos.size()
+			,periodoCierre:periodoCierre]
+	}
+	
+	def generarCierreAnual(){
+		//println 'Generando cierre anual: '+session.periodoCierre
+		
+		saldoPorCuentaContableService.cierreAnual(session.periodoCierre)
+		
+		
+		redirect action:'cierreAnual'
+		
 	}
 }

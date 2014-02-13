@@ -28,6 +28,13 @@
 			</g:link>
 		</li>
 		
+		<li>
+ 			<g:link action="cierreAnual">
+				<i class="icon-list icon-white"></i>
+				Cierre anual
+			</g:link>
+		</li>
+		
  	</content>
  	
 	

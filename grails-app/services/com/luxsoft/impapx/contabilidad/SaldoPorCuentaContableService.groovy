@@ -1,5 +1,7 @@
 package com.luxsoft.impapx.contabilidad
 
+import java.text.SimpleDateFormat
+
 class SaldoPorCuentaContableService {
 
     def actualizarSaldos(int year,int mes){
@@ -96,5 +98,72 @@ class SaldoPorCuentaContableService {
 			if(it.padre)
 				actualizarSaldo(saldo.year,saldo.mes,it.padre)
 		}
+	}
+	
+	def cierreAnual(year){
+		def cuentas=CuentaContable.findAllByDetalle('false')
+		println 'Generando cierre para : '+year
+		cuentas.each{ c->
+			c.subCuentas.each{
+				//println 'Procesando cuenta: '+it.clave
+				cierre(year,year.toYear(),it)
+			}
+			//println 'Actualizando saldo para la cuenta de mayor: '+c.clave
+			cierre(year,year.toYear(),c)
+			
+		}
+	}
+	
+	def cierre(Date fecha,int year, def cuenta){
+		
+		//def fecha=calendar.getTime().inicioDeMes()
+		//def fecha=new Date(2013,8,1)
+		
+		//def fecha=new SimpleDateFormat("yyyy").parse(year.to)
+		println 'Cerrando cuenta'+cuenta+' Per:'+year
+		if(cuenta.detalle){
+			
+			//println 'Actualizando saldo para cuenta: '+cuenta
+			def saldoInicial=PolizaDet.executeQuery("select sum(d.debe-d.haber) from PolizaDet d where d.cuenta=? and year(d.poliza.fecha)<?",[cuenta,year])
+			
+			def row=PolizaDet.executeQuery(
+				"select sum(d.debe),sum(d.haber) from PolizaDet d where d.cuenta=? and year(d.poliza.fecha)=? "
+				,[cuenta,year])
+			
+			
+			def debe=row.get(0)[0]?:0.0
+			
+			def haber=row.get(0)[1]?:0.0
+			def saldo=SaldoPorCuentaContable.findOrCreateWhere([cuenta:cuenta,year:year,mes:13])
+			saldo.fecha=fecha
+			saldo.cierre=fecha
+			saldo.saldoInicial=saldoInicial.get(0)?:0.0
+			saldo.debe=debe
+			saldo.haber=haber
+			saldo.saldoFinal=saldo.saldoInicial+debe-haber
+			def res=saldo.save(failOnError:true)
+			println res
+		}else{
+			//println 'Actualizando saldo para cuenta de mayor: '+cuenta
+			def saldoInicial=PolizaDet.executeQuery("select sum(d.debe-d.haber) from PolizaDet d where d.cuenta.padre=? and year(d.poliza.fecha)<?",[cuenta,year])
+		
+			def row=PolizaDet.executeQuery("select sum(d.debe),sum(d.haber) from PolizaDet d where d.cuenta.padre=? and year(d.poliza.fecha)=? "
+				,[cuenta,year])
+		
+			//println 'Saldo inicial: '+saldoInicial.get(0)
+			def debe=row.get(0)[0]?:0.0
+		
+			def haber=row.get(0)[1]?:0.0
+			def saldo=SaldoPorCuentaContable.findOrCreateWhere([cuenta:cuenta,year:year,mes:13])
+			
+			saldo.fecha=fecha
+			saldo.cierre=fecha
+			saldo.saldoInicial=saldoInicial.get(0)?:0.0
+			saldo.debe=debe
+			saldo.haber=haber
+			saldo.saldoFinal=saldo.saldoInicial+debe-haber
+			saldo.save(failOnError:true)
+		}
+		
 	}
 }
