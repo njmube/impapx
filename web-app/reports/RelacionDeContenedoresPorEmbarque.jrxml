@@ -224,7 +224,7 @@ WHERE ED.id NOT IN(SELECT D.embarque_det_id FROM distribucion_det D WHERE D.emba
 						mode="Opaque"
 						x="97"
 						y="43"
-						width="140"
+						width="174"
 						height="11"
 						forecolor="#000000"
 						key="staticText-23"
@@ -242,7 +242,7 @@ WHERE ED.id NOT IN(SELECT D.embarque_det_id FROM distribucion_det D WHERE D.emba
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="237"
+						x="271"
 						y="43"
 						width="36"
 						height="11"
@@ -262,7 +262,7 @@ WHERE ED.id NOT IN(SELECT D.embarque_det_id FROM distribucion_det D WHERE D.emba
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="326"
+						x="360"
 						y="43"
 						width="53"
 						height="11"
@@ -320,9 +320,9 @@ WHERE ED.id NOT IN(SELECT D.embarque_det_id FROM distribucion_det D WHERE D.emba
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="432"
+						x="466"
 						y="43"
-						width="112"
+						width="78"
 						height="11"
 						forecolor="#000000"
 						key="staticText-30"
@@ -340,7 +340,7 @@ WHERE ED.id NOT IN(SELECT D.embarque_det_id FROM distribucion_det D WHERE D.emba
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="273"
+						x="307"
 						y="43"
 						width="53"
 						height="11"
@@ -360,7 +360,7 @@ WHERE ED.id NOT IN(SELECT D.embarque_det_id FROM distribucion_det D WHERE D.emba
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="379"
+						x="413"
 						y="43"
 						width="53"
 						height="11"
@@ -469,7 +469,7 @@ WHERE ED.id NOT IN(SELECT D.embarque_det_id FROM distribucion_det D WHERE D.emba
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="237"
+						x="271"
 						y="0"
 						width="36"
 						height="12"
@@ -482,7 +482,7 @@ WHERE ED.id NOT IN(SELECT D.embarque_det_id FROM distribucion_det D WHERE D.emba
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.000" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="326"
+						x="360"
 						y="0"
 						width="53"
 						height="12"
@@ -495,7 +495,7 @@ WHERE ED.id NOT IN(SELECT D.embarque_det_id FROM distribucion_det D WHERE D.emba
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.000" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="379"
+						x="413"
 						y="0"
 						width="53"
 						height="12"
@@ -509,7 +509,7 @@ WHERE ED.id NOT IN(SELECT D.embarque_det_id FROM distribucion_det D WHERE D.emba
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="161"
+						x="195"
 						y="0"
 						width="76"
 						height="12"
@@ -573,7 +573,7 @@ WHERE ED.id NOT IN(SELECT D.embarque_det_id FROM distribucion_det D WHERE D.emba
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="86"
+						x="120"
 						y="0"
 						width="133"
 						height="12"
@@ -592,7 +592,7 @@ WHERE ED.id NOT IN(SELECT D.embarque_det_id FROM distribucion_det D WHERE D.emba
 				</staticText>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="237"
+						x="271"
 						y="0"
 						width="36"
 						height="12"
@@ -605,7 +605,7 @@ WHERE ED.id NOT IN(SELECT D.embarque_det_id FROM distribucion_det D WHERE D.emba
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.000" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="326"
+						x="360"
 						y="0"
 						width="53"
 						height="12"
@@ -618,7 +618,7 @@ WHERE ED.id NOT IN(SELECT D.embarque_det_id FROM distribucion_det D WHERE D.emba
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.000" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="379"
+						x="413"
 						y="0"
 						width="53"
 						height="12"
@@ -687,7 +687,7 @@ WHERE ED.id NOT IN(SELECT D.embarque_det_id FROM distribucion_det D WHERE D.emba
 					<reportElement
 						x="97"
 						y="0"
-						width="140"
+						width="174"
 						height="10"
 						key="textField"/>
 					<box></box>
@@ -711,9 +711,9 @@ WHERE ED.id NOT IN(SELECT D.embarque_det_id FROM distribucion_det D WHERE D.emba
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="437"
+						x="471"
 						y="0"
-						width="106"
+						width="72"
 						height="10"
 						key="textField"/>
 					<box></box>
@@ -737,7 +737,7 @@ WHERE ED.id NOT IN(SELECT D.embarque_det_id FROM distribucion_det D WHERE D.emba
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="237"
+						x="271"
 						y="0"
 						width="36"
 						height="10"
@@ -750,7 +750,7 @@ WHERE ED.id NOT IN(SELECT D.embarque_det_id FROM distribucion_det D WHERE D.emba
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.000" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="273"
+						x="307"
 						y="0"
 						width="53"
 						height="10"
@@ -763,7 +763,7 @@ WHERE ED.id NOT IN(SELECT D.embarque_det_id FROM distribucion_det D WHERE D.emba
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.000" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="326"
+						x="360"
 						y="0"
 						width="53"
 						height="10"
@@ -776,7 +776,7 @@ WHERE ED.id NOT IN(SELECT D.embarque_det_id FROM distribucion_det D WHERE D.emba
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.000" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="379"
+						x="413"
 						y="0"
 						width="53"
 						height="10"

@@ -20,7 +20,7 @@ class PolizaDet {
 	static belongsTo = [poliza:Poliza]
 
     static constraints = {
-		tipo(inList:['INGRESO','EGRESO','DIARIO','COMPRAS','GENERICA'])
+		tipo(inList:['INGRESO','EGRESO','DIARIO','COMPRAS','GENERICA','CIERRE_ANUAL'])
 		entidad(nullable:true,maxSize:50)
 		origen(nullable:true)
 		concepto(nullable:true,maxSize:50)

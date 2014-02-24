@@ -131,27 +131,27 @@ ORDER BY P.vencimiento ASC]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="¤ #,##0.00" isBlankWhenNull="false" evaluationTime="Group" evaluationGroup="PROVEEDOR"  hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="393"
-						y="8"
+						y="6"
 						width="77"
-						height="11"
+						height="13"
 						key="textField-18"/>
-					<box>					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<box>					<topPen lineWidth="0.25" lineStyle="Double" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 </box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-BoldOblique" size="8" isBold="true" isItalic="true"/>
+						<font pdfFontName="Helvetica-BoldOblique" size="9" isBold="true" isItalic="true"/>
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{SALDO_SEM}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement
 						mode="Transparent"
-						x="243"
-						y="8"
-						width="100"
-						height="11"
+						x="232"
+						y="6"
+						width="111"
+						height="13"
 						forecolor="#000000"
 						backcolor="#CCCCCC"
 						key="staticText-112"/>
@@ -161,16 +161,16 @@ ORDER BY P.vencimiento ASC]]></queryString>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 </box>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica-Oblique" size="8" isBold="false" isItalic="true" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+						<font fontName="Arial" pdfFontName="Helvetica-Oblique" size="9" isBold="false" isItalic="true" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<text><![CDATA[TOTAL POR SEMANA : ]]></text>
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="dd - MMM" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="343"
-						y="8"
+						y="6"
 						width="46"
-						height="11"
+						height="13"
 						key="textField-21"/>
 					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
 					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
@@ -179,7 +179,7 @@ ORDER BY P.vencimiento ASC]]></queryString>
 					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#CCCCCC"/>
 </box>
 					<textElement textAlignment="Left" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica" size="8" isBold="false" isUnderline="false"/>
+						<font pdfFontName="Helvetica" size="9" isBold="false" isUnderline="false"/>
 					</textElement>
 				<textFieldExpression   class="java.util.Date"><![CDATA[$F{FECHA_A_PAG}]]></textFieldExpression>
 				</textField>
@@ -961,17 +961,17 @@ ORDER BY P.vencimiento ASC]]></queryString>
 				<textField isStretchWithOverflow="false" pattern="¤ #,##0.00" isBlankWhenNull="false" evaluationTime="Group" evaluationGroup="PROVEEDOR"  hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="393"
-						y="11"
+						y="8"
 						width="77"
-						height="11"
+						height="14"
 						key="textField-20"/>
-					<box>					<topPen lineWidth="0.25" lineStyle="Solid" lineColor="#000000"/>
+					<box>					<topPen lineWidth="0.25" lineStyle="Double" lineColor="#000000"/>
 					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 					<bottomPen lineWidth="0.0" lineColor="#000000"/>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 </box>
 					<textElement textAlignment="Right" verticalAlignment="Middle">
-						<font pdfFontName="Helvetica-BoldOblique" size="8" isBold="true" isItalic="true"/>
+						<font pdfFontName="Helvetica-BoldOblique" size="9" isBold="true" isItalic="true"/>
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$V{SALDO_TOTAL}]]></textFieldExpression>
 				</textField>
@@ -979,9 +979,9 @@ ORDER BY P.vencimiento ASC]]></queryString>
 					<reportElement
 						mode="Transparent"
 						x="286"
-						y="11"
+						y="8"
 						width="107"
-						height="11"
+						height="14"
 						forecolor="#000000"
 						backcolor="#CCCCCC"
 						key="staticText-115"/>
@@ -991,7 +991,7 @@ ORDER BY P.vencimiento ASC]]></queryString>
 					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
 </box>
 					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
-						<font fontName="Arial" pdfFontName="Helvetica-BoldOblique" size="8" isBold="true" isItalic="true" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+						<font fontName="Arial" pdfFontName="Helvetica-BoldOblique" size="9" isBold="true" isItalic="true" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
 					</textElement>
 				<text><![CDATA[TOTAL : ]]></text>
 				</staticText>

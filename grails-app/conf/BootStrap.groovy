@@ -92,7 +92,26 @@ class BootStrap {
 			UserRole.create(compras2, role2, true)
 		if(!compras2.authorities.contains(role4))
 			UserRole.create(compras2, role4, true)
+	
+		def compras3=User.findByUsername('orios')
+		if(!compras3){
+			compras3=new User(username:"orios",password:"cachorro",enabled:true).save(flush:true)
+		}
+		if(!compras3.authorities.contains(role2))
+			UserRole.create(compras3, role2, true)
+		if(!compras3.authorities.contains(role4))
+			UserRole.create(compras3, role4, true)
 		
+		def compras4=User.findByUsername('rarroyo')
+		if(!compras4){
+				compras4=new User(username:"rarroyo",password:"garroyo",enabled:true).save(flush:true)
+			}
+		if(!compras4.authorities.contains(role2))
+			UserRole.create(compras4, role2, true)
+		if(!compras4.authorities.contains(role4))
+			UserRole.create(compras4, role4, true)
+				
+				
 		def conta1=User.findByUsername('mbolanos')
 		if(!conta1){
 			conta1=new User(username:"mbolanos",password:"ebola",enabled:true).save(flush:true)

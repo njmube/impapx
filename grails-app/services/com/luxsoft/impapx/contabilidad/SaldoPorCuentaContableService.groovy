@@ -124,20 +124,25 @@ class SaldoPorCuentaContableService {
 		if(cuenta.detalle){
 			
 			//println 'Actualizando saldo para cuenta: '+cuenta
-			def saldoInicial=PolizaDet.executeQuery("select sum(d.debe-d.haber) from PolizaDet d where d.cuenta=? and year(d.poliza.fecha)<?",[cuenta,year])
+			def saldoInicial=SaldoPorCuentaContable.findByCuentaAndYearAndMes(cuenta,year,12)
+			assert saldoInicial ,'No existe el saldo inicial para la cuenta: '+cuenta+' año: '+year+ ' mes '+12
+				//.executeQuery("select sum(d.debe-d.haber) from PolizaDet d where d.cuenta=? and year(d.poliza.fecha)<?",[cuenta,year])
 			
+			/*
 			def row=PolizaDet.executeQuery(
 				"select sum(d.debe),sum(d.haber) from PolizaDet d where d.cuenta=? and year(d.poliza.fecha)=? "
 				,[cuenta,year])
+			*/
 			
-			
-			def debe=row.get(0)[0]?:0.0
-			
-			def haber=row.get(0)[1]?:0.0
+			//def debe=row.get(0)[0]?:0.0
+			def debe=0.0
+			def haber=0.0
+			//def haber=row.get(0)[1]?:0.0
 			def saldo=SaldoPorCuentaContable.findOrCreateWhere([cuenta:cuenta,year:year,mes:13])
 			saldo.fecha=fecha
 			saldo.cierre=fecha
-			saldo.saldoInicial=saldoInicial.get(0)?:0.0
+			saldo.saldoInicial=saldoInicial.saldoFinal
+			//saldo.saldoInicial=saldoInicial.get(0)?:0.0
 			saldo.debe=debe
 			saldo.haber=haber
 			saldo.saldoFinal=saldo.saldoInicial+debe-haber
@@ -145,20 +150,23 @@ class SaldoPorCuentaContableService {
 			println res
 		}else{
 			//println 'Actualizando saldo para cuenta de mayor: '+cuenta
-			def saldoInicial=PolizaDet.executeQuery("select sum(d.debe-d.haber) from PolizaDet d where d.cuenta.padre=? and year(d.poliza.fecha)<?",[cuenta,year])
-		
-			def row=PolizaDet.executeQuery("select sum(d.debe),sum(d.haber) from PolizaDet d where d.cuenta.padre=? and year(d.poliza.fecha)=? "
-				,[cuenta,year])
+			//def saldoInicial=PolizaDet.executeQuery("select sum(d.debe-d.haber) from PolizaDet d where d.cuenta.padre=? and year(d.poliza.fecha)<?",[cuenta,year])
+			
+		def saldoInicial=SaldoPorCuentaContable.findByCuentaAndYearAndMes(cuenta,year,12)
+		assert saldoInicial ,'No existe el saldo inicial para la cuenta: '+cuenta+' año: '+year+ ' mes '+12
+		println 'Saldo inicial localizado: '+saldoInicial.id
 		
 			//println 'Saldo inicial: '+saldoInicial.get(0)
-			def debe=row.get(0)[0]?:0.0
-		
-			def haber=row.get(0)[1]?:0.0
+			//def debe=row.get(0)[0]?:0.0
+			def debe=0.0
+			//def haber=row.get(0)[1]?:0.0
+			def haber=0.0
 			def saldo=SaldoPorCuentaContable.findOrCreateWhere([cuenta:cuenta,year:year,mes:13])
 			
 			saldo.fecha=fecha
 			saldo.cierre=fecha
-			saldo.saldoInicial=saldoInicial.get(0)?:0.0
+			//saldo.saldoInicial=saldoInicial.get(0)?:0.0
+			saldo.saldoInicial=saldoInicial.saldoFinal
 			saldo.debe=debe
 			saldo.haber=haber
 			saldo.saldoFinal=saldo.saldoInicial+debe-haber

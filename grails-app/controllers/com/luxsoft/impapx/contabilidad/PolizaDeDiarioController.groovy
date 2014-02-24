@@ -6,6 +6,7 @@ import java.util.Date;
 import org.apache.commons.lang.time.DateUtils;
 
 import com.luxsoft.cfd.ComprobanteFiscal;
+import com.luxsoft.cfdi.Cfdi;
 import com.luxsoft.impapx.FacturaDeGastos;
 import com.luxsoft.impapx.FacturaDeImportacion;
 import com.luxsoft.impapx.Pedimento;
@@ -62,10 +63,29 @@ class PolizaDeDiarioController {
 		Poliza poliza=new Poliza(tipo:'DIARIO',folio:1, fecha:dia,descripcion:'Poliza '+dia.text(),partidas:[])
 		
 		//Collecciones usadas mas de una vez
-		def facturas=Venta.findAll("from Venta v  where date(v.cfd.fecha)=? and v.tipo=? and (v.clase is null or v.clase='IMPORTACION') ",[dia,'VENTA'])
+		def facturas=[]
+		def servicios=[]
+		println 'Cargando CFDIs con fecha: '+dia
+		def cfdis=Cfdi.findAll("from Cfdi c where date(c.fecha)=? and c.tipo=? and c.origen!='CANCELACION' ",[dia,'FAC'])
+		println 'Cfdis localizados: '+cfdis.size()
+		cfdis.each {
+			Venta venta=Venta.get(it.origen)
+			assert venta,"Debe existir la venta para el cfdi: "+cfdi
+			println 'Procesando: '+venta+' Clase: '+venta.clase	
+			if(!venta.clase || venta.clase=='IMPORTACION')
+				facturas.add(venta)
+			if(venta.clase=='generica')
+				servicios.add(venta)
+		}
+		println 'Facturas de importacion: '+facturas.size()
+		println 'Facturas de servicios: '+servicios.size()
+		//def facturas=Venta.findAll("from Venta v  where date(v.fechaFactura)=? and v.tipo=? and (v.clase is null or v.clase='IMPORTACION') ",[dia,'VENTA'])
 		
 		//Collecciones usadas mas de una vez
-		def servicios=Venta.findAll("from Venta v  where date(v.cfd.fecha)=? and v.tipo=? and v.clase='generica' ",[dia,'VENTA'])
+		
+		
+		//def servicios=Venta.findAll("from Venta v  where date(v.fechaFactura)=? and v.tipo=? and v.clase='generica' ",[dia,'VENTA'])
+		
 		
 		// Procesadores
 		
@@ -113,7 +133,7 @@ class PolizaDeDiarioController {
 					debe:fac.total,
 					haber:0.0,
 					asiento:asiento,
-					descripcion:"Fecha:$fac.cfd.fecha $fac.cliente.nombre",
+					descripcion:"Fecha:$fac.fechaFactura $fac.cliente.nombre",
 					referencia:"$fac.factura"
 					,fecha:poliza.fecha
 					,tipo:poliza.tipo
@@ -129,7 +149,7 @@ class PolizaDeDiarioController {
 				debe:0.0,
 				haber:fac.importe,
 				asiento:asiento,
-				descripcion:"Fecha:$fac.cfd.fecha $fac.cliente.nombre",
+				descripcion:"Fecha:$fac.fechaFactura $fac.cliente.nombre",
 				referencia:"$fac.factura"
 				,fecha:poliza.fecha
 				,tipo:poliza.tipo
@@ -142,7 +162,7 @@ class PolizaDeDiarioController {
 				debe:0.0,
 				haber:fac.impuestos,
 				asiento:asiento,
-				descripcion:"Fecha:$fac.cfd.fecha $fac.cliente.nombre",
+				descripcion:"Fecha:$fac.fechaFactura $fac.cliente.nombre",
 				referencia:"$fac.factura"
 				,fecha:poliza.fecha
 				,tipo:poliza.tipo
@@ -172,7 +192,7 @@ class PolizaDeDiarioController {
 					debe:srv.total,
 					haber:0.0,
 					asiento:asientos,
-					descripcion:"Fecha:$srv.cfd.fecha $srv.cliente.nombre",
+					descripcion:"Fecha:$srv.fechaFactura $srv.cliente.nombre",
 					referencia:"$srv.factura"
 					,fecha:poliza.fecha
 					,tipo:poliza.tipo
@@ -188,7 +208,7 @@ class PolizaDeDiarioController {
 				debe:0.0,
 				haber:srv.importe,
 				asiento:asientos,
-				descripcion:"Fecha:$srv.cfd.fecha $srv.cliente.nombre",
+				descripcion:"Fecha:$srv.fechaFactura $srv.cliente.nombre",
 				referencia:"$srv.factura"
 				,fecha:poliza.fecha
 				,tipo:poliza.tipo
@@ -201,7 +221,7 @@ class PolizaDeDiarioController {
 				debe:0.0,
 				haber:srv.impuestos,
 				asiento:asientos,
-				descripcion:"Fecha:$srv.cfd.fecha $srv.cliente.nombre",
+				descripcion:"Fecha:$srv.fechaFactura $srv.cliente.nombre",
 				referencia:"$srv.factura"
 				,fecha:poliza.fecha
 				,tipo:poliza.tipo
@@ -219,6 +239,7 @@ class PolizaDeDiarioController {
 			def costoNeto=fac.partidas.sum(0.0,{it.embarque.costoBruto})
 			def embarque=fac.partidas.embarque.embarque.id			
 			
+			def pedimento=fac.partidas[0].embarque?.pedimento?.pedimento
 			
 			
 			//Abono al inventario
@@ -227,7 +248,7 @@ class PolizaDeDiarioController {
 				debe:0.0,
 				haber:costoNeto,
 				asiento:asiento,
-				descripcion:"Fecha:$fac.cfd.fecha $fac.cliente.nombre Pedimento:$fac.cfd.pedimento",
+				descripcion:"Fecha:$fac.fechaFactura $fac.cliente.nombre Pedimento:$pedimento",
 				referencia:"$fac.factura"
 				,fecha:poliza.fecha
 				,tipo:poliza.tipo
@@ -240,7 +261,7 @@ class PolizaDeDiarioController {
 				debe:costoNeto,
 				haber:0.0,
 				asiento:asiento,
-				descripcion:"Fecha:$fac.cfd.fecha $fac.cliente.nombre Pedimento:$fac.cfd.pedimento",
+				descripcion:"Fecha:$fac.fechaFactura $fac.cliente.nombre Pedimento:$pedimento",
 				referencia:"$fac.factura"
 				,fecha:poliza.fecha
 				,tipo:poliza.tipo
@@ -675,8 +696,8 @@ class PolizaDeDiarioController {
 				debe:0.0,
 				haber:nota.total,
 				asiento:asiento,
-				descripcion:"NC: $nota.tipo $nota?.cfd?.folio  ",
-				referencia:"$nota?.comprobanteFiscal",
+				descripcion:"NC: $nota.tipo $nota.cfdi  ",
+				referencia:"$nota.comprobanteFiscal",
 				,fecha:poliza.fecha
 				,tipo:poliza.tipo
 				,entidad:'CXCNota'
@@ -688,8 +709,8 @@ class PolizaDeDiarioController {
 				debe:nota.importe,
 				haber:0.0,
 				asiento:asiento,
-				descripcion:"NC: $nota.tipo $nota?.factura  ",
-				referencia:"$nota?.comprobanteFiscal",
+				descripcion:"NC: $nota.tipo $nota.cfdi  ",
+				referencia:"$nota.comprobanteFiscal",
 				,fecha:poliza.fecha
 				,tipo:poliza.tipo
 				,entidad:'NotaDeCredito'
@@ -701,8 +722,8 @@ class PolizaDeDiarioController {
 				debe:nota.impuesto,
 				haber:0.0,
 				asiento:asiento,
-				descripcion:"NC: $nota.tipo $nota?.comprobanteFiscal  ",
-				referencia:"$nota?.comprobanteFiscal",
+				descripcion:"NC: $nota.tipo $nota.cfdi  ",
+				referencia:"$nota.comprobanteFiscal",
 				,fecha:poliza.fecha
 				,tipo:poliza.tipo
 				,entidad:'NotaDeCredito'

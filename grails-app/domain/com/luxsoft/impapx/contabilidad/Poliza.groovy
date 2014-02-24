@@ -25,7 +25,7 @@ class Poliza {
 		descripcion(blank:false,maxSize:250)
 		debe(nullable:false,scale:6)
 		haber(nullable:false,scale:6)
-		tipo(inList:['INGRESO','EGRESO','DIARIO','COMPRAS','GENERICA'])
+		tipo(inList:['INGRESO','EGRESO','DIARIO','COMPRAS','GENERICA','CIERRE_ANUAL'])
     }
 	
 	
