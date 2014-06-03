@@ -5,6 +5,14 @@ import grails.converters.JSON
 class TipoDeCambioController {
 	static scaffold = true
 	
+	def list(){
+		params.max = Math.min(params.max ? params.int('max') : 20, 100)
+		params.sort="fecha"
+		params.order="desc"
+		
+		[tipoDeCambioInstanceList: TipoDeCambio.list(params), tipoDeCambioInstanceTotal: TipoDeCambio.count()]
+	}
+	
 	def ajaxTipoDeCambioDiaAnterior(String fecha){
 		println 'Calculando el tipo de cambio: '+params
 		def dia=new Date().parse("dd/MM/yyyy",fecha)-1;

@@ -129,9 +129,11 @@ class SaldoDeCuentaController {
 		def saldoInicial=MovimientoDeCuenta.executeQuery("select sum(x.importe) from MovimientoDeCuenta x where x.cuenta=? and date(fecha) < ?"
 			,[cuenta,fechaIni])[0]?:0.0
 		//Calculando los movimientos del mes
-		def hql="select sum(x.importe) from MovimientoDeCuenta x where x.cuenta=? and date(x.fecha) between ? and ? and ingreso=?  "
-		def ingresos=MovimientoDeCuenta.executeQuery(hql,[cuenta,fechaIni,fechaFin,true])[0]?:00
-		def egresos=MovimientoDeCuenta.executeQuery(hql,[cuenta,fechaIni,fechaFin,false])[0]?:00
+		//def hql="select sum(x.importe) from MovimientoDeCuenta x where x.cuenta=? and date(x.fecha) between ? and ? and ingreso=?  "
+		def ingresos=MovimientoDeCuenta.executeQuery("select sum(x.importe) from MovimientoDeCuenta x where x.cuenta=? and date(x.fecha) between ? and ? and importe>0  "
+			,[cuenta,fechaIni,fechaFin])[0]?:00
+		def egresos=MovimientoDeCuenta.executeQuery("select sum(x.importe) from MovimientoDeCuenta x where x.cuenta=? and date(x.fecha) between ? and ? and importe<0  "
+			,[cuenta,fechaIni,fechaFin])[0]?:00
 		def saldoFinal=saldoInicial+(ingresos+egresos)
 		
 		//def movimientos=MovimientoDeCuenta.findAllByCuentaAndFechaBetween(cuenta,fechaIni,fechaFin,[sort:('fecha')])
@@ -143,8 +145,8 @@ class SaldoDeCuentaController {
 			'FECHA':mov.fecha.format("dd"),
 			 'CONCEPTO':mov.concepto
 			 ,'TIPO':mov.tipo
-			,'INGRESO':mov.ingreso?mov.importe.abs():0.0
-			,'EGRESO':!mov.ingreso?mov.importe.abs():0.0
+			,'INGRESO':mov.importe>0?mov.importe.abs():0.0
+			,'EGRESO':mov.importe<0?mov.importe.abs():0.0
 			 ,'COMENTARIO':mov.comentario
 			 ,'REFERENCIA':mov.referenciaBancaria
 			 ,INI:saldoInicial

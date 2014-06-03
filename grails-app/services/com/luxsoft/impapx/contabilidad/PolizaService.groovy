@@ -131,30 +131,18 @@ class PolizaService implements ApplicationListener<PolizaUpdateEvent>{
 	}
 	
 	def actualizarSaldos(def poliza){
+		if(poliza.tipo=='CIERRE_ANUAL'){
+			return
+		}
 		int year=poliza.fecha.toYear()
 		int mes=poliza.fecha.toMonth()
 		def cuentas=PolizaDet.executeQuery("select distinct(d.cuenta) from PolizaDet d where d.poliza=?",[poliza])
 		
 		
 		cuentas.each{ c->
-			//println 'Actualizando saldo para la cuenta: '+c
+			
 			saldoPorCuentaContableService.actualizarSaldo(year, mes, c)
-			/*
-			def saldoInicial=PolizaDet.executeQuery("select sum(d.debe-d.haber) from PolizaDet d where d.cuenta=? and date(d.poliza.fecha)<?",[c,poliza.fecha.inicioDeMes()])
-			def row=PolizaDet.executeQuery("select sum(d.debe),sum(d.haber) from PolizaDet d where d.cuenta=? and date(d.poliza.fecha) between ? and ?",[c,poliza.fecha,poliza.fecha])
 			
-			//println 'Saldo inicial: '+saldoInicial.get(0)
-			def debe=row.get(0)[0]
-			
-			def haber=row.get(0)[1]
-			def saldo=SaldoPorCuentaContable.findOrCreateWhere([cuenta:c,year:year,mes:mes])
-			saldo.fecha=poliza.fecha
-			saldo.cierre=poliza.fecha
-			saldo.saldoInicial=saldoInicial.get(0)?:0.0
-			saldo.debe=debe
-			saldo.haber=haber
-			saldo.saldoFinal=saldo.saldoInicial+debe-haber
-			saldo.save(failOnError:true)*/
 		}
 	}
 }

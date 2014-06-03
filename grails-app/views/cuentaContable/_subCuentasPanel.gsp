@@ -25,7 +25,11 @@
 	<tbody>
 		<g:each in="${cuenta.subCuentas}" var="row">
 			<tr id="${fieldValue(bean:row, field:"id")}">
-				<td>${fieldValue(bean: row, field: "clave")}</td>
+				
+				<td><g:link action="edit" id="${row.id }">
+					${fieldValue(bean: row, field: "clave")}</g:link>
+				</td>
+				
 				<td>${fieldValue(bean: row, field: "descripcion")}</td>
 				<td>${fieldValue(bean: row, field: "tipo")}</td>
 				<td>${fieldValue(bean: row, field: "subTipo")}</td>

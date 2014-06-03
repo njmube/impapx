@@ -42,6 +42,7 @@ environments {
 			username = 'root'
 			password = 'sys'			
 			url = 'jdbc:mysql://localhost/impapx?autoReconnect=true'
+			//url = 'jdbc:mysql://10.10.1.227/impapx'
 			pooled = true
 			properties {
 			   maxActive = 3

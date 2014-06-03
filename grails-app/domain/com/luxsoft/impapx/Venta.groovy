@@ -86,7 +86,8 @@ class Venta {
 		if(tipo=='NOTA_DE_CARGO')
 			serie='CAR'
 		return Cfdi.findBySerieAndOrigen(serie,id)?.id
-	} 
+	}
+	 
 	
 	def getFactura(){
 		if(getCfd())
@@ -95,8 +96,19 @@ class Venta {
 			return getCfdi()
 	}
 	
+	def getFacturaFolio(){
+		if(getCfd())
+			return getCfd().getSerie()+' - '+getCfd().getFolio()
+		else{
+			def serie=tipo=='VENTA'?'FAC':'CAR'
+			Cfdi cfdi= Cfdi.findBySerieAndOrigen(serie,id)
+			return cfdi!=null?serie+'-'+cfdi.folio:'NA'
+		}
+			
+	}
+	
 	def getFechaFactura(){
-		def serie='FAC'
+		def serie=tipo=='VENTA'?'FAC':'CAR'
 		if(cfd){
 			return cfd?.fecha?.text()
 		}

@@ -128,13 +128,14 @@ class PolizaDeDiarioController {
 			def cuenta=CuentaContable.findByClave(clave)
 			//println 'Cuenta localizada: '+cuenta
 			if(!cuenta) throw new RuntimeException("No existe la cuenta para el cliente: "+fac.cliente+ 'Clave: '+clave)
+			
 			poliza.addToPartidas(
 					cuenta:cuenta,
 					debe:fac.total,
 					haber:0.0,
 					asiento:asiento,
 					descripcion:"Fecha:$fac.fechaFactura $fac.cliente.nombre",
-					referencia:"$fac.factura"
+					referencia:"$fac.facturaFolio"
 					,fecha:poliza.fecha
 					,tipo:poliza.tipo
 					,entidad:'Venta'

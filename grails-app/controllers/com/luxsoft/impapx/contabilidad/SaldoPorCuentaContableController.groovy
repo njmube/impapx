@@ -206,12 +206,18 @@ class SaldoPorCuentaContableController {
 	}
 	
 	def generarCierreAnual(){
-		//println 'Generando cierre anual: '+session.periodoCierre
+		println 'Generando cierre anual: '+session.periodoCierre
 		
 		saldoPorCuentaContableService.cierreAnual(session.periodoCierre)
 		
 		
 		redirect action:'cierreAnual'
 		
+	}
+	
+	def actualizarCierreAnual(){
+		println 'Actualizando cierre anual: '+session.periodoCierre
+		saldoPorCuentaContableService.actualizarCierreAnual(session.periodoCierre.toYear())
+		redirect action:'cierreAnual'
 	}
 }

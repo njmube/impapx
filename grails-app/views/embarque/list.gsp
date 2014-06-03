@@ -36,6 +36,7 @@
 							<th>Id .</th>
 							<th>BL</th>
 							<th>Nombre</th>
+							<th>Cont</th>
 							<th>F Emb</th>
 							<th>Proveedor</th>
 							<th>Aduana</th>
@@ -58,7 +59,7 @@
 						<td><g:link action="edit" id="${embarqueInstance.id}">${fieldValue(bean: embarqueInstance, field: "bl")}</g:link></td>
 					
 						<td>${fieldValue(bean: embarqueInstance, field: "nombre")}</td>
-					
+						<td><g:formatNumber number="${embarqueInstance.contenedores }" format="###"/>
 						<td><g:formatDate date="${embarqueInstance.fechaEmbarque}" format="dd/MM/yyyy"/></td>
 					
 						<td>${fieldValue(bean: embarqueInstance, field: "proveedor.nombre")}</td>
@@ -96,7 +97,7 @@
 	<filterpane:filterPane	domain="com.luxsoft.impapx.Embarque"
 		dialog="true"
 		title="Filtrar"
-		filterProperties="id,fechaEmbarque,nombre"
+		filterProperties="id,fechaEmbarque,nombre,contenedores,bl"
 		associatedProperties="proveedor.nombre"
 		additionalProperties="identifier"
 		

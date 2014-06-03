@@ -87,13 +87,13 @@
 					<td><lx:shortDate date="${movimientoDeCuentaInstance.fecha }"/></td>
 					<td>${fieldValue(bean: movimientoDeCuentaInstance, field: "concepto")}</td>
 					<td>${fieldValue(bean: movimientoDeCuentaInstance, field: "tipo")}</td>
-					<g:if test="${movimientoDeCuentaInstance.ingreso}">
-						<td><lx:moneyFormat number="${movimientoDeCuentaInstance.importe.abs() }"/></td>
+					<g:if test="${movimientoDeCuentaInstance.importe>0}">
+						<td><lx:moneyFormat number="${movimientoDeCuentaInstance.importe }"/></td>
 					</g:if>
 					<g:else>
 						<td></td>
 					</g:else>
-					<g:if test="${!movimientoDeCuentaInstance.ingreso}">
+					<g:if test="${movimientoDeCuentaInstance.importe<0}">
 						<td><lx:moneyFormat number="${movimientoDeCuentaInstance.importe.abs() }"/></td>
 					</g:if>
 					<g:else>

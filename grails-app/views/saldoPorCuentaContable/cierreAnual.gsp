@@ -42,6 +42,9 @@
  		<li>
  			<g:link action="generarCierreAnual" params="[year:session?.periodoCierre?.toYear()]">Generar cierre</g:link>
 		</li>
+		<li>
+ 			<g:link action="actualizarCierreAnual" params="[year:session?.periodoCierre?.toYear()]">Actualizar cierre anual</g:link>
+		</li>
 		<div class="accordion-group">
  	<div class="accordion-heading">
  		<a class="accordion-toggle alert" data-toggle="collapse" data-parent="#saldoDeCuentaAccordion" href="#collapseOne">

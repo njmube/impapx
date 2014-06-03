@@ -34,34 +34,60 @@ class SaldoPorCuentaContableService {
 		
 		def fecha=calendar.getTime().inicioDeMes()
 		//def fecha=new Date(2013,8,1)
-		println 'Actualizando saldo para cuenta '+cuenta+' Per:'+mes+' /'+year+ 'icio de mes: '+fecha
+		//println 'Actualizando saldo para cuenta '+cuenta+' Per:'+mes+' /'+year+ 'icio de mes: '+fecha
 		if(cuenta.detalle){
 			
 			//println 'Actualizando saldo para cuenta: '+cuenta
-			def saldoInicial=PolizaDet.executeQuery("select sum(d.debe-d.haber) from PolizaDet d where d.cuenta=? and date(d.poliza.fecha)<?",[cuenta,fecha])
+			def saldoInicial=0
+			if(mes==1){
+				def cierreAnual=SaldoPorCuentaContable.findByCuentaAndYearAndMes(cuenta,year-1,13)
+				println 'SaldoInicial obtenido: '+cierreAnual
+				saldoInicial=cierreAnual.saldoFinal
+			}else{
+				saldoInicial=SaldoPorCuentaContable.findByCuentaAndYearAndMes(cuenta,year,mes-1)?.saldoFinal?:0.0
+				//saldoInicial=saldoInicial?:0.0
+				/*PolizaDet.executeQuery(
+				"select sum(d.debe-d.haber) from PolizaDet d where d.cuenta=? and date(d.poliza.fecha)<? and d.poliza.tipo!=?"
+				,[cuenta,fecha,'CIERRE_ANUAL']).get(0)?:0.0*/
+			}
 			
-			def row=PolizaDet.executeQuery("select sum(d.debe),sum(d.haber) from PolizaDet d where d.cuenta=? and year(d.poliza.fecha)=? and month(d.poliza.fecha)=?"
-				,[cuenta,year,mes])
 			
-			println 'Saldo inicial: '+saldoInicial.get(0)
+			def row=PolizaDet
+				.executeQuery("select sum(d.debe),sum(d.haber) from PolizaDet d where d.cuenta=? and year(d.poliza.fecha)=? and month(d.poliza.fecha)=? and d.poliza.tipo!=?"
+				,[cuenta,year,mes,'CIERRE_ANUAL'])
+			
+			//println 'Saldo inicial: '+saldoInicial
+				
 			def debe=row.get(0)[0]?:0.0
 			
 			def haber=row.get(0)[1]?:0.0
 			def saldo=SaldoPorCuentaContable.findOrCreateWhere([cuenta:cuenta,year:year,mes:mes])
+			println "Cuenta $cuenta.clave Saldo inicial:$saldoInicial Debe:$debe Haber:$haber"
 			saldo.fecha=fecha
 			saldo.cierre=fecha
-			saldo.saldoInicial=saldoInicial.get(0)?:0.0
+			//saldo.saldoInicial=saldoInicial.get(0)?:0.0
+			saldo.saldoInicial=saldoInicial
 			saldo.debe=debe
 			saldo.haber=haber
 			saldo.saldoFinal=saldo.saldoInicial+debe-haber
 			def res=saldo.save(failOnError:true)
-			println res
+			//println res
 		}else{
 			//println 'Actualizando saldo para cuenta de mayor: '+cuenta
-			def saldoInicial=PolizaDet.executeQuery("select sum(d.debe-d.haber) from PolizaDet d where d.cuenta.padre=? and date(d.poliza.fecha)<?",[cuenta,fecha])
-		
-			def row=PolizaDet.executeQuery("select sum(d.debe),sum(d.haber) from PolizaDet d where d.cuenta.padre=? and year(d.poliza.fecha)=? and month(d.poliza.fecha)=?"
-				,[cuenta,year,mes])
+			def saldoInicial=0
+			if(mes==1){
+				def cierreAnual=SaldoPorCuentaContable.findByCuentaAndYearAndMes(cuenta,year-1,13)
+				saldoInicial=cierreAnual.saldoFinal
+			}else{
+				saldoInicial=SaldoPorCuentaContable.findByCuentaAndYearAndMes(cuenta,year,mes-1)?.saldoFinal?:0.0
+				/*PolizaDet
+				.executeQuery("select sum(d.debe-d.haber) from PolizaDet d where d.cuenta.padre=? and date(d.poliza.fecha)<? and d.poliza.tipo!=?"
+					,[cuenta,fecha,'CIERRE_ANUAL']).get(0)?:0.0
+					*/
+			}
+			def row=PolizaDet.executeQuery(
+				"select sum(d.debe),sum(d.haber) from PolizaDet d where d.cuenta.padre=? and year(d.poliza.fecha)=? and month(d.poliza.fecha)=? and d.poliza.tipo!=?"
+				,[cuenta,year,mes,'CIERRE_ANUAL'])
 		
 			//println 'Saldo inicial: '+saldoInicial.get(0)
 			def debe=row.get(0)[0]?:0.0
@@ -71,7 +97,8 @@ class SaldoPorCuentaContableService {
 			
 			saldo.fecha=fecha
 			saldo.cierre=fecha
-			saldo.saldoInicial=saldoInicial.get(0)?:0.0
+			//saldo.saldoInicial=saldoInicial.get(0)?:0.0
+			saldo.saldoInicial=saldoInicial
 			saldo.debe=debe
 			saldo.haber=haber
 			saldo.saldoFinal=saldo.saldoInicial+debe-haber
@@ -167,6 +194,54 @@ class SaldoPorCuentaContableService {
 			saldo.cierre=fecha
 			//saldo.saldoInicial=saldoInicial.get(0)?:0.0
 			saldo.saldoInicial=saldoInicial.saldoFinal
+			saldo.debe=debe
+			saldo.haber=haber
+			saldo.saldoFinal=saldo.saldoInicial+debe-haber
+			saldo.save(failOnError:true)
+		}
+		
+	}
+	
+	def actualizarCierreAnual(int year){
+		println 'Actualizando cierre anual Year: '+year
+		
+		def saldos=SaldoPorCuentaContable.findAllByYearAndMes(year,13)
+		for(SaldoPorCuentaContable saldo:saldos){
+			def cuenta =saldo.cuenta
+			actualizarCierreAnual(year,cuenta)
+		}
+	}
+	
+	def actualizarCierreAnual(int year,def cuenta){
+		
+		def mes=13
+		
+		if(cuenta.detalle){
+			
+			
+			def row=PolizaDet
+				.executeQuery("select sum(d.debe),sum(d.haber) from PolizaDet d where d.cuenta=? and year(d.poliza.fecha)=?  and d.poliza.tipo=?"
+				,[cuenta,year,'CIERRE_ANUAL'])
+			
+			
+			def debe=row.get(0)[0]?:0.0
+			def haber=row.get(0)[1]?:0.0
+			def saldo=SaldoPorCuentaContable.findOrCreateWhere([cuenta:cuenta,year:year,mes:mes])
+			saldo.debe=debe
+			saldo.haber=haber
+			saldo.saldoFinal=saldo.saldoInicial+debe-haber
+			def res=saldo.save(failOnError:true)
+			println " Cuenta: $cuenta.clave debe:$debe  haber:$haber"
+		}else{
+			
+			def row=PolizaDet.executeQuery(
+				"select sum(d.debe),sum(d.haber) from PolizaDet d where d.cuenta.padre=? and year(d.poliza.fecha)=? and d.poliza.tipo=?"
+				,[cuenta,year,'CIERRE_ANUAL'])
+		
+			def debe=row.get(0)[0]?:0.0
+			def haber=row.get(0)[1]?:0.0
+			println " Cuenta: $cuenta.clave debe:$debe  haber:$haber"
+			def saldo=SaldoPorCuentaContable.findOrCreateWhere([cuenta:cuenta,year:year,mes:mes])
 			saldo.debe=debe
 			saldo.haber=haber
 			saldo.saldoFinal=saldo.saldoInicial+debe-haber
