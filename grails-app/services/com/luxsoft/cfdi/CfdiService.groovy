@@ -52,7 +52,7 @@ class CfdiService {
 		def cfdi=CfdiConverters.toCfdi(source,empresa)
 		cfdi.serie=serie
 		cfdi.folio=folio
-		
+		St
 		def ComprobanteDocument document=CfdiConverters.toComprobante(source, empresa)
 		assert document," Debe existir la conversion a ComprobanteDocument de la entidad: "+source.class
 		Comprobante comprobante=document.getComprobante()
@@ -168,3 +168,5 @@ class CfdiService {
 		return cfdi
 	}
 }
+
+
