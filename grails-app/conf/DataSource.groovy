@@ -41,6 +41,7 @@ environments {
 			driverClassName = 'com.mysql.jdbc.Driver'
 			username = 'root'
 			password = 'sys'			
+			//url = 'jdbc:mysql://10.10.1.228/paperx?autoReconnect=true'
 			url = 'jdbc:mysql://localhost/impapx?autoReconnect=true'
 			//url = 'jdbc:mysql://10.10.1.227/impapx'
 			pooled = true
@@ -101,7 +102,8 @@ environments {
 			driverClassName = 'com.mysql.jdbc.Driver'
 			username = 'root'
 			password = 'sys'
-			url = 'jdbc:mysql://10.10.1.227/impapx'
+			//url = 'jdbc:mysql://10.10.1.227/impapx'
+			url = 'jdbc:mysql://10.10.1.228/paperx'
 			pooled = true
 			properties {
 			   maxActive = 10

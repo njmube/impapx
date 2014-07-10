@@ -26,25 +26,25 @@
 					input-value="${embarqueDetInstance.cantidad}" autofocus="true"/>
 				</div>
 				<div class="span6">
-					<f:field property="precio" input-class="numericField"/>
+					<f:field property="precio" input-class="numericField" input-type="text"/>
 				</div>
 
 				<div class="span4">
-					<f:field property="kilosNetos" input-class="numericField" />
+					<f:field property="kilosNetos" input-class="numericField" input-type="text"/>
 				</div>
 
 				<div class="span6">
-					<f:field property="kilosEstimados"  input-class="numericField" value="${embarqueDetInstance.kilosEstimados }"/>
+					<f:field property="kilosEstimados"  input-class="numericField" value="${embarqueDetInstance.kilosEstimados }" input-type="text"/>
 				</div>
 				
 				<div class="span4">
-					<f:field property="importe" input-type="number" input-required="true" input-class="numericField"/>
+					<f:field property="importe" input-type="string" input-required="true" input-class="numericField" />
 				</div>
 				<div class="span6">
-					<f:field property="tarimas" input-class="numericField" value="${embarqueDetInstance.tarimas}"/>
+					<f:field property="tarimas" input-class="numericField" value="${embarqueDetInstance.tarimas}" input-type="string"/>
 				</div>
 				<div class="span4">
-					<f:field property="contenedor" input-type="number" input-required="true"/>
+					<f:field property="contenedor" input-type="string" input-required="true"/>
 				</div>
 				
 				

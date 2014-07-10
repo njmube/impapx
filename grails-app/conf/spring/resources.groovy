@@ -28,10 +28,12 @@ beans = {
 			cfdiTimbrador(CfdiTimbrador){
 				timbradoDePrueba=true
 			}
-		case 'paper':
+			break
+		case Environment.CUSTOM:
 			cfdiTimbrador(CfdiTimbrador){
 				timbradoDePrueba=false
 			}
+			break
 		
 		
 	}

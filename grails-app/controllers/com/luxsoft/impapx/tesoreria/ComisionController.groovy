@@ -16,6 +16,8 @@ class ComisionController {
 
     def list() {
         params.max = Math.min(params.max ? params.int('max') : 100, 500)
+		params.sort="fecha"
+		params.order="desc"
         [comisionInstanceList: Comision.list(params), comisionInstanceTotal: Comision.count()]
     }
 

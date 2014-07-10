@@ -13,7 +13,9 @@ class TraspasoController {
     }
 
     def list() {
-        params.max = Math.min(params.max ? params.int('max') : 10, 100)
+        params.max = Math.min(params.max ? params.int('max') : 20, 100)
+		params.sort="fecha"
+		params.order="desc"
         [traspasoInstanceList: Traspaso.list(params), traspasoInstanceTotal: Traspaso.count()]
     }
 

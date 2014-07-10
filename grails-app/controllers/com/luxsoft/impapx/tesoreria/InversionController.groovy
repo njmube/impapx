@@ -15,7 +15,9 @@ class InversionController {
     }
 
     def list() {
-        params.max = Math.min(params.max ? params.int('max') : 10, 100)
+        params.max = Math.min(params.max ? params.int('max') : 20, 100)
+		params.sort="fecha"
+		params.order="desc"
         [inversionInstanceList: Inversion.list(params), inversionInstanceTotal: Inversion.count()]
     }
 

@@ -108,3 +108,9 @@ form{
 	width: 780px;
     margin-left: -390px; /* - width/2 */
 }
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}

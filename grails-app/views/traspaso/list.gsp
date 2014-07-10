@@ -32,7 +32,7 @@
 					<g:sortableColumn property="importe" title="${message(code: 'traspaso.comision.label', default: 'Importe')}" />
 					<g:sortableColumn property="comision" title="${message(code: 'traspaso.comision.label', default: 'Comision')}" />
 					<th class="header"><g:message code="traspaso.comentario.label" default="Comentario" /></th>
-					<g:sortableColumn property="dateCreated" title="${message(code: 'traspaso.dateCreated.label', default: 'Creado')}" />
+					
 				</tr>
 			</thead>
 			<tbody>
@@ -40,12 +40,13 @@
 					<tr>
 						<td><g:link action="show" id="${traspasoInstance.id}">${fieldValue(bean: traspasoInstance, field: "id")}</g:link></td>
 						<td><lx:shortDate date="${traspasoInstance.fecha}"/></td>
-						<td>${fieldValue(bean: traspasoInstance, field: "cuentaOrigen")}</td>
-						<td>${fieldValue(bean: traspasoInstance, field: "cuentaDestino")}</td>
+						<td>${fieldValue(bean: traspasoInstance, field: "cuentaOrigen.nombre")} (${fieldValue(bean: traspasoInstance, field: "cuentaOrigen.numero")})</td>
+						<td>${fieldValue(bean: traspasoInstance, field: "cuentaDestino.nombre")} (${fieldValue(bean: traspasoInstance, field: "cuentaDestino.numero")})</td>
+						
 						<td><lx:moneyFormat number="${traspasoInstance.importe}"/></td>
 						<td><lx:moneyFormat number="${traspasoInstance.comision}"/></td>
 						<td>${fieldValue(bean: traspasoInstance, field: "comentario")}</td>
-						<td><g:formatDate date="${traspasoInstance.dateCreated}" /></td>
+						
 					</tr>
 				</g:each>
 			</tbody>

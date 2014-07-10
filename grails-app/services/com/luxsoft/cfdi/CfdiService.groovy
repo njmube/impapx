@@ -12,6 +12,7 @@ import mx.gob.sat.cfd.x3.ComprobanteDocument;
 import mx.gob.sat.cfd.x3.ComprobanteDocument.Comprobante;
 
 import org.bouncycastle.util.encoders.Base64;
+import org.springframework.beans.factory.InitializingBean
 
 import com.edicom.ediwinws.cfdi.client.CfdiClient;
 import com.edicom.ediwinws.cfdi.utils.Base64Util;
@@ -20,11 +21,12 @@ import com.luxsoft.impapx.Empresa;
 import com.luxsoft.impapx.Venta;
 import com.luxsoft.impapx.cxc.CXCNota;
 
-class CfdiService {
+class CfdiService implements InitializingBean{
 
 	def grailsApplication
 	
 	def cfdiSellador
+	
 	
 	def cfdiTimbrador
 	
@@ -79,9 +81,10 @@ class CfdiService {
 		
 		validarDocumento(document)		
 		cfdi.save(failOnError:true)
-		/*if(cfdiTimbrador==null){
-			cfdiTimbrador=new CfdiTimbrador(timbradoDePrueba:false)
-		}*/
+		if(cfdiTimbrador==null){
+			//cfdiTimbrador=new CfdiTimbrador(timbradoDePrueba:false)
+			println 'Algo anda mal el timbrador no puede ser nulo'
+		}
 		cfdi=cfdiTimbrador.timbrar(cfdi,"PAP830101CR3", "yqjvqfofb")
 		return cfdi
     }
@@ -166,6 +169,15 @@ class CfdiService {
 		cfdi.save(flush:true)
 		
 		return cfdi
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		if(cfdiTimbrador==null){
+			println 'Error timbrador no detectado'
+			println 'Env: '+Environment.getCurrent().getName()
+		}
+		 
 	}
 }
 
