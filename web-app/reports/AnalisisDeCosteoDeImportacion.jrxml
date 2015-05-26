@@ -8,10 +8,10 @@
 		 orientation="Landscape"
 		 pageWidth="792"
 		 pageHeight="612"
-		 columnWidth="754"
+		 columnWidth="762"
 		 columnSpacing="0"
-		 leftMargin="19"
-		 rightMargin="19"
+		 leftMargin="15"
+		 rightMargin="15"
 		 topMargin="20"
 		 bottomMargin="20"
 		 whenNoDataType="NoPages"
@@ -36,6 +36,7 @@
 ,I.COSTO_UNITARIO_NETO,I.PRECIO_DE_VENTA,I.precio_de_venta*(I.CANTIDAD/U.factor) AS IMP_A_FAC
 ,(SELECT X.DOCUMENTO FROM CUENTA_POR_PAGAR X WHERE X.ID=I.FACTURA_ID) AS FACTURA
 ,I.importe AS IMP_USD,I.costo_bruto AS IMP_MN,I.gastos_honorarios AS GASTOS,I.gastos_por_pedimento AS IMP_PEDIMENTO
+,ROUND(((I.gastos_honorarios+I.gastos_por_pedimento+i.incrementables)*100/I.costo_bruto),2) AS PORC_GASTO
 FROM embarque e 
 join embarque_det i on(i.embarque_id=e.ID) 
 JOIN pedimento M ON(M.ID=I.pedimento_id) 
@@ -69,6 +70,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 	<field name="IMP_MN" class="java.math.BigDecimal"/>
 	<field name="GASTOS" class="java.math.BigDecimal"/>
 	<field name="IMP_PEDIMENTO" class="java.math.BigDecimal"/>
+	<field name="PORC_GASTO" class="java.math.BigDecimal"/>
 
 	<sortField name="PEDIMENTO" />
 
@@ -310,9 +312,9 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="259"
+						x="254"
 						y="31"
-						width="50"
+						width="46"
 						height="11"
 						forecolor="#000000"
 						key="staticText-25"
@@ -331,7 +333,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 					<reportElement
 						x="0"
 						y="29"
-						width="754"
+						width="762"
 						height="0"
 						key="line-5"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -340,7 +342,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 					<reportElement
 						x="0"
 						y="42"
-						width="754"
+						width="762"
 						height="3"
 						key="line-6"/>
 					<graphicElement stretchType="NoStretch"/>
@@ -348,9 +350,9 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="309"
+						x="300"
 						y="31"
-						width="47"
+						width="39"
 						height="11"
 						forecolor="#000000"
 						key="staticText-34"
@@ -388,7 +390,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="569"
+						x="580"
 						y="31"
 						width="50"
 						height="11"
@@ -408,7 +410,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="619"
+						x="630"
 						y="31"
 						width="39"
 						height="11"
@@ -428,7 +430,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="658"
+						x="669"
 						y="31"
 						width="39"
 						height="11"
@@ -448,7 +450,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="697"
+						x="708"
 						y="31"
 						width="50"
 						height="11"
@@ -468,7 +470,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="356"
+						x="339"
 						y="31"
 						width="61"
 						height="11"
@@ -490,7 +492,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 						mode="Opaque"
 						x="192"
 						y="31"
-						width="67"
+						width="62"
 						height="11"
 						forecolor="#000000"
 						key="staticText-61"
@@ -508,7 +510,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="417"
+						x="400"
 						y="31"
 						width="50"
 						height="11"
@@ -528,7 +530,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="467"
+						x="450"
 						y="31"
 						width="50"
 						height="11"
@@ -548,7 +550,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="517"
+						x="528"
 						y="31"
 						width="50"
 						height="11"
@@ -565,6 +567,26 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 					</textElement>
 				<text><![CDATA[GASTOS]]></text>
 				</staticText>
+				<staticText>
+					<reportElement
+						mode="Opaque"
+						x="500"
+						y="31"
+						width="28"
+						height="11"
+						forecolor="#000000"
+						key="staticText-67"
+						isPrintInFirstWholeBand="true"/>
+					<box>					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle" rotation="None" lineSpacing="Single">
+						<font fontName="Arial" pdfFontName="Helvetica" size="8" isBold="false" isItalic="false" isUnderline="false" isPdfEmbedded ="false" pdfEncoding ="Cp1252" isStrikeThrough="false" />
+					</textElement>
+				<text><![CDATA[GST %]]></text>
+				</staticText>
 			</band>
 			</groupHeader>
 			<groupFooter>
@@ -572,7 +594,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				<staticText>
 					<reportElement
 						mode="Opaque"
-						x="220"
+						x="215"
 						y="3"
 						width="39"
 						height="12"
@@ -591,9 +613,9 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="#,##0.000" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="259"
+						x="254"
 						y="3"
-						width="50"
+						width="46"
 						height="12"
 						key="textField-44"/>
 					<box></box>
@@ -604,9 +626,9 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.000" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="309"
+						x="300"
 						y="3"
-						width="47"
+						width="39"
 						height="12"
 						key="textField-45"/>
 					<box></box>
@@ -617,7 +639,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="569"
+						x="580"
 						y="3"
 						width="50"
 						height="12"
@@ -630,7 +652,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="697"
+						x="708"
 						y="3"
 						width="50"
 						height="12"
@@ -643,7 +665,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				</textField>
 				<line direction="TopDown">
 					<reportElement
-						x="267"
+						x="257"
 						y="1"
 						width="42"
 						height="0"
@@ -652,16 +674,16 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="313"
+						x="304"
 						y="1"
-						width="42"
+						width="35"
 						height="0"
 						key="line-13"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="577"
+						x="588"
 						y="1"
 						width="42"
 						height="0"
@@ -670,7 +692,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="705"
+						x="716"
 						y="1"
 						width="42"
 						height="0"
@@ -679,7 +701,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="426"
+						x="409"
 						y="1"
 						width="42"
 						height="0"
@@ -688,7 +710,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				</line>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="418"
+						x="401"
 						y="3"
 						width="50"
 						height="12"
@@ -701,7 +723,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				</textField>
 				<line direction="TopDown">
 					<reportElement
-						x="476"
+						x="459"
 						y="1"
 						width="42"
 						height="0"
@@ -710,7 +732,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				</line>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="468"
+						x="451"
 						y="3"
 						width="50"
 						height="12"
@@ -723,7 +745,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				</textField>
 				<line direction="TopDown">
 					<reportElement
-						x="527"
+						x="538"
 						y="1"
 						width="42"
 						height="0"
@@ -732,7 +754,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				</line>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="519"
+						x="530"
 						y="3"
 						width="50"
 						height="12"
@@ -990,9 +1012,9 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.000" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="259"
+						x="254"
 						y="0"
-						width="50"
+						width="46"
 						height="10"
 						key="textField-15"/>
 					<box></box>
@@ -1001,11 +1023,11 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{CANTIDAD}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="false" pattern="#,##0.0000" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<textField isStretchWithOverflow="false" pattern="#,##0.000" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="309"
+						x="300"
 						y="0"
-						width="47"
+						width="39"
 						height="10"
 						key="textField-16"/>
 					<box></box>
@@ -1016,7 +1038,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="569"
+						x="580"
 						y="0"
 						width="50"
 						height="10"
@@ -1029,7 +1051,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="619"
+						x="630"
 						y="0"
 						width="39"
 						height="10"
@@ -1042,7 +1064,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="658"
+						x="669"
 						y="0"
 						width="39"
 						height="10"
@@ -1055,7 +1077,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="697"
+						x="708"
 						y="0"
 						width="50"
 						height="10"
@@ -1068,7 +1090,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				</textField>
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="356"
+						x="339"
 						y="0"
 						width="61"
 						height="10"
@@ -1083,7 +1105,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 					<reportElement
 						x="192"
 						y="0"
-						width="67"
+						width="62"
 						height="10"
 						key="textField-52"/>
 					<box></box>
@@ -1094,7 +1116,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="417"
+						x="400"
 						y="0"
 						width="50"
 						height="10"
@@ -1107,7 +1129,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="468"
+						x="451"
 						y="0"
 						width="50"
 						height="10"
@@ -1120,9 +1142,9 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="519"
+						x="528"
 						y="0"
-						width="50"
+						width="52"
 						height="10"
 						key="textField-59"/>
 					<box></box>
@@ -1130,6 +1152,19 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 						<font fontName="Arial" size="8"/>
 					</textElement>
 				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{GASTOS}]]></textFieldExpression>
+				</textField>
+				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						x="502"
+						y="0"
+						width="26"
+						height="10"
+						key="textField-62"/>
+					<box></box>
+					<textElement textAlignment="Right">
+						<font fontName="Arial" size="8"/>
+					</textElement>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{PORC_GASTO}]]></textFieldExpression>
 				</textField>
 			</band>
 		</detail>
@@ -1144,7 +1179,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 						mode="Opaque"
 						x="0"
 						y="2"
-						width="754"
+						width="762"
 						height="2"
 						forecolor="#666666"
 						backcolor="#FFFFFF"
@@ -1280,7 +1315,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 						mode="Opaque"
 						x="0"
 						y="28"
-						width="754"
+						width="762"
 						height="0"
 						forecolor="#666666"
 						backcolor="#FFFFFF"
@@ -1372,7 +1407,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 						mode="Opaque"
 						x="147"
 						y="5"
-						width="112"
+						width="107"
 						height="12"
 						forecolor="#000000"
 						key="staticText-36"
@@ -1389,9 +1424,9 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				</staticText>
 				<textField isStretchWithOverflow="false" pattern="#,##0.000" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="259"
+						x="254"
 						y="5"
-						width="50"
+						width="46"
 						height="12"
 						key="textField-18"/>
 					<box></box>
@@ -1402,9 +1437,9 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.000" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="309"
+						x="300"
 						y="5"
-						width="47"
+						width="39"
 						height="12"
 						key="textField-19"/>
 					<box></box>
@@ -1415,7 +1450,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="569"
+						x="580"
 						y="5"
 						width="50"
 						height="12"
@@ -1428,7 +1463,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="697"
+						x="708"
 						y="5"
 						width="50"
 						height="12"
@@ -1441,7 +1476,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				</textField>
 				<line direction="TopDown">
 					<reportElement
-						x="267"
+						x="257"
 						y="3"
 						width="42"
 						height="0"
@@ -1450,16 +1485,16 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="314"
+						x="305"
 						y="3"
-						width="42"
+						width="35"
 						height="0"
 						key="line-8"/>
 					<graphicElement stretchType="NoStretch"/>
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="577"
+						x="588"
 						y="3"
 						width="42"
 						height="0"
@@ -1468,7 +1503,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="705"
+						x="716"
 						y="3"
 						width="42"
 						height="0"
@@ -1477,7 +1512,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				</line>
 				<line direction="TopDown">
 					<reportElement
-						x="426"
+						x="409"
 						y="3"
 						width="42"
 						height="0"
@@ -1486,7 +1521,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				</line>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="418"
+						x="401"
 						y="5"
 						width="50"
 						height="12"
@@ -1499,7 +1534,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				</textField>
 				<line direction="TopDown">
 					<reportElement
-						x="476"
+						x="459"
 						y="3"
 						width="42"
 						height="0"
@@ -1508,7 +1543,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				</line>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="468"
+						x="451"
 						y="5"
 						width="50"
 						height="12"
@@ -1521,7 +1556,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				</textField>
 				<line direction="TopDown">
 					<reportElement
-						x="527"
+						x="538"
 						y="3"
 						width="42"
 						height="0"
@@ -1530,7 +1565,7 @@ JOIN producto P ON(P.ID=I.PRODUCTO_ID) JOIN unidad U ON(U.id=P.unidad_id)
 				</line>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
-						x="519"
+						x="530"
 						y="5"
 						width="50"
 						height="12"

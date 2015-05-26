@@ -102,7 +102,7 @@
 						action="imprimirCfdi"
 						jasper="CFDI" 
 						format="PDF" 
-						name="">
+						name="${cfdiInstance.serie}-${cfdiInstance.folio}">
 				<g:hiddenField name="id" value="${cfdiInstance.id}"/>
 			</g:jasperReport>
 				</g:if>
@@ -114,7 +114,10 @@
 				<g:link class="btn btn-info" action="mostrarXml" id="${cfdiInstance.id}">Ver XML</g:link>
 				<g:if test="${cfdiInstance.uuid }">
 					
-					<g:link class="btn btn-success" action="descargarXml" resource="${cfdiInstance}"><i class="icon-download icon-white"></i> Descargar XML</g:link>
+					<g:link class="btn btn-success" action="descargarXml" id="${cfdiInstance.id}"> <i class="icon-download icon-white"></i> Descargar XML</g:link>
+					
+				
+					
 					<g:actionSubmit class="btn btn-danger" action="cancelar" value="${message(code: 'default.button.cancel.label', default: 'Cancelar')}" 
 						onclick="return confirm('${message(code: 'default.button.cancel.confirm.message', default: 'Seguro que desa cancelar?')}');" />
 				</g:if>

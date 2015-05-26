@@ -217,8 +217,8 @@ CON UNA HORA DE DIFERENCIA ENTRE CONTENEDORES]]></text>
 					</textElement>
 				<textFieldExpression   class="java.lang.String"><![CDATA[$F{SUCURSAL}.equals( "TRANSITO" ) && !$P{ICONTACTO}.equals( null ) ? $P{ICONTACTO} :
 $F{SUCURSAL}.equals( "ANDRADE" ) ? "JOSE LUIS CONTRERAS" :
-$F{SUCURSAL}.equals( "CALLE 4" ) ? "JAIME MARTINEZ" :
-$F{SUCURSAL}.equals( "TACUBA" ) ? "PABLO MEJIA" :
+$F{SUCURSAL}.equals( "CALLE 4" ) ? "DAVID PERALTA" :
+$F{SUCURSAL}.equals( "TACUBA" ) ? "RUBEN VELAZQUEZ" :
 $F{SUCURSAL}.equals( "VERTIZ 176" ) ? "JOSE LUIS CONTRERAS" :
 $F{SUCURSAL}.equals( "ALESA" ) ? "ALEJANDRO RETAMA ALFARO" :
 $F{SUCURSAL}.equals( "PROMASA NORTE" ) ? "DANIEL GOMEZ" :

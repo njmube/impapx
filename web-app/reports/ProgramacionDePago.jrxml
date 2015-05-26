@@ -35,12 +35,12 @@
         when DAYOFWEEK(P.vencimiento)>4 then DATE_ADD(P.vencimiento, INTERVAL -(DAYOFWEEK(P.vencimiento)-4) DAY) end) as FECHA_A_PAG        
 ,(SELECT MAX(E.fecha_embarque) FROM embarque_det D JOIN embarque E ON(E.ID=D.embarque_id) WHERE (D.factura_id=P.ID)) AS FECHA_BL
 ,P.TOTAL
-,IFNULL((SELECT SUM(B.TOTAL) FROM aplicacion B WHERE B.FACTURA_ID=P.ID AND B.fecha<=$P{FECHA_INI}),0) AS APLIC
-,P.TOTAL-IFNULL((SELECT SUM(B.TOTAL) FROM aplicacion B WHERE B.FACTURA_ID=P.ID AND B.fecha<=$P{FECHA_INI}),0) AS SALDO
+,IFNULL((SELECT SUM(B.TOTAL) FROM aplicacion B WHERE B.FACTURA_ID=P.ID AND B.fecha<=$P{FECHA_FIN}),0) AS APLIC
+,P.TOTAL-IFNULL((SELECT SUM(B.TOTAL) FROM aplicacion B WHERE B.FACTURA_ID=P.ID AND B.fecha<=$P{FECHA_FIN}),0) AS SALDO
  FROM cuenta_por_pagar P
 JOIN proveedor X ON(X.ID=P.proveedor_id)
 WHERE P.proveedor_id LIKE $P{PROVEEDOR} AND P.MONEDA='USD' AND
-P.TOTAL-IFNULL((SELECT SUM(B.TOTAL) FROM aplicacion B WHERE B.FACTURA_ID=P.ID AND B.fecha<=$P{FECHA_INI}),0)>1
+P.TOTAL-IFNULL((SELECT SUM(B.TOTAL) FROM aplicacion B WHERE B.FACTURA_ID=P.ID AND B.fecha<=$P{FECHA_FIN}),0)>1
 AND DATE(case   when DAYOFWEEK(P.vencimiento)=4 then P.vencimiento
         when DAYOFWEEK(P.vencimiento)<4 then DATE_ADD(P.vencimiento, INTERVAL -(3+DAYOFWEEK(P.vencimiento)) DAY) 
         when DAYOFWEEK(P.vencimiento)>4 then DATE_ADD(P.vencimiento, INTERVAL -(DAYOFWEEK(P.vencimiento)-4) DAY) end) BETWEEN $P{FECHA_INI} AND $P{FECHA_FIN}

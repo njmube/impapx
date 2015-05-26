@@ -284,7 +284,7 @@ class EmbarqueController {
 	def comprasPendientes(long id){
 		println 'Localizando compras pendientes por atender '+params
 		def embarque=Embarque.get(id)
-		def res=CompraDet.findAll("from CompraDet d left join fetch d.compra c left join fetch c.proveedor p where c.proveedor=? and solicitado-entregado>0 order by d.compra.folio"
+		def res=CompraDet.findAll("from CompraDet d left join fetch d.compra c left join fetch c.proveedor p where c.fecha>='2013/07/01' and c.proveedor=? and solicitado-entregado>0 order by d.compra.folio"
 			,[embarque.proveedor]
 			,[max:500]
 			)

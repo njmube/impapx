@@ -39,11 +39,12 @@ class PolizaDeCierreAnualController {
 		params.dia=dia
 		
 		//Prepara la poliza
-		Poliza poliza=new Poliza(tipo:'CIERRE_ANUAL',folio:1, fecha:dia,descripcion:'CIERRE ANUAL '+dia.toYear(),partidas:[])
+		Poliza poliza=new Poliza(tipo:'GENERICA',folio:1, fecha:dia,descripcion:'CIERRE ANUAL '+dia.toYear(),partidas:[])
 		// Procesadores
 		generar(poliza, dia)
 		cancelacionIETU(poliza, dia)
 		//Salvar la poliza
+		poliza.tipo='CIERRE_ANUAL'
 		poliza.debe=poliza.partidas.sum (0.0,{it.debe})
 		poliza.haber=poliza.partidas.sum(0.0,{it.haber})
 		
