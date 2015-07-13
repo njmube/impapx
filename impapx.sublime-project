@@ -5,6 +5,12 @@
 	"folders":
 	[
 		{
+			"name": "RottFoleder",
+			"path": ".",
+			"folder_exclude_patterns": ["*"],
+			"file_exclude_patterns": ["*.log","*.project","*.classpath","*.sublime-project"]
+		},
+		{
 			"name": "Configuration",
 			"path": "grails-app/conf"
 		},
